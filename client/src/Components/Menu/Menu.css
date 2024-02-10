@@ -1,1 +1,16 @@
 @import "rsuite/dist/rsuite.css";
+
+.rs-sidenav-toggle {
+  position: relative;
+  background-color: #1f2937 !important;
+  border-radius: 10px;
+  button {
+    background-color: #1f2937 !important;
+    /* padding-top: ; */
+    height: 50px;
+    border-radius: 10px;
+    svg {
+      color: #ffffff;
+    }
+  }
+}
