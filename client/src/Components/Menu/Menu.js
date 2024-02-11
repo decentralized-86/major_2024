@@ -1,19 +1,51 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "./Menu.css";
-import { Sidenav, Nav, Toggle } from "rsuite";
+import { Sidenav, Nav, Button } from "rsuite";
 import DashboardIcon from "@rsuite/icons/legacy/Dashboard";
 import GroupIcon from "@rsuite/icons/legacy/Group";
 import MagicIcon from "@rsuite/icons/legacy/Magic";
 import GearCircleIcon from "@rsuite/icons/legacy/GearCircle";
+import { MenuIcon, XIcon } from "@heroicons/react/outline";
+import { Disclosure } from "@headlessui/react";
 
-const Navbar = (value) => {
-  const [expanded, setExpanded] = React.useState(true);
+const Navbar = () => {
+  const [expanded, setExpanded] = React.useState(false);
   const [activeKey, setActiveKey] = React.useState("1");
+
+  const toggleMenu = () => {
+    setExpanded((prevExpanded) => !prevExpanded); // Toggle expanded state
+  };
+
   return (
     <div style={{ width: 240 }}>
       <Sidenav expanded={expanded}>
-        <Sidenav.Toggle onToggle={(expanded) => setExpanded(expanded)} />
+        <Sidenav.Header>
+          <Disclosure>
+            <div className="flex items-center bg-gray-800 pb-1">
+              <Disclosure.Button
+                className="inline-flex items-center justify-center p-2 m-[1.5px] text-gray-400 hover:ring-2 hover:ring-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-inset h-[49px] w-[54px]"
+                onClick={toggleMenu}
+              >
+                {expanded ? (
+                  <XIcon className="block h-6 w-6" aria-hidden="true" />
+                ) : (
+                  <MenuIcon className="block h-6 w-8" aria-hidden="true" />
+                )}
+              </Disclosure.Button>
+              <div
+                style={{
+                  width: "9vw",
+                  fontWeight: "bolder",
+                  fontSize: "30px",
+                  color: "White",
+                  textAlign: "center",
+                }}
+              >
+                {expanded ? "CPMS" : ""}
+              </div>
+            </div>
+          </Disclosure>
+        </Sidenav.Header>
         <Sidenav.Body>
           <Nav activeKey={activeKey} onSelect={setActiveKey}>
             <Nav.Item eventKey="1" icon={<DashboardIcon />}>
