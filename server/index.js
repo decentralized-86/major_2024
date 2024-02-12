@@ -5,6 +5,8 @@ const cors = require('cors')
 require('dotenv').config();
 const connect = require('./db/connect')
 
+
+app.use(cors());
 app.use(express.json()); 
 
 const Port = process.env.PORT ||  8080;
