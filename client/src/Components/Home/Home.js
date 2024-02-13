@@ -4,8 +4,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../Header/Header";
 import SideNavBar from "../Menu/Menu";
 import { useNavigate, Outlet } from "react-router-dom";
-import SearchBar from "../Search/Search";
-import { Container, Header, Content } from "rsuite";
+import { Container, Content } from "rsuite";
 
 function Home({ isDarkMode, toggleDarkMode }) {
   const [expanded, setExpanded] = React.useState(true);
@@ -44,9 +43,6 @@ function Home({ isDarkMode, toggleDarkMode }) {
           }}
         >
           <Container>
-            <Header>
-              <SearchBar />
-            </Header>
             <Content>
               <Outlet />
             </Content>

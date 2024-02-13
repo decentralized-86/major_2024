@@ -4,40 +4,49 @@ import ReactSearchBox from "react-search-box";
 import "./sb.css";
 
 export default class SearchBar extends Component {
-  data = [
-    {
-      key: "john",
-      value: "John Doe",
-    },
-    {
-      key: "jane",
-      value: "Jane Doe",
-    },
-    {
-      key: "mary",
-      value: "Mary Phillips",
-    },
-    {
-      key: "robert",
-      value: "Robert",
-    },
-    {
-      key: "karius",
-      value: "Karius",
-    },
-  ];
-
   render() {
+    const searchData = this.props.data.map((data) => ({
+      key: data.id,
+      value: data.name,
+    }));
+
+    const searchDataUID = this.props.data.map((data) => ({
+      key: data.id,
+      value: data.UID,
+    }));
+
+    const searchDataYear = this.props.data.map((data) => ({
+      key: data.id,
+      value: data.Year,
+    }));
+
     return (
-      <ReactSearchBox
-        style={{ width: "100%" }}
-        placeholder="Search"
-        autoFocus={true}
-        leftIcon={<SearchIcon />}
-        iconBoxSize={"25px"}
-        data={this.data}
-        callback={(record) => console.log(record)}
-      />
+      <div className="searchbox">
+        <ReactSearchBox
+          placeholder="Name"
+          autoFocus={true}
+          leftIcon={<SearchIcon />}
+          iconBoxSize={"25px"}
+          data={searchData}
+          callback={(record) => console.log(record)}
+        />
+        <ReactSearchBox
+          placeholder="UID"
+          autoFocus={true}
+          leftIcon={<SearchIcon />}
+          iconBoxSize={"25px"}
+          data={searchDataUID}
+          callback={(record) => console.log(record)}
+        />
+        <ReactSearchBox
+          placeholder="Year"
+          autoFocus={true}
+          leftIcon={<SearchIcon />}
+          iconBoxSize={"25px"}
+          data={searchDataYear}
+          callback={(record) => console.log(record)}
+        />
+      </div>
     );
   }
 }
