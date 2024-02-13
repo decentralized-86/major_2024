@@ -1,9 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { BellIcon, MenuIcon, XIcon } from "@heroicons/react/outline";
+import { BellIcon } from "@heroicons/react/outline";
 import "./Header.css"; // Importing external CSS file
 import logo from "../Header/Logo/2.png";
+import { DarkModeSwitch } from "react-toggle-dark-mode";
 
 // Utility function to conditionally concatenate CSS classes
 function classNames(...classes) {
@@ -18,7 +19,7 @@ const notifications = [
 ];
 
 // Navbar component
-export default function Navbar() {
+export default function Navbar({ isDarkMode, toggleDarkMode }) {
   // State for managing visibility of notification dropdown
   const [openNotifications, setOpenNotifications] = useState(false);
 
@@ -43,6 +44,14 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                {/* Darkmode Switch */}
+                <DarkModeSwitch
+                  style={{ marginRight: "1em" }}
+                  checked={isDarkMode}
+                  onChange={toggleDarkMode}
+                  sunColor="white"
+                  size={25}
+                />
                 {/* Notifications button */}
                 <button
                   type="button"
@@ -79,41 +88,41 @@ export default function Navbar() {
                       {/* Profile dropdown menu items */}
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <div
+                            // href="#"
                             className={classNames(
                               "profile-dropdown-item",
                               active && "active"
                             )}
                           >
                             Your Profile
-                          </a>
+                          </div>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <div
+                            // href="#"
                             className={classNames(
                               "profile-dropdown-item",
                               active && "active"
                             )}
                           >
                             Settings
-                          </a>
+                          </div>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <div
+                            // href="#"
                             className={classNames(
                               "profile-dropdown-item",
                               active && "active"
                             )}
                           >
                             Sign out
-                          </a>
+                          </div>
                         )}
                       </Menu.Item>
                     </Menu.Items>

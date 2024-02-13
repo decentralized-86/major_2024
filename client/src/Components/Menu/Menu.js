@@ -1,23 +1,25 @@
 import React from "react";
 import "./Menu.css";
-import { Sidenav, Nav, Button } from "rsuite";
+import { Sidenav, Nav } from "rsuite";
 import DashboardIcon from "@rsuite/icons/legacy/Dashboard";
 import GroupIcon from "@rsuite/icons/legacy/Group";
-import MagicIcon from "@rsuite/icons/legacy/Magic";
-import GearCircleIcon from "@rsuite/icons/legacy/GearCircle";
+import TaskIcon from "@rsuite/icons/Task";
+import CalendarIcon from "@rsuite/icons/Calendar";
+import GearIcon from "@rsuite/icons/Gear";
+import Building from "@rsuite/icons/legacy/Building";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Disclosure } from "@headlessui/react";
+import { Link } from "react-router-dom";
 
-const Navbar = () => {
-  const [expanded, setExpanded] = React.useState(false);
-  const [activeKey, setActiveKey] = React.useState("1");
-
-  const toggleMenu = () => {
-    setExpanded((prevExpanded) => !prevExpanded); // Toggle expanded state
-  };
+const SideNavBar = ({ expanded, toggleMenu }) => {
+  const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
+    <Link ref={ref} to={href} {...rest}>
+      {children}
+    </Link>
+  ));
 
   return (
-    <div style={{ width: 240 }}>
+    <div className="sideNavBar">
       <Sidenav expanded={expanded}>
         <Sidenav.Header>
           <Disclosure>
@@ -47,38 +49,55 @@ const Navbar = () => {
           </Disclosure>
         </Sidenav.Header>
         <Sidenav.Body>
-          <Nav activeKey={activeKey} onSelect={setActiveKey}>
-            <Nav.Item eventKey="1" icon={<DashboardIcon />}>
+          <Nav>
+            <Nav.Item
+              as={NavLink}
+              href="dashboard"
+              eventKey="1"
+              icon={<DashboardIcon />}
+            >
               Dashboard
             </Nav.Item>
-            <Nav.Item eventKey="2" icon={<GroupIcon />}>
-              User Group
+            <Nav.Item
+              as={NavLink}
+              href="drives"
+              eventKey="2"
+              icon={<CalendarIcon />}
+            >
+              Manage Drives
             </Nav.Item>
-            <Nav.Menu
-              placement="rightStart"
+            <Nav.Item
+              as={NavLink}
+              href="student"
               eventKey="3"
-              title="Advanced"
-              icon={<MagicIcon />}
+              icon={<GroupIcon />}
             >
-              <Nav.Item eventKey="3-1">Geo</Nav.Item>
-              <Nav.Item eventKey="3-2">Devices</Nav.Item>
-              <Nav.Item eventKey="3-3">Loyalty</Nav.Item>
-              <Nav.Item eventKey="3-4">Visit Depth</Nav.Item>
-            </Nav.Menu>
-            <Nav.Menu
-              placement="rightStart"
+              Student Details
+            </Nav.Item>
+            <Nav.Item
+              as={NavLink}
+              href="trainings"
               eventKey="4"
-              title="Settings"
-              icon={<GearCircleIcon />}
+              icon={<TaskIcon />}
             >
-              <Nav.Item eventKey="4-1">Applications</Nav.Item>
-              <Nav.Item eventKey="4-2">Channels</Nav.Item>
-              <Nav.Item eventKey="4-3">Versions</Nav.Item>
-              <Nav.Menu eventKey="4-5" title="Custom Action">
-                <Nav.Item eventKey="4-5-1">Action Name</Nav.Item>
-                <Nav.Item eventKey="4-5-2">Action Params</Nav.Item>
-              </Nav.Menu>
-            </Nav.Menu>
+              Manage Trainings
+            </Nav.Item>
+            <Nav.Item
+              as={NavLink}
+              href="company"
+              eventKey="5"
+              icon={<Building />}
+            >
+              Company
+            </Nav.Item>
+            <Nav.Item
+              as={NavLink}
+              href="settings"
+              eventKey="6"
+              icon={<GearIcon />}
+            >
+              Settings
+            </Nav.Item>
           </Nav>
         </Sidenav.Body>
       </Sidenav>
@@ -86,4 +105,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default SideNavBar;
