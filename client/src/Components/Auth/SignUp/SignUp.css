@@ -1,0 +1,19 @@
+.rs-flex-box-grid {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin: 3em;
+    padding: 3em;
+    width: 50vw;
+  }
+}
+.rs-flex-box-grid-item-12 {
+  margin: auto;
+}

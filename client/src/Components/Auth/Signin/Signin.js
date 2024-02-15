@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signin() {
   const navigate = useNavigate();
@@ -18,9 +18,14 @@ function Signin() {
   }
   return (
     <div>
-      <button className="btn-primary" onClick={handleLogin}>
+      <button className="btn-primary p-1 m-1" onClick={handleLogin}>
         Log in
       </button>
+      <Link to="/signup/studentdetails">
+        <button className="btn-primary p-1 m-1">
+          Don't have an account? Sign up
+        </button>
+      </Link>
       {!loginFailed ? null : (
         <div style={{ color: "red", fontWeight: "bold" }}>Try Again!!!!</div>
       )}

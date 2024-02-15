@@ -1,7 +1,8 @@
 import "./App.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Signin from "./Components/Auth/Signin";
+import Signin from "./Components/Auth/Signin/Signin";
+import SignUp from "./Components/Auth/SignUp/SignUp";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Components/Home/Home";
 import Dashboard from "./Components/Dashboard/Dashboard";
@@ -10,6 +11,9 @@ import Student from "./Components/StudentDetails/Student";
 import Drives from "./Components/ManageDrives/Drives";
 import Trainings from "./Components/ManageTraining/Training";
 import Company from "./Components/ManageCompany/Company";
+import Location from "./Components/Auth/SignUp/Location/Location";
+import Links from "./Components/Auth/SignUp/Links/Link";
+import StudentDetails from "./Components/Auth/SignUp/StudentDetails/StudentDetails";
 
 function App() {
   const [isDarkMode, setDarkMode] = React.useState(false);
@@ -23,7 +27,22 @@ function App() {
   return (
     <div className={themeClass}>
       <Routes>
-        <Route path="/" element={<Signin />} />
+        <Route
+          path="/"
+          element={
+            <Signin isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <SignUp isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+          }
+        >
+          <Route path="studentdetails" element={<StudentDetails />} />
+          <Route path="location" element={<Location />} />
+          <Route path="links" element={<Links />} />
+        </Route>
         <Route
           path="home"
           element={

@@ -7,13 +7,23 @@ import { Header } from "rsuite";
 const data = mockUsers(200);
 
 function Drives() {
-  const [selectedId, setSelectedId] = useState(null);
+  const [selectedId, setSelectedId] = useState([]);
+  const handleSearch = (record) => {
+    setSelectedId((prevIds) => [...prevIds, record]); // update the state with the selected ID
+  };
+  const clearSelectedIds = () => {
+    setSelectedId([]); // clear the array
+  };
   return (
     <div>
       <Header>
-        <SearchBar data={data} onSearch={(id) => setSelectedId(id)} />
+        <SearchBar data={data} onSearch={handleSearch} />
       </Header>
-      <ListTable data={data} selectedId={selectedId} />
+      <ListTable
+        data={data}
+        selectedId={selectedId}
+        clearSelectedId={clearSelectedIds}
+      />
     </div>
   );
 }
