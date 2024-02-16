@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
 
-    student: {
+student: {
         name : {type : String, required: true },
         uid : {  type : String, required : true},
         batch : {type : String,   required: true, },
@@ -41,6 +41,7 @@ const userSchema = new mongoose.Schema({
         required: true, 
         
     },
+    
     isAdmin: {
         type: Boolean,
         default: false
