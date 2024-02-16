@@ -14,7 +14,7 @@ import Location from "./Location/Location";
 import Links from "./Links/Link";
 import SignupNav from "./SignupNav/SignupNav";
 import { Outlet, useLocation } from "react-router-dom";
-import AuthHeader from "../AuthHeader/AuthHeader";
+import AuthHeader from "./AuthHeader/AuthHeader";
 
 const { StringType } = Schema.Types;
 
@@ -55,13 +55,8 @@ const SignUp = ({ isDarkMode, toggleDarkMode }) => {
   const formRef = useRef();
   const [formValue, setFormValue] = useState({});
   const [formError, setFormError] = useState({});
-  const [expanded, setExpanded] = React.useState(true);
 
   const location = useLocation();
-
-  const toggleMenu = () => {
-    setExpanded((prevExpanded) => !prevExpanded); // Toggle expanded state
-  };
 
   const handleSubmit = () => {
     if (!formRef.current.check()) {
@@ -78,11 +73,10 @@ const SignUp = ({ isDarkMode, toggleDarkMode }) => {
         <AuthHeader isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       </div>
       <div style={{ display: "flex", flexDirection: "row" }}>
-        <SignupNav expanded={expanded} toggleMenu={toggleMenu} />
-        <FlexboxGrid className="groupContainer">
+        <SignupNav />
+        <FlexboxGrid className="groupContainer h-[91vh] p-4">
           <FlexboxGrid.Item colspan={12}>
             <Form
-              className="form-group"
               ref={formRef}
               onChange={setFormValue}
               onCheck={setFormError}

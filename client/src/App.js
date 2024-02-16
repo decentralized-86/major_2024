@@ -5,12 +5,11 @@ import Signin from "./Components/Auth/Signin/Signin";
 import SignUp from "./Components/Auth/SignUp/SignUp";
 import { Routes, Route } from "react-router-dom";
 import Home from "./Components/Home/Home";
-import Dashboard from "./Components/Dashboard/Dashboard";
-import Settings from "./Components/Settings/Settings";
-import Student from "./Components/StudentDetails/Student";
-import Drives from "./Components/ManageDrives/Drives";
-import Trainings from "./Components/ManageTraining/Training";
-import Company from "./Components/ManageCompany/Company";
+import Dashboard from "./Components/SideNavBar/SideNavOptions/Dashboard/Dashboard";
+import Settings from "./Components/SideNavBar/SideNavOptions/Settings/Settings";
+import StudentListTable from "./Components/SideNavBar/SideNavOptions/StudentDetails/Student";
+import Drives from "./Components/SideNavBar/SideNavOptions/ManageDrives/Drives";
+import Trainings from "./Components/SideNavBar/SideNavOptions/ManageTraining/Training";
 import Location from "./Components/Auth/SignUp/Location/Location";
 import Links from "./Components/Auth/SignUp/Links/Link";
 import StudentDetails from "./Components/Auth/SignUp/StudentDetails/StudentDetails";
@@ -51,9 +50,8 @@ function App() {
         >
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="drives" element={<Drives />} />
-          <Route path="student" element={<Student />} />
+          <Route path="student" element={<StudentListTable />} />
           <Route path="trainings" element={<Trainings />} />
-          <Route path="company" element={<Company />} />
           <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>

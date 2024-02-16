@@ -9,6 +9,7 @@ import {
   Panel,
   FlexboxGrid,
 } from "rsuite";
+import "./StudentDetails.css";
 
 const { StringType } = Schema.Types;
 
@@ -50,67 +51,43 @@ const TextField = React.forwardRef((props, ref) => {
 
 const StudentDetails = () => {
   return (
-    <>
-      <TextField name="name" label="Name" />
-      <TextField name="uid" label="UID" />
-      <TextField name="password" label="Password" />
-      <TextField name="c_password" label="Confirm Password" />
-      <TextField name="batch" label="Batch" />
-      <TextField name="branch" label="Branch" />
-      <TextField name="gender" label="Gender" />
-      <TextField name="contact" label="Contact" />
-      <TextField name="college_email" label="College Email" />
-      <TextField name="degree" label="Degree" />
-      <TextField name="avg_cgpa" label="Average CGPA" />
-      <TextField name="ssc_marks" label="SSC Marks" />
-      <TextField name="ssc_board" label="SSC Board" />
-      <TextField name="hsc_marks" label="HSC Marks" />
-      <TextField name="hsc_board" label="HSC Board" />
-    </>
+    <div className="StudentDetailsForm">
+      <div className="StudentDetailsForm-items" id="Name">
+        <TextField name="firstName" label="firstName" />
+        <TextField name="lastName" label="lastName" />
+      </div>
+      <div className="StudentDetailsForm-items" id="personalInfo">
+        <TextField name="gender" label="Gender" />
+        <TextField name="contact" label="Contact" />
+      </div>
+      <div className="StudentDetailsForm-items" id="collegeInfo">
+        <div className="flex flex-row">
+          <TextField name="uid" label="UID" />
+          <TextField name="batch" label="Batch" />
+          <TextField name="branch" label="Branch" />
+        </div>
+        <div>
+          <TextField name="college_email" label="College Email" />
+        </div>
+        <div className="flex flex-row">
+          <TextField name="degree" label="Degree" />
+          <TextField name="avg_cgpa" label="Average CGPA" />
+        </div>
+      </div>
+      <div className="StudentDetailsForm-items" id="boardMarks">
+        <div className="flex flex-row">
+          <TextField name="ssc_marks" label="SSC Marks" />
+          <TextField name="ssc_board" label="SSC Board" />
+          <TextField name="hsc_marks" label="HSC Marks" />
+          <TextField name="hsc_board" label="HSC Board" />
+        </div>
+      </div>
+      <div className="StudentDetailsForm-items" id="password">
+        <TextField name="password" label="Password" />
+        <TextField name="c_password" label="Confirm Password" />
+      </div>
+    </div>
   );
 };
 
 export default StudentDetails;
-/*
-------------------------------------------------------------------
-student: {
-        name : {type : String, required: true },
-        uid : {  type : String, required : true},
-        batch : {type : String,   required: true, },
-        branch : { type : String,  required: true },
-        gender : {  type : String, required:true,  default : 'M' },
-        contact : {  type : String, required: true},
-        college_email : { type : String, required: true, },
-        degree : { type : String, required: true,  },
-       avg_cgpa : { type : String, required: true },
-        ssc_marks : {type : String, required: true  },
-        ssc_board : { type : String,  required: true,},
-        hsc_marks : { type : String, required: true },
-        hsc_board : { type : String, required: true,  },
- },
-
- location: {
-    address : {  type : String, required: true },
-    city : { type : String,  required: true},
-    post_code : {type : String, required: true},
-    state : { type : String, required: true,  },
-    country : { type : String, required: true },
- },
-    
-    
-    linkedln_link: {
-        type : String
-    },
-    resume_url : {
-        type : String
-    },
-    password : {
-        type : String,
-        required: true, 
-        
-    },c_password : {
-        type : String,
-        required: true, 
-        
-    },
-*/

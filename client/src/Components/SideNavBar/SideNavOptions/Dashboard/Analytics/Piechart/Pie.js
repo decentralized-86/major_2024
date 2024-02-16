@@ -56,7 +56,7 @@ export const data = {
 
 export function Piechart() {
   return (
-    <div style={{ width: "30%", height: "auto" }}>
+    <div className="lg:w-[40vw]  lg:px-[5vw] sm:w-[80vw] sm:mx-auto">
       <Pie options={options} data={data} />
     </div>
   );

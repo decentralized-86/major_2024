@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon } from "@heroicons/react/outline";
 import "./Header.css"; // Importing external CSS file
-import logo from "../Header/Logo/2.png";
 import { DarkModeSwitch } from "react-toggle-dark-mode";
+import { Link } from "react-router-dom";
+import logo from "../Logo/cpmsLogo.png";
 
 // Utility function to conditionally concatenate CSS classes
 function classNames(...classes) {
@@ -16,12 +17,32 @@ const notifications = [
   { id: 1, text: "New message from John" },
   { id: 2, text: "You have a meeting at 3:00 PM" },
   { id: 3, text: "Reminder: Complete task by EOD" },
+  { id: 4, text: "Hey!!! test Notification" },
 ];
 
 // Navbar component
 export default function Navbar({ isDarkMode, toggleDarkMode }) {
   // State for managing visibility of notification dropdown
   const [openNotifications, setOpenNotifications] = useState(false);
+  const notificationsRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (
+        notificationsRef.current &&
+        !notificationsRef.current.contains(event.target)
+      ) {
+        setOpenNotifications(false);
+      }
+    }
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [notificationsRef]);
 
   return (
     <Disclosure as="nav" className="bg-gray-800">
@@ -31,16 +52,7 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
             <div className="relative flex items-center justify-between h-16 w-auto">
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                 <div className="flex-shrink-0 flex items-center">
-                  <img
-                    className="block lg:hidden h-9 w-auto"
-                    src={logo}
-                    alt="CPMS"
-                  />
-                  <img
-                    className="hidden lg:block h-9 w-auto"
-                    src={logo}
-                    alt="CPMS"
-                  />
+                  <img className=" h-9" src={logo} alt="CPMS" />
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -52,19 +64,50 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
                   sunColor="white"
                   size={25}
                 />
-                {/* Notifications button */}
-                <button
-                  type="button"
-                  className="notifications-button"
-                  onClick={() => setOpenNotifications(!openNotifications)}
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
 
-                {/* Profile dropdown */}
-                <Menu as="div" className="ml-3 relative">
+                <Menu ref={notificationsRef} as="div" className="relative">
                   <div>
+                    {/* Notifications button */}
+                    <Menu.Button
+                      className="notifications-button"
+                      onClick={() => setOpenNotifications(!openNotifications)} // Toggle the state on click
+                    >
+                      <span className="sr-only">View notifications</span>
+                      <BellIcon className="h-6 w-6" aria-hidden="true" />
+                    </Menu.Button>
+                  </div>
+                  {/* Transition for Notification dropdown menu */}
+                  <Transition
+                    show={openNotifications}
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="notifications-dropdown-menu z-10 absolute right-0 origin-top-left bg-white shadow-lg rounded-md overflow-hidden">
+                      {notifications.map((notification) => (
+                        <Menu.Item key={notification.id}>
+                          {({ active }) => (
+                            <div
+                              className={classNames(
+                                "notifications-dropdown-item",
+                                active && "active"
+                              )}
+                            >
+                              {notification.text}
+                            </div>
+                          )}
+                        </Menu.Item>
+                      ))}
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+                <Menu as="div" className="ml-4 relative">
+                  <div>
+                    {/* Profile dropdown */}
                     <Menu.Button className="profile-dropdown-button">
                       <span className="sr-only">Open user menu</span>
                       <img
@@ -84,7 +127,7 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="profile-dropdown-menu">
+                    <Menu.Items className="profile-dropdown-menu z-10">
                       {/* Profile dropdown menu items */}
                       <Menu.Item>
                         {({ active }) => (
@@ -102,7 +145,6 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
                       <Menu.Item>
                         {({ active }) => (
                           <div
-                            // href="#"
                             className={classNames(
                               "profile-dropdown-item",
                               active && "active"
@@ -115,13 +157,12 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
                       <Menu.Item>
                         {({ active }) => (
                           <div
-                            // href="#"
                             className={classNames(
                               "profile-dropdown-item",
                               active && "active"
                             )}
                           >
-                            Sign out
+                            <Link to={"/"}>Sign out</Link>
                           </div>
                         )}
                       </Menu.Item>
@@ -131,22 +172,6 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
               </div>
             </div>
           </div>
-
-          {/* Notification dropdown */}
-          {openNotifications && (
-            <div className="absolute right-0 mt-2 origin-top-left bg-white shadow-lg rounded-md overflow-hidden z-10">
-              <div className="py-1">
-                {notifications.map((notification) => (
-                  <div
-                    key={notification.id}
-                    className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-                  >
-                    {notification.text}
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
         </>
       )}
     </Disclosure>

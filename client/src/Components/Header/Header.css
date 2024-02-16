@@ -25,6 +25,26 @@
   @apply bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white;
 }
 
+/* notifications dropdown menu */
+.notifications-dropdown-menu {
+  @apply origin-top-right absolute right-0 mt-2 w-60 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none;
+}
+
+/* notifications dropdown menu items */
+.notifications-dropdown-item {
+  @apply block px-4 py-2 text-sm text-gray-700;
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+/* Active notifications dropdown item */
+.notifications-dropdown-item.active {
+  @apply bg-gray-100;
+}
+
 /* Profile dropdown button */
 .profile-dropdown-button {
   @apply bg-gray-800 flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white;
@@ -43,6 +63,11 @@
 /* Profile dropdown menu items */
 .profile-dropdown-item {
   @apply block px-4 py-2 text-sm text-gray-700;
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 /* Active profile dropdown item */

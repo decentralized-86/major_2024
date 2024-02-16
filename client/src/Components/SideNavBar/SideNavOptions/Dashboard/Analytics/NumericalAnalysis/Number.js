@@ -37,7 +37,7 @@ const NumberAnalysis = () => {
   };
   // Display analysis for each dataset
   return (
-    <div className="NumAnalysis">
+    <div className="NumAnalysis lg:w-[85vw] ">
       <Row>
         <Col md={6} sm={12}>
           <Panel bordered header="Students Registered">

@@ -1,5 +1,5 @@
 import React from "react";
-import "./Menu.css";
+import "./SideNavBar.css";
 import { Sidenav, Nav } from "rsuite";
 import DashboardIcon from "@rsuite/icons/legacy/Dashboard";
 import GroupIcon from "@rsuite/icons/legacy/Group";
@@ -12,26 +12,28 @@ import { Disclosure } from "@headlessui/react";
 import { Link } from "react-router-dom";
 
 const SideNavBar = ({ expanded, toggleMenu }) => {
-  const NavLink = React.forwardRef(({ href, children, ...rest }, ref) => (
-    <Link ref={ref} to={href} {...rest}>
-      {children}
-    </Link>
-  ));
+  const NavLink = React.memo(
+    React.forwardRef(({ href, children, ...rest }, ref) => (
+      <Link ref={ref} to={href} {...rest}>
+        {children}
+      </Link>
+    ))
+  );
 
   return (
     <div className="sideNavBar">
-      <Sidenav expanded={expanded}>
+      <Sidenav className="lg:w-[20vw] lg:h-[90vh] " expanded={expanded}>
         <Sidenav.Header>
           <Disclosure>
-            <div className="flex items-center bg-gray-800 pb-1">
+            <div className="flex items-center bg-gray-800 pb-1 ">
               <Disclosure.Button
-                className="inline-flex items-center justify-center p-2 m-[1.5px] text-gray-400 hover:ring-2 hover:ring-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-inset h-[49px] w-[54px]"
+                className="inline-flex items-center justify-center  text-gray-400 hover:ring-2 hover:ring-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-inset h-[45px] w-[55px] ml-[0.125rem]"
                 onClick={toggleMenu}
               >
                 {expanded ? (
                   <XIcon className="block h-6 w-6" aria-hidden="true" />
                 ) : (
-                  <MenuIcon className="block h-6 w-8" aria-hidden="true" />
+                  <MenuIcon className="block h-8 w-12 " aria-hidden="true" />
                 )}
               </Disclosure.Button>
               <div
@@ -42,9 +44,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
                   color: "White",
                   textAlign: "center",
                 }}
-              >
-                {expanded ? "CPMS" : ""}
-              </div>
+              ></div>
             </div>
           </Disclosure>
         </Sidenav.Header>
@@ -79,16 +79,9 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
               href="trainings"
               eventKey="4"
               icon={<TaskIcon />}
+              style={{ paddingRight: "10px" }}
             >
               Manage Trainings
-            </Nav.Item>
-            <Nav.Item
-              as={NavLink}
-              href="company"
-              eventKey="5"
-              icon={<Building />}
-            >
-              Company
             </Nav.Item>
             <Nav.Item
               as={NavLink}

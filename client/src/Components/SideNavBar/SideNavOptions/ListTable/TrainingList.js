@@ -5,7 +5,7 @@ import { Table, Button, List } from "rsuite";
 
 const { Column, HeaderCell, Cell } = Table;
 
-const ListTable = ({ data: mockUsers, selectedId: key, clearSelectedId }) => {
+const TrainingList = ({ data: mockUsers, selectedId: key }) => {
   // console.log(key);
   const data = mockUsers;
   const filteredData =
@@ -13,44 +13,38 @@ const ListTable = ({ data: mockUsers, selectedId: key, clearSelectedId }) => {
 
   return (
     <div>
-      <Button onClick={clearSelectedId}>Clear Selected IDs</Button>
       <Table
         height={600}
         data={filteredData}
         onRowClick={(rowData) => {
-          // console.log(rowData.selectedId);
+          console.log(rowData.selectedId);
         }}
         // rowClassName={(rowData) =>
         //   rowData.id === selectedId ? "highlighted-row" : ""
         // }
       >
-        <Column width={60} align="center" fixed>
-          <HeaderCell>Id</HeaderCell>
-          <Cell dataKey="id" />
-        </Column>
-
-        <Column width={150}>
-          <HeaderCell>First Name</HeaderCell>
-          <Cell dataKey="firstName" />
-        </Column>
-
-        <Column width={150}>
-          <HeaderCell>Last Name</HeaderCell>
-          <Cell dataKey="lastName" />
-        </Column>
-
         <Column width={100}>
           <HeaderCell>UID</HeaderCell>
-          <Cell dataKey="UID" />
+          <Cell dataKey="uid" />
+        </Column>
+
+        <Column width={200}>
+          <HeaderCell>NAME</HeaderCell>
+          <Cell dataKey="name" />
         </Column>
 
         <Column width={100}>
-          <HeaderCell>Age</HeaderCell>
-          <Cell dataKey="age" />
+          <HeaderCell>BATCH</HeaderCell>
+          <Cell dataKey="batch" />
         </Column>
 
-        <Column width={150}>
-          <HeaderCell>Year</HeaderCell>
+        <Column width={100}>
+          <HeaderCell>BRANCH</HeaderCell>
+          <Cell dataKey="branch" />
+        </Column>
+
+        <Column width={100}>
+          <HeaderCell>YEAR</HeaderCell>
           <Cell>
             {(rowData) => {
               return String(rowData.Year);
@@ -58,20 +52,34 @@ const ListTable = ({ data: mockUsers, selectedId: key, clearSelectedId }) => {
           </Cell>
         </Column>
 
-        <Column width={300}>
-          <HeaderCell>Email</HeaderCell>
-          <Cell dataKey="email" />
+        <Column width={400}>
+          <HeaderCell>COLLEGE EMAIL</HeaderCell>
+          <Cell dataKey="college_email" />
         </Column>
+
         <Column width={80} fixed="right">
           <HeaderCell>...</HeaderCell>
-
           <Cell style={{ padding: "6px" }}>
             {(rowData) => (
               <Button
                 appearance="link"
                 onClick={() => alert(`id:${rowData.id}`)}
               >
-                View
+                Edit
+              </Button>
+            )}
+          </Cell>
+        </Column>
+
+        <Column width={80} fixed="right">
+          <HeaderCell>...</HeaderCell>
+          <Cell style={{ padding: "6px" }}>
+            {(rowData) => (
+              <Button
+                appearance="link"
+                onClick={() => alert(`id:${rowData.id}`)}
+              >
+                Delete
               </Button>
             )}
           </Cell>
@@ -81,4 +89,4 @@ const ListTable = ({ data: mockUsers, selectedId: key, clearSelectedId }) => {
   );
 };
 
-export default ListTable;
+export default TrainingList;

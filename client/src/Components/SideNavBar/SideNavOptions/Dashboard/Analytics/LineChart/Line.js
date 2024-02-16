@@ -60,7 +60,10 @@ export const data = {
 
 export function LineChart() {
   return (
-    <div style={{ width: "50%", height: "auto" }}>
+    <div
+      className="lg:w-[50vw] lg:px-5
+    sm:w-[80vw] "
+    >
       <Line options={options} data={data} />
     </div>
   );

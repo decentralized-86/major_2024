@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import ListTable from "../ListTable/ListTable";
+import DriveList from "../ListTable/DriveList";
 import { mockUsers } from "../ListTable/mock";
 import SearchBar from "../Search/Search";
 import { Header } from "rsuite";
@@ -17,13 +17,13 @@ function Drives() {
   return (
     <div>
       <Header>
-        <SearchBar data={data} onSearch={handleSearch} />
+        <SearchBar
+          data={data}
+          onSearch={handleSearch}
+          clearSelectedId={clearSelectedIds}
+        />
       </Header>
-      <ListTable
-        data={data}
-        selectedId={selectedId}
-        clearSelectedId={clearSelectedIds}
-      />
+      <DriveList data={data} selectedId={selectedId} />
     </div>
   );
 }
