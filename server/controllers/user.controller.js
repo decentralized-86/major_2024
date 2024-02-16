@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt');
 
 
 const signup = async (req,res) => {
-    const { linkedln_link, resume_url, isAdmin,password,c_password,location,student} = req.body;
+    const { linkedln_link, resume_url, isAdmin,password,location,student} = req.body;
     
     try {
         if (!student || !password || !location) {
@@ -19,33 +19,27 @@ const signup = async (req,res) => {
             return res.status(400).json({ error: 'Enter Official email id!' });
         }
 
-        if(password !== c_password)
-        {
-            return res.status(400).json({error: 'Password does not match!'})
-        }
-
-        const oldUser = await User.findOne({ 'student.uid': student.uid });
-        if(oldUser)
+        const oldStudent = await User.findOne({ 'student.uid': student.uid, 'student.email': student.college_email});
+        if(oldStudent)
         {
             return res.status(409).json({msg: "User already exists!"})
         }
         
 
 
-    const newUser = await User.create({
+    const newStudent = await User.create({
         student: student,
         location: location,
         linkedln_link: linkedln_link,
         resume_url: resume_url,
         password: password,
-        c_password: c_password,
         isAdmin: isAdmin,
      });
 
 
-        const token = await newUser.generateAuthToken();
+        const token = await newStudent.generateAuthToken();
         
-        res.status(200).json({result: newUser,token})
+        res.status(200).json({result: newStudent,token})
         
         
     } catch (error) {
@@ -63,11 +57,11 @@ const login = async (req, res) => {
     try {
         
         if (!email || !password) {
-            return res.status(400).json({ error: 'Both uid and password are required' });
+            return res.status(400).json({ error: 'Both email and password are required' });
         }
 
 
-        //Coordinator login:
+        //Coordinator login auth:
         if(select === 'coordinator')
         {
             const coordinator = Coordinator.findOne({email: email});
