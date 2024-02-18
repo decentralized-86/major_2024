@@ -2,7 +2,6 @@ import "./Signin.css";
 import * as yup from "yup";
 import { ErrorMessage, Formik, Form, Field } from "formik";
 import Axios from "axios";
-// import Img from "../Assets/result.svg";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
@@ -31,37 +30,24 @@ function Signin({ loginValue = true }) {
           progress: undefined,
           theme: "dark",
         });
-        //alert(response.data.msg);
-        //console.log(response.data.msg);
       }
     });
   };
 
   const validationsLogin = yup.object().shape({
-    email: yup
-      .string()
-      .email("email Invalid")
-      .required("O email é obrigatório"),
+    email: yup.string().email("Invalid email").required("Email is required"),
     password: yup
       .string()
-      .min(8, "A senha deve ter pelo menos 8 caracteres")
-      .required("A senha é obrigatória"),
+      .min(8, "Password must be at least 8 characters long")
+      .required("Password is required"),
   });
 
   return (
     <div className="LoginBody">
-      <div className="left-login">
-        {/* <img src={Img} alt="Pessoas olhando gráficos" className="chart" /> */}
-      </div>
+      <div className="left-login"></div>
 
       <div className="right-login">
         <div className="card-login">
-          {/* <div className="user-links">
-            <div className="user-link-home">
-              {!logado && <Link to="/">Home</Link>}
-            </div>
-
-             */}
           <h1>Welcome!!</h1>
           <Formik
             initialValues={{}}
@@ -87,12 +73,12 @@ function Signin({ loginValue = true }) {
               </div>
 
               <div className="form-group">
-                <label form="email">password</label>
+                <label form="email">Password</label>
                 <Field
                   name="password"
                   type="password"
                   className="form-field"
-                  placeholder="password"
+                  placeholder="Password"
                 />
 
                 <ErrorMessage
