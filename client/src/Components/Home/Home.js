@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Home.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../Header/Header";
-import SideNavBar from "../SideNavBar/SideNavBar";
+import SideNavBar from "../AdminPages/SideNavBar/SideNavBar";
 import { useNavigate, Outlet } from "react-router-dom";
 import { Container, Content } from "rsuite";
 
