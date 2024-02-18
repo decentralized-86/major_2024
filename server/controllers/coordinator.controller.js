@@ -45,7 +45,7 @@ try {
 //Students CRUD: 
 const getStudentDetails = async (req,res) => {
     try {
-        const studentList = User.find({});
+        const studentList = await User.find({});
         res.status(200).json({studentList})
         
     } catch (error) {
@@ -53,22 +53,57 @@ const getStudentDetails = async (req,res) => {
     }
 }
 
-const updateStudent = async(req,res) => {
+const getStudent = async(req,res) => {
     const id = req.params.id;
     try {
-        const student = await User.findByIdAndUpdate(id,req.body,{
-            runValidators: true,
-            new:true
-        });
+        const student = await User.findById(id);
         if(!student)
         {
             return res.status(404).json({msg: `Student does not exists with id:${id}!`});
         }
         res.status(200).json({student})
+        
     } catch (error) {
+        console.log(error)
         return res.status(500).json({err: error,msg: 'Internal server error!'})
     }
 }
+
+
+//update under development!!!
+
+const updateStudent = async (req, res) => {
+    const id = req.params.id;
+    const studentDoc = req.body.student;
+    const locationDoc = req.body.location;
+    const { linkedln_link, resume_url, password, isAdmin, tokens } = req.body;
+    try {
+      const updatedStudent = await User.findByIdAndUpdate(
+        id,
+        {
+            $set: {
+              ...(studentDoc && { 'student': studentDoc }),
+              ...(locationDoc && { 'location': locationDoc }),
+              ...(linkedln_link && { 'linkedln_link': linkedln_link }),
+              ...(resume_url && { 'resume_url': resume_url }),
+              ...(password && { 'password': password }),
+              ...(isAdmin !== undefined && { 'isAdmin': isAdmin }),
+              ...(tokens && { 'tokens': tokens })
+            }
+          },
+        { new: true, runValidators: true, context: 'query' }
+      );
+  
+      if (!updatedStudent) {
+        return res.status(404).json({ msg: `Student does not exist with id: ${id}` });
+      }
+  
+      res.status(200).json({ student: updatedStudent });
+    } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ err: error, msg: 'Internal server error!' });
+    }
+  };
 
 const deleteStudent = async(req,res) => {
     const id = req.params.id;
@@ -86,6 +121,4 @@ const deleteStudent = async(req,res) => {
 
 
 
-
-
-module.exports = {co_signup,getStudentDetails,updateStudent,deleteStudent};
+module.exports = {co_signup,getStudentDetails,getStudent,updateStudent,deleteStudent};
