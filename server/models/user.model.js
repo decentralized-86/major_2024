@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
 
-student: {
         name : {type : String, required: true },
         uid : {  type : String, required : true},
         batch : {type : String,   required: true, },
@@ -19,27 +18,23 @@ student: {
         ssc_board : { type : String,  required: true,},
         hsc_marks : { type : String, required: true },
         hsc_board : { type : String, required: true,  },
- },
 
- location: {
-    address : {  type : String, required: true },
-    city : { type : String,  required: true},
-    post_code : {type : String, required: true},
-    state : { type : String, required: true,  },
-    country : { type : String, required: true },
- },
+        address : {  type : String, required: true },
+        city : { type : String,  required: true},
+        post_code : {type : String, required: true},
+        state : { type : String, required: true,  },
+        country : { type : String, required: true },
     
-    
-    linkedln_link: {
+
+        linkedln_link: {
         type : String
-    },
-    resume_url : {
+        },
+        resume_url : {
         type : String
-    },
-    password : {
+        },
+        password : {
         type : String,
-        required: true, 
-        
+        required: true,     
     },
     
     isAdmin: {

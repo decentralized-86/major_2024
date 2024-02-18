@@ -70,41 +70,27 @@ const getStudent = async(req,res) => {
 }
 
 
-//update under development!!!
 
-const updateStudent = async (req, res) => {
-    const id = req.params.id;
-    const studentDoc = req.body.student;
-    const locationDoc = req.body.location;
-    const { linkedln_link, resume_url, password, isAdmin, tokens } = req.body;
-    try {
-      const updatedStudent = await User.findByIdAndUpdate(
-        id,
-        {
-            $set: {
-              ...(studentDoc && { 'student': studentDoc }),
-              ...(locationDoc && { 'location': locationDoc }),
-              ...(linkedln_link && { 'linkedln_link': linkedln_link }),
-              ...(resume_url && { 'resume_url': resume_url }),
-              ...(password && { 'password': password }),
-              ...(isAdmin !== undefined && { 'isAdmin': isAdmin }),
-              ...(tokens && { 'tokens': tokens })
-            }
-          },
-        { new: true, runValidators: true, context: 'query' }
-      );
-  
-      if (!updatedStudent) {
-        return res.status(404).json({ msg: `Student does not exist with id: ${id}` });
-      }
-  
-      res.status(200).json({ student: updatedStudent });
-    } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ err: error, msg: 'Internal server error!' });
-    }
-  };
-
+    const updateStudent = async (req, res) => {
+        const id = req.params.id;
+      
+        try {
+          const updatedStudent = await User.findByIdAndUpdate(id,req.body,{
+            new: true,
+            runValidators: true,
+          })
+      
+          if (!updatedStudent) {
+            return res.status(404).json({ msg: `Student does not exist with id: ${id}` });
+          }
+      
+          res.status(200).json({ student: updatedStudent });
+        } catch (error) {
+          console.error('Error:', error);
+          res.status(500).json({ err: error, msg: 'Internal server error!' });
+        }
+      };
+      
 const deleteStudent = async(req,res) => {
     const id = req.params.id;
     try {

@@ -5,21 +5,25 @@ const bcrypt = require('bcrypt');
 
 
 const signup = async (req,res) => {
-    const { linkedln_link, resume_url, isAdmin,password,location,student} = req.body;
+    const { name,uid,batch,gender,contact,college_email,degree,avg_cgpa,ssc_marks,ssc_board,hsc_marks,hsc_board,branch,
+        address,city,post_code,state,country,
+        linkedln_link, resume_url,password} = req.body;
     
     try {
-        if (!student || !password || !location) {
+        if (!name || !uid || !batch || !branch || !contact || !college_email || !degree || !avg_cgpa || !ssc_marks || !ssc_board || !hsc_marks || !hsc_board
+            || !address || !city || !post_code || !state || !country
+            || !password) {
             return res.status(400).json({ error: 'All fields are required!' });
         }
-        if (student.contact.length !== 10 || !/^\d+$/.test(student.contact)) {
+        if (contact.length !== 10 || !/^\d+$/.test(contact)) {
             return res.status(400).json({ error: 'Contact number must be a 10-digit number' });
         }
         
-        if (!student.college_email.endsWith('edu.in')) {
+        if (!college_email.endsWith('edu.in')) {
             return res.status(400).json({ error: 'Enter Official email id!' });
         }
 
-        const oldStudent = await User.findOne({ 'student.uid': student.uid, 'student.email': student.college_email});
+        const oldStudent = await User.findOne({ 'uid': uid, 'college_email':college_email});
         if(oldStudent)
         {
             return res.status(409).json({msg: "User already exists!"})
@@ -28,12 +32,27 @@ const signup = async (req,res) => {
 
 
     const newStudent = await User.create({
-        student: student,
-        location: location,
+        name: name,
+        uid: uid,
+        batch: batch,
+        branch: branch,
+        contact: contact,
+        gender: gender,
+        college_email: college_email,
+        degree: degree,
+        avg_cgpa: avg_cgpa,
+        ssc_marks: ssc_marks,
+        ssc_board: ssc_board,
+        hsc_marks: hsc_board,
+        hsc_board:hsc_board,
+        address: address,
+        city: city,
+        state: state,
+        post_code: post_code,
+        country: country,
         linkedln_link: linkedln_link,
         resume_url: resume_url,
         password: password,
-        isAdmin: isAdmin,
      });
 
 
@@ -43,7 +62,9 @@ const signup = async (req,res) => {
         
         
     } catch (error) {
+        console.log(error)
         return res.status(500).json({
+           
             err: error, msg:"Internal server error!"
         })
         
