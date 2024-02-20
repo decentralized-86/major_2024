@@ -42,15 +42,21 @@ function Signin() {
           >
             <Form className="login-form">
               <div className="form-group">
-                <label form="email">Email</label>
+                <label htmlFor="select">Role</label>
+                <Field as="select" name="select" className="form-field">
+                  <option value="student">Student</option>
+                  <option value="coordinator">Coordinator</option>
+                </Field>
+              </div>
 
+              <div className="form-group">
+                <label form="email">Email</label>
                 <Field
                   name="email"
                   type="email"
                   className="form-field"
                   placeholder="Email"
                 />
-
                 <ErrorMessage
                   component="span"
                   name="email"
@@ -66,7 +72,6 @@ function Signin() {
                   className="form-field"
                   placeholder="Password"
                 />
-
                 <ErrorMessage
                   component="span"
                   name="password"
