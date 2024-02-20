@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import TrainingList from "../ListTable/TrainingList";
+import TrainingList from "./TrainingList";
 import { mockUsers } from "../ListTable/mock";
 import SearchBar from "../Search/Search";
 import { Header } from "rsuite";

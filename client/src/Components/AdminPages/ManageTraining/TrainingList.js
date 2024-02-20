@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./ListTable.css";
 import { Table, Button, List } from "rsuite";
 
 const { Column, HeaderCell, Cell } = Table;

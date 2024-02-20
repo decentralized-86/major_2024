@@ -2,15 +2,23 @@ import "./Signin.css";
 import * as yup from "yup";
 import { ErrorMessage, Formik, Form, Field } from "formik";
 import Axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../../../redux/action/auth";
+import { useState } from "react";
 
-function Signin({ loginValue = true }) {
-  const login = { loginValue };
+function Signin() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [login, setLogin] = useState(true);
 
-  const handleLogin = () => {};
+  const handleLogin = (loginCredentials) => {
+    // dispatch(loginAction(loginCredentials, setLogin, navigate));
+    navigate("/home/dashboard");
+  };
 
   const validationsLogin = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
@@ -28,7 +36,7 @@ function Signin({ loginValue = true }) {
         <div className="card-login">
           <h1>Welcome!!</h1>
           <Formik
-            initialValues={{}}
+            initialValues={{ email: "", password: "" }}
             onSubmit={handleLogin}
             validationSchema={validationsLogin}
           >
@@ -67,7 +75,7 @@ function Signin({ loginValue = true }) {
               </div>
 
               <button className="button" type="submit">
-                {login && <Link to="/home/dashboard">LOGIN</Link>}
+                <div>LOGIN</div>
               </button>
               <div
                 className="user-link-cad"

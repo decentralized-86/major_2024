@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import DriveList from "../ListTable/DriveList";
+import DriveList from "./DriveList";
 import { mockUsers } from "../ListTable/mock";
 import SearchBar from "../Search/Search";
 import { Header } from "rsuite";
