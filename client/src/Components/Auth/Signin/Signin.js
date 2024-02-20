@@ -13,11 +13,11 @@ import { useState } from "react";
 function Signin() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState(false);
 
   const handleLogin = (loginCredentials) => {
-    // dispatch(loginAction(loginCredentials, setLogin, navigate));
-    navigate("/home/dashboard");
+    dispatch(loginAction(loginCredentials, setLogin, navigate));
+    // navigate("/home/dashboard");
   };
 
   const validationsLogin = yup.object().shape({
@@ -36,7 +36,7 @@ function Signin() {
         <div className="card-login">
           <h1>Welcome!!</h1>
           <Formik
-            initialValues={{ email: "", password: "" }}
+            initialValues={{ select: "student", email: "", password: "" }}
             onSubmit={handleLogin}
             validationSchema={validationsLogin}
           >

@@ -7,9 +7,11 @@ const URL = "http://localhost:8080";
 export const signupAction =
   (authData, navigate) => async (dispatch, getState) => {
     const res = await axios.post(`${URL}/api/user/signup`, authData);
+
     const {
       auth: { data },
     } = getState();
+
     try {
       localStorage.setItem("Profile", JSON.stringify({ ...data, ...authData }));
 
@@ -48,19 +50,33 @@ export const signupAction =
     }
   };
 
-// export const loginAction = (loginCredentials, navigate) => async (dispatch) => {
-//   try {
-//     const { data } = await api.logIn(loginCredentials);
+export const loginAction =
+  (loginCredentials, setLogin, navigate) => async (dispatch) => {
+    try {
+      const response = await axios.post(
+        `${URL}/api/user/login`,
+        loginCredentials
+      );
 
-//     if (data) {
-//       dispatch({ type: "AUTH", data });
-//       localStorage.setItem(
-//         "Profile",
-//         JSON.stringify({ ...data, loginValue: true })
-//       );
-//       navigate("/home/dashboard");
-//     }
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
+      if (response.status === 200) {
+        dispatch({
+          type: "AUTH",
+          payload: {
+            ...response.data,
+            select: loginCredentials.select, // Use the select from loginCredentials
+            email: loginCredentials.email, // Use the email from loginCredentials
+            password: loginCredentials.password, // Use the password from loginCredentials
+          },
+        });
+
+        localStorage.setItem("Profile", JSON.stringify({ ...response.data }));
+        setLogin(true); // Set login to true when user is authenticated
+        navigate("/home/dashboard");
+      } else {
+        dispatch({ type: "AUTH_ERROR", error: "Invalid login credentials" });
+      }
+    } catch (error) {
+      console.error(error);
+      dispatch({ type: "AUTH_ERROR", error: error.message });
+    }
+  };
