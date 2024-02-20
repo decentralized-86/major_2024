@@ -10,30 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 function Signin({ loginValue = true }) {
   const login = { loginValue };
 
-  const handleLogin = (values) => {
-    Axios.post("http://localhost:3000/login", {
-      email: values.email,
-      password: values.password,
-    }).then((response) => {
-      const page = response.data;
-
-      if (page === true) {
-        localStorage.setItem("@user", JSON.stringify(response.config.data));
-        window.location.reload();
-      } else {
-        toast.info(`${response.data.msg}`, {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-      }
-    });
-  };
+  const handleLogin = () => {};
 
   const validationsLogin = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),

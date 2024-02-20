@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 // import "./SignUp.css";
 import ReactDOM from "react-dom";
 import {
@@ -9,16 +9,7 @@ import {
   Panel,
   FlexboxGrid,
 } from "rsuite";
-
-const { StringType } = Schema.Types;
-
-const model = Schema.Model({
-  address: StringType().isRequired("This field is required."),
-  city: StringType().isRequired("This field is required."),
-  post_code: StringType().isRequired("This field is required."),
-  state: StringType().isRequired("This field is required."),
-  country: StringType().isRequired("This field is required."),
-});
+import { FormValueContext } from "../FormValueContext";
 
 const TextField = React.forwardRef((props, ref) => {
   const { name, label, accepter, ...rest } = props;
@@ -31,18 +22,31 @@ const TextField = React.forwardRef((props, ref) => {
 });
 
 const Location = () => {
-  const formRef = useRef();
-  const [formValue, setFormValue] = useState({});
-  const [formError, setFormError] = useState({});
+  const { formRef, formValue, setFormValue, formError, setFormError, model } =
+    useContext(FormValueContext);
+
+  const handleChange = (newFormValue) => {
+    setFormValue(newFormValue);
+  };
 
   return (
-    <>
-      <TextField name="address" label="Address" />
-      <TextField name="city" label="City" />
-      <TextField name="post_code" label="Post Code" />
-      <TextField name="state" label="State" />
-      <TextField name="country" label="Country" />
-    </>
+    <Form
+      ref={formRef}
+      onCheck={setFormError}
+      formValue={formValue}
+      model={model}
+      onChange={handleChange}
+    >
+      <TextField name="address" label="Address" value={formValue.address} />
+      <TextField name="city" label="City" value={formValue.city} />
+      <TextField
+        name="post_code"
+        label="Post Code"
+        value={formValue.post_code}
+      />
+      <TextField name="state" label="State" value={formValue.state} />
+      <TextField name="country" label="Country" value={formValue.country} />
+    </Form>
   );
 };
 

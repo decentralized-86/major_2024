@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 // import "./SignUp.css";
 import ReactDOM from "react-dom";
 import {
@@ -9,13 +9,7 @@ import {
   Panel,
   FlexboxGrid,
 } from "rsuite";
-
-const { StringType } = Schema.Types;
-
-const model = Schema.Model({
-  linkedln_link: StringType(),
-  resume_url: StringType(),
-});
+import { FormValueContext } from "../FormValueContext";
 
 const TextField = React.forwardRef((props, ref) => {
   const { name, label, accepter, ...rest } = props;
@@ -28,15 +22,32 @@ const TextField = React.forwardRef((props, ref) => {
 });
 
 const Links = () => {
-  const formRef = useRef();
-  const [formValue, setFormValue] = useState({});
-  const [formError, setFormError] = useState({});
+  const { formRef, formValue, setFormValue, formError, setFormError, model } =
+    useContext(FormValueContext);
+
+  const handleChange = (newFormValue) => {
+    setFormValue(newFormValue);
+  };
 
   return (
-    <>
-      <TextField name="linkedln_link" label="LinkedIn Link" />
-      <TextField name="resume_url" label="Resume URL" />
-    </>
+    <Form
+      ref={formRef}
+      onCheck={setFormError}
+      formValue={formValue}
+      model={model}
+      onChange={handleChange}
+    >
+      <TextField
+        name="linkedln_link"
+        label="LinkedIn Link"
+        value={formValue.linkedln_link}
+      />
+      <TextField
+        name="resume_url"
+        label="Resume URL"
+        value={formValue.resume_url}
+      />
+    </Form>
   );
 };
 

@@ -1,5 +1,5 @@
 import "./App.css";
-import React from "react";
+import React, { useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Signin from "./Components/Auth/Signin/Signin";
 import SignUp from "./Components/Auth/SignUp/SignUp";
@@ -13,9 +13,24 @@ import Trainings from "./Components/AdminPages/ManageTraining/Training";
 import Location from "./Components/Auth/SignUp/Location/Location";
 import Links from "./Components/Auth/SignUp/Links/Link";
 import StudentDetails from "./Components/Auth/SignUp/StudentDetails/StudentDetails";
+import { FormValueProvider } from "./Components/Auth/SignUp/FormValueContext";
 
 function App() {
   const [isDarkMode, setDarkMode] = React.useState(false);
+
+  useEffect(() => {
+    fetch("http://localhost:8080")
+      .then((response) => {
+        if (response.ok) {
+          console.log("Server is accessible");
+        } else {
+          console.log("Server responded, but with an error status");
+        }
+      })
+      .catch((error) => {
+        console.log("Server is not accessible", error);
+      });
+  }, []);
 
   function toggleDarkMode() {
     setDarkMode((prevDarkMode) => !prevDarkMode);
@@ -35,7 +50,9 @@ function App() {
         <Route
           path="/signup"
           element={
-            <SignUp isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+            <FormValueProvider>
+              <SignUp isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+            </FormValueProvider>
           }
         >
           <Route path="studentdetails" element={<StudentDetails />} />
