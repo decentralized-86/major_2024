@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const companySchema = new mongoose.Schema({
+const jobPostSchema = new mongoose.Schema({
     company_name: {
         type: String,
         required: true,
@@ -151,5 +151,5 @@ const companySchema = new mongoose.Schema({
     
 
 
-const Company = mongoose.model('Company', companySchema);
-module.exports = Company;
+const jobPost = mongoose.model('Company', jobPostSchema);
+module.exports = jobPost;
