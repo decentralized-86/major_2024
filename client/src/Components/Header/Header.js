@@ -4,8 +4,9 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { BellIcon } from "@heroicons/react/outline";
 import "./Header.css"; // Importing external CSS file
 import { DarkModeSwitch } from "react-toggle-dark-mode";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../Logo/cpmsLogo.png";
+import { set } from "rsuite/esm/utils/dateUtils";
 
 // Utility function to conditionally concatenate CSS classes
 function classNames(...classes) {
@@ -21,7 +22,8 @@ const notifications = [
 ];
 
 // Navbar component
-export default function Navbar({ isDarkMode, toggleDarkMode }) {
+export default function Navbar({ isDarkMode, toggleDarkMode, setLogin }) {
+  const navigate = useNavigate();
   // State for managing visibility of notification dropdown
   const [openNotifications, setOpenNotifications] = useState(false);
   const notificationsRef = useRef(null);
@@ -44,6 +46,11 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
     };
   }, [notificationsRef]);
 
+  const handleLogout = () => {
+    setLogin(false);
+    navigate("/");
+  };
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -51,9 +58,11 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
           <div className="max-w-8xl mx-2 px-2 sm:px-6 lg:px-8">
             <div className="relative flex items-center justify-between h-16 w-auto">
               <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex-shrink-0 flex items-center">
-                  <img className=" h-9" src={logo} alt="CPMS" />
-                </div>
+                <Link to="/home/dashboard">
+                  <div className="flex-shrink-0 flex items-center">
+                    <img className=" h-9" src={logo} alt="CPMS" />
+                  </div>
+                </Link>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                 {/* Darkmode Switch */}
@@ -87,7 +96,7 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="notifications-dropdown-menu z-10 absolute right-0 origin-top-left bg-white shadow-lg rounded-md overflow-hidden">
+                    <Menu.Items className="notifications-dropdown-menu z-10 absolute right-0 origin-top-left bg-white shadow-lg rounded-md overflow-hidden hover:cursor-pointer">
                       {notifications.map((notification) => (
                         <Menu.Item key={notification.id}>
                           {({ active }) => (
@@ -127,7 +136,7 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="profile-dropdown-menu z-10">
+                    <Menu.Items className="profile-dropdown-menu z-10 hover:cursor-pointer">
                       {/* Profile dropdown menu items */}
                       <Menu.Item>
                         {({ active }) => (
@@ -154,7 +163,7 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
                           </div>
                         )}
                       </Menu.Item>
-                      <Menu.Item>
+                      <Menu.Item onClick={handleLogout}>
                         {({ active }) => (
                           <div
                             className={classNames(
@@ -162,7 +171,7 @@ export default function Navbar({ isDarkMode, toggleDarkMode }) {
                               active && "active"
                             )}
                           >
-                            <Link to={"/"}>Sign out</Link>
+                            Sign out
                           </div>
                         )}
                       </Menu.Item>

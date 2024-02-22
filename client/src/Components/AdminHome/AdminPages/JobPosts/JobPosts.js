@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import DriveList from "./DriveList";
-import { mockUsers } from "../ListTable/mock";
-import SearchBar from "../Search/Search";
+import SearchBar from "../StudentDetails/Search/Search";
 import { Header } from "rsuite";
 
-const data = mockUsers(200);
+const data = 0;
 
-function Drives() {
+function AdminJobPosts() {
   const [selectedId, setSelectedId] = useState([]);
   const handleSearch = (record) => {
     setSelectedId((prevIds) => [...prevIds, record]); // update the state with the selected ID
@@ -23,9 +21,9 @@ function Drives() {
           clearSelectedId={clearSelectedIds}
         />
       </Header>
-      <DriveList data={data} selectedId={selectedId} />
+      Job Post
     </div>
   );
 }
 
-export default Drives;
+export default AdminJobPosts;

@@ -1,4 +1,4 @@
-import * as api from "../api/index";
+// import * as api from "../api/index";
 // import { setCurrentUser } from "./auth";
 import axios from "axios";
 
@@ -68,15 +68,58 @@ export const loginAction =
             password: loginCredentials.password, // Use the password from loginCredentials
           },
         });
-
         localStorage.setItem("Profile", JSON.stringify({ ...response.data }));
-        setLogin(true); // Set login to true when user is authenticated
         navigate("/home/dashboard");
+        return setLogin(true); // Set login status to true
       } else {
         dispatch({ type: "AUTH_ERROR", error: "Invalid login credentials" });
+        alert("Invalid login credentials");
       }
     } catch (error) {
       console.error(error);
       dispatch({ type: "AUTH_ERROR", error: error.message });
+      alert("Invalid login");
     }
   };
+
+  export const getUsersAction = () => async (dispatch) => {
+    try {
+      const response = await axios.get(`${URL}/api/coordinator/getstudents`);
+  
+      if (response.status === 200) {
+        dispatch({
+          type: "GET_USERS",
+          payload: response.data,
+        });
+      } else {
+        dispatch({ type: "GET_USERS_ERROR", error: "Error fetching users" });
+      }
+    } catch (error) {
+      console.error(error);
+      dispatch({ type: "GET_USERS_ERROR", error: error.message });
+    }
+  };
+  
+  export const deleteStudentAction =
+    (studentId, setDeleteStatus) => async (dispatch) => {
+      console.log("Response", studentId);
+      try {
+        const response = await axios.delete(
+          `${URL}/api/coordinator/deleteStudent/${studentId}`
+        );
+  
+        if (response.status === 200) {
+          dispatch({
+            type: "DELETE_STUDENT",
+            payload: response.data.studentId,
+          });
+          return setDeleteStatus(true);
+        } else {
+          dispatch({ type: "DELETE_STUDENT_ERROR", error: response.data.msg });
+        }
+      } catch (error) {
+        console.error(error);
+        dispatch({ type: "DELETE_STUDENT_ERROR", error: error.message });
+      }
+    };
+  

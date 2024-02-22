@@ -1,22 +1,37 @@
 import "./App.css";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Signin from "./Components/Auth/Signin/Signin";
 import SignUp from "./Components/Auth/SignUp/SignUp";
 import { Routes, Route } from "react-router-dom";
-import Home from "./Components/Home/Home";
-import Dashboard from "./Components/AdminPages/Dashboard/Dashboard";
-import Settings from "./Components/AdminPages/Settings/Settings";
-import StudentListTable from "./Components/AdminPages/StudentDetails/Student";
-import Drives from "./Components/AdminPages/ManageDrives/Drives";
-import Trainings from "./Components/AdminPages/ManageTraining/Training";
+import AdminHome from "./Components/AdminHome/AdminHome";
+import AdminDashboard from "./Components/AdminHome/AdminPages/AdminDashboard/AdminDashboard";
+import AdminSettings from "./Components/AdminHome/AdminPages/Settings/Settings";
+import AdminStudentList from "./Components/AdminHome/AdminPages/StudentDetails/StudentDetails";
+import AdminJobPosts from "./Components/AdminHome/AdminPages/JobPosts/JobPosts";
+import AdminManageTrainings from "./Components/AdminHome/AdminPages/ManageTraining/Training";
 import Location from "./Components/Auth/SignUp/Location/Location";
 import Links from "./Components/Auth/SignUp/Links/Link";
 import StudentDetails from "./Components/Auth/SignUp/StudentDetails/StudentDetails";
 import { FormValueProvider } from "./Components/Auth/SignUp/FormValueContext";
 
 function App() {
-  const [isDarkMode, setDarkMode] = React.useState(false);
+  const [isDarkMode, setDarkMode] = useState(() => {
+    const savedDarkMode = localStorage.getItem("isDarkMode");
+    return savedDarkMode !== null ? JSON.parse(savedDarkMode) : false;
+  });
+  const [login, setLogin] = useState(() => {
+    const savedLogin = localStorage.getItem("login");
+    return savedLogin !== null ? JSON.parse(savedLogin) : false;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("login", JSON.stringify(login));
+  }, [login]);
+
+  useEffect(() => {
+    localStorage.setItem("isDarkMode", JSON.stringify(isDarkMode));
+  }, [isDarkMode]);
 
   useEffect(() => {
     fetch("http://localhost:8080")
@@ -44,7 +59,11 @@ function App() {
         <Route
           path="/"
           element={
-            <Signin isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+            <Signin
+              isDarkMode={isDarkMode}
+              toggleDarkMode={toggleDarkMode}
+              setLogin={setLogin}
+            />
           }
         />
         <Route
@@ -62,14 +81,19 @@ function App() {
         <Route
           path="home"
           element={
-            <Home isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+            <AdminHome
+              isDarkMode={isDarkMode}
+              toggleDarkMode={toggleDarkMode}
+              login={login}
+              setLogin={setLogin}
+            />
           }
         >
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="drives" element={<Drives />} />
-          <Route path="student" element={<StudentListTable />} />
-          <Route path="trainings" element={<Trainings />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="drives" element={<AdminJobPosts />} />
+          <Route path="student" element={<AdminStudentList />} />
+          <Route path="trainings" element={<AdminManageTrainings />} />
+          <Route path="settings" element={<AdminSettings />} />
         </Route>
       </Routes>
     </div>

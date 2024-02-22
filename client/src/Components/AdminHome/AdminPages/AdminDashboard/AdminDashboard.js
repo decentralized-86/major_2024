@@ -1,9 +1,9 @@
-import { LineChart } from "./Analytics/LineChart/Line";
+import { LineChart } from "../../../Analytics/LineChart/Line";
 import React from "react";
-import { Piechart } from "./Analytics/Piechart/Pie";
-import NumberAnalysis from "./Analytics/NumericalAnalysis/Number";
+import { Piechart } from "../../../Analytics/Piechart/Pie";
+import NumberAnalysis from "../../../Analytics/NumericalAnalysis/Number";
 
-function Dashboard() {
+function AdminDashboard() {
   return (
     <div className="flex flex-col lg:items- sm:w-[100%] sm:justify-between sm:items-center sm:h-[90vh] sm:py-2">
       <h1>Placement Analysis</h1>
@@ -19,4 +19,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default AdminDashboard;

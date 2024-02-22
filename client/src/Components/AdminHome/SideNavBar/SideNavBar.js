@@ -4,9 +4,8 @@ import { Sidenav, Nav } from "rsuite";
 import DashboardIcon from "@rsuite/icons/legacy/Dashboard";
 import GroupIcon from "@rsuite/icons/legacy/Group";
 import TaskIcon from "@rsuite/icons/Task";
-import CalendarIcon from "@rsuite/icons/Calendar";
+import BriefcaseIcon from "@rsuite/icons/legacy/Briefcase";
 import GearIcon from "@rsuite/icons/Gear";
-import Building from "@rsuite/icons/legacy/Building";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Disclosure } from "@headlessui/react";
 import { Link } from "react-router-dom";
@@ -21,17 +20,17 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
   );
 
   return (
-    <div className="sideNavBar">
-      <Sidenav className="lg:w-[20vw] lg:h-[90vh] " expanded={expanded}>
+    <div className="sideNavBar h-[100%]">
+      <Sidenav className="w-[20vw] " expanded={expanded}>
         <Sidenav.Header>
           <Disclosure>
-            <div className="flex items-center bg-gray-800 pb-1 ">
+            <div className="flex items-center pb-1 ml-1 ">
               <Disclosure.Button
-                className="inline-flex items-center justify-center  text-gray-400 hover:ring-2 hover:ring-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-inset h-[45px] w-[55px] ml-[0.125rem]"
+                className="inline-flex items-center justify-center  text-gray-400 hover:ring-2 hover:ring-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-inset h-[40px] w-[55px] mt-1 "
                 onClick={toggleMenu}
               >
                 {expanded ? (
-                  <XIcon className="block h-6 w-6" aria-hidden="true" />
+                  <XIcon className="block h-8 w-12" aria-hidden="true" />
                 ) : (
                   <MenuIcon className="block h-8 w-12 " aria-hidden="true" />
                 )}
@@ -56,15 +55,15 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
               eventKey="1"
               icon={<DashboardIcon />}
             >
-              Dashboard
+              DASHBOARD
             </Nav.Item>
             <Nav.Item
               as={NavLink}
               href="drives"
               eventKey="2"
-              icon={<CalendarIcon />}
+              icon={<BriefcaseIcon />}
             >
-              Manage Drives
+              JOBS
             </Nav.Item>
             <Nav.Item
               as={NavLink}
@@ -72,7 +71,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
               eventKey="3"
               icon={<GroupIcon />}
             >
-              Student Details
+              STUDENTS
             </Nav.Item>
             <Nav.Item
               as={NavLink}
@@ -81,7 +80,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
               icon={<TaskIcon />}
               style={{ paddingRight: "10px" }}
             >
-              Manage Trainings
+              TRAININGS
             </Nav.Item>
             <Nav.Item
               as={NavLink}
@@ -89,7 +88,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
               eventKey="6"
               icon={<GearIcon />}
             >
-              Settings
+              SETTINGS
             </Nav.Item>
           </Nav>
         </Sidenav.Body>

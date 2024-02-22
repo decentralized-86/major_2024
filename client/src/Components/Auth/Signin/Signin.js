@@ -8,18 +8,14 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch } from "react-redux";
 import { loginAction } from "../../../redux/action/auth";
-import { useState } from "react";
 
-function Signin() {
+function Signin({ setLogin }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [login, setLogin] = useState(false);
 
   const handleLogin = (loginCredentials) => {
     dispatch(loginAction(loginCredentials, setLogin, navigate));
-    // navigate("/home/dashboard");
   };
-
   const validationsLogin = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
     password: yup

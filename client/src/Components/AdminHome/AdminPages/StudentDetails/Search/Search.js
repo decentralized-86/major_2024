@@ -8,10 +8,12 @@ import "./sb.css";
 const Search = ({ data, onSearch, clearSelectedId }) => {
   const [selectedValue, setSelectedValue] = useState("name");
 
-  const searchData = data.map((item) => ({
-    key: item.id,
-    value: item[selectedValue],
-  }));
+  const searchData = data
+    ? data.map((item) => ({
+        key: item._id,
+        value: item[selectedValue],
+      }))
+    : [];
 
   const handleSelect = (record) => {
     onSearch(record.item.key);
