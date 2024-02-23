@@ -1,36 +1,18 @@
 const initialState = {
-  students: [],
-  data: null,
+  data: JSON.parse(localStorage.getItem("Profile")) || null,
 };
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case "AUTH":
-      // localStorage.setItem(
-      //   "Profile",
-      //   JSON.stringify({ ...(action.data || {}) })
-      // );
+      localStorage.setItem(
+        "Profile",
+        JSON.stringify({ ...(action.data || {}) })
+      );
       return { ...state, data: action.payload || {} };
     case "LOGOUT":
-      // localStorage.clear();
+      localStorage.clear();
       return { ...state, data: null };
-    case "GET_USERS":
-      return {
-        ...state,
-        users: action.payload,
-      };
-    case "GET_USERS_ERROR":
-      return {
-        ...state,
-        error: action.error,
-      };
-    case "DELETE_STUDENT":
-      return {
-        ...state,
-        students: state.students.filter(
-          (student) => student._id !== action.payload
-        ),
-      };
     default:
       return state;
   }

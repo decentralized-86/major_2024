@@ -14,6 +14,9 @@ import Location from "./Components/Auth/SignUp/Location/Location";
 import Links from "./Components/Auth/SignUp/Links/Link";
 import StudentDetails from "./Components/Auth/SignUp/StudentDetails/StudentDetails";
 import { FormValueProvider } from "./Components/Auth/SignUp/FormValueContext";
+import ApplicationList from "./Components/AdminHome/AdminPages/JobPosts/applications/ApplicationList";
+import ViewApplication from "./Components/AdminHome/AdminPages/JobPosts/applications/ViewApplication";
+import ApplicationForm from "./Components/AdminHome/AdminPages/JobPosts/applicationForm/ApplicationForm";
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(() => {
@@ -79,7 +82,7 @@ function App() {
           <Route path="links" element={<Links />} />
         </Route>
         <Route
-          path="home"
+          path="adminHome"
           element={
             <AdminHome
               isDarkMode={isDarkMode}
@@ -89,11 +92,15 @@ function App() {
             />
           }
         >
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="drives" element={<AdminJobPosts />} />
-          <Route path="student" element={<AdminStudentList />} />
-          <Route path="trainings" element={<AdminManageTrainings />} />
-          <Route path="settings" element={<AdminSettings />} />
+          <Route path="adminDashboard" element={<AdminDashboard />} />
+          <Route path="adminJobPosts" element={<AdminJobPosts />}>
+            <Route path="applicationList" element={<ApplicationList />} />
+            <Route path="viewApplication" element={<ViewApplication />} />
+            <Route path="applicationForm" element={<ApplicationForm />} />
+          </Route>
+          <Route path="adminStudentList" element={<AdminStudentList />} />
+          <Route path="adminTrainings" element={<AdminManageTrainings />} />
+          <Route path="adminSettings" element={<AdminSettings />} />
         </Route>
       </Routes>
     </div>

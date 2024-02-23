@@ -69,7 +69,7 @@ export const loginAction =
           },
         });
         localStorage.setItem("Profile", JSON.stringify({ ...response.data }));
-        navigate("/home/dashboard");
+        navigate("/adminHome/adminDashboard");
         return setLogin(true); // Set login status to true
       } else {
         dispatch({ type: "AUTH_ERROR", error: "Invalid login credentials" });
@@ -82,44 +82,8 @@ export const loginAction =
     }
   };
 
-  export const getUsersAction = () => async (dispatch) => {
-    try {
-      const response = await axios.get(`${URL}/api/coordinator/getstudents`);
-  
-      if (response.status === 200) {
-        dispatch({
-          type: "GET_USERS",
-          payload: response.data,
-        });
-      } else {
-        dispatch({ type: "GET_USERS_ERROR", error: "Error fetching users" });
-      }
-    } catch (error) {
-      console.error(error);
-      dispatch({ type: "GET_USERS_ERROR", error: error.message });
-    }
-  };
-  
-  export const deleteStudentAction =
-    (studentId, setDeleteStatus) => async (dispatch) => {
-      console.log("Response", studentId);
-      try {
-        const response = await axios.delete(
-          `${URL}/api/coordinator/deleteStudent/${studentId}`
-        );
-  
-        if (response.status === 200) {
-          dispatch({
-            type: "DELETE_STUDENT",
-            payload: response.data.studentId,
-          });
-          return setDeleteStatus(true);
-        } else {
-          dispatch({ type: "DELETE_STUDENT_ERROR", error: response.data.msg });
-        }
-      } catch (error) {
-        console.error(error);
-        dispatch({ type: "DELETE_STUDENT_ERROR", error: error.message });
-      }
-    };
-  
+export const logoutAction = (setLogin, navigate) => async (dispatch) => {
+  dispatch({ type: "LOGOUT" });
+  navigate("/");
+  return setLogin(false);
+};

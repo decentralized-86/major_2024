@@ -31,7 +31,7 @@ function AdminHome({ isDarkMode, toggleDarkMode, login, setLogin }) {
   };
 
   return login ? (
-    <div className="Home">
+    <div className="Home h-[100vh]">
       <Navbar
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleDarkMode}
@@ -46,7 +46,6 @@ function AdminHome({ isDarkMode, toggleDarkMode, login, setLogin }) {
           style={{
             margin: "1vh 0vw 0vh 0vw",
             padding: "0vh 0vw 0vh 1vw ",
-            height: "90vh",
           }}
         >
           <Container>

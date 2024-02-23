@@ -20,17 +20,17 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
   );
 
   return (
-    <div className="sideNavBar h-[100%]">
-      <Sidenav className="w-[20vw] " expanded={expanded}>
+    <div className="sideNavBar h-[91vh] ">
+      <Sidenav className="w-[20vw]" expanded={expanded}>
         <Sidenav.Header>
           <Disclosure>
-            <div className="flex items-center pb-1 ml-1 ">
+            <div className="flex items-center pb-1 pl-1 bg-white ">
               <Disclosure.Button
-                className="inline-flex items-center justify-center  text-gray-400 hover:ring-2 hover:ring-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-inset h-[40px] w-[55px] mt-1 "
+                className="inline-flex items-center justify-center   text-gray-400 hover:ring-2 hover:ring-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-inset h-[40px] w-[55px] mt-1 "
                 onClick={toggleMenu}
               >
                 {expanded ? (
-                  <XIcon className="block h-8 w-12" aria-hidden="true" />
+                  <XIcon className="block h-8 w-10" aria-hidden="true" />
                 ) : (
                   <MenuIcon className="block h-8 w-12 " aria-hidden="true" />
                 )}
@@ -48,10 +48,10 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
           </Disclosure>
         </Sidenav.Header>
         <Sidenav.Body>
-          <Nav>
+          <Nav style={{ backgroundColor: "red" }}>
             <Nav.Item
               as={NavLink}
-              href="dashboard"
+              href="adminDashboard"
               eventKey="1"
               icon={<DashboardIcon />}
             >
@@ -59,7 +59,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
             </Nav.Item>
             <Nav.Item
               as={NavLink}
-              href="drives"
+              href="adminJobPosts/applicationList"
               eventKey="2"
               icon={<BriefcaseIcon />}
             >
@@ -67,7 +67,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
             </Nav.Item>
             <Nav.Item
               as={NavLink}
-              href="student"
+              href="adminStudentList"
               eventKey="3"
               icon={<GroupIcon />}
             >
@@ -75,16 +75,15 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
             </Nav.Item>
             <Nav.Item
               as={NavLink}
-              href="trainings"
+              href="adminTrainings"
               eventKey="4"
               icon={<TaskIcon />}
-              style={{ paddingRight: "10px" }}
             >
               TRAININGS
             </Nav.Item>
             <Nav.Item
               as={NavLink}
-              href="settings"
+              href="adminSettings"
               eventKey="6"
               icon={<GearIcon />}
             >

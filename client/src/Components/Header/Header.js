@@ -7,6 +7,8 @@ import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../Logo/cpmsLogo.png";
 import { set } from "rsuite/esm/utils/dateUtils";
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../../redux/action/auth";
 
 // Utility function to conditionally concatenate CSS classes
 function classNames(...classes) {
@@ -24,6 +26,7 @@ const notifications = [
 // Navbar component
 export default function Navbar({ isDarkMode, toggleDarkMode, setLogin }) {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   // State for managing visibility of notification dropdown
   const [openNotifications, setOpenNotifications] = useState(false);
   const notificationsRef = useRef(null);
@@ -47,8 +50,7 @@ export default function Navbar({ isDarkMode, toggleDarkMode, setLogin }) {
   }, [notificationsRef]);
 
   const handleLogout = () => {
-    setLogin(false);
-    navigate("/");
+    dispatch(logoutAction(setLogin, navigate));
   };
 
   return (

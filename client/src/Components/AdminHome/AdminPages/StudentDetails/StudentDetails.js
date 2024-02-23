@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import StudentList from "./StudentList";
 import SearchBar from "./Search/Search";
 import { Header } from "rsuite";
-import { getUsersAction } from "../../../../redux/action/auth";
+import { getUsersAction } from "../../../../redux/action/userControls";
 
 function AdminStudentList() {
   const dispatch = useDispatch();
-  const studentList = useSelector((state) => state.auth?.users?.studentList);
+  const studentList = useSelector((state) => state.userControls?.users);
   const [selectedId, setSelectedId] = useState([]);
   const [deleteStatus, setDeleteStatus] = useState(false);
 

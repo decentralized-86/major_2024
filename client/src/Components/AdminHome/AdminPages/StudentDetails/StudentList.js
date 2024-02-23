@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { Table, Button, List } from "rsuite";
-import { deleteStudentAction } from "../../../../redux/action/auth";
+import { deleteStudentAction } from "../../../../redux/action/userControls";
 import { useDispatch } from "react-redux";
 
 const { Column, HeaderCell, Cell } = Table;
