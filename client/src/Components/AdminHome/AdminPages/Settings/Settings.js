@@ -1,7 +1,7 @@
 import React from "react";
 
-function Settings() {
+function AdminSettings() {
   return <div>Settings</div>;
 }
 
-export default Settings;
+export default AdminSettings;

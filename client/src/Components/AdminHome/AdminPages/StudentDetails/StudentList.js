@@ -1,27 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
-import "./ListTable.css";
 import { Table, Button, List } from "rsuite";
+import { deleteStudentAction } from "../../../../redux/action/userControls";
+import { useDispatch } from "react-redux";
 
 const { Column, HeaderCell, Cell } = Table;
 
-const TrainingList = ({ data: mockUsers, selectedId: key }) => {
-  // console.log(key);
-  const data = mockUsers;
-  const filteredData =
-    key.length > 0 ? data.filter((item) => key.includes(item.id)) : data;
+const StudentList = ({ data, selectedId, setDeleteStatus }) => {
+  const dispatch = useDispatch();
+  const [studentData, setStudentData] = useState([]);
+
+  useEffect(() => {
+    setStudentData(
+      selectedId.length > 0
+        ? data.filter((item) => selectedId.includes(item._id))
+        : data
+    );
+  }, [selectedId, data]);
+
+  const handleDelete = (id) => {
+    if (window.confirm(`Are you sure you want to delete the student?`)) {
+      dispatch(deleteStudentAction(id, setDeleteStatus));
+    }
+  };
 
   return (
-    <div>
+    <div
+      style={{
+        width: "75vw",
+        maxHeight: "73vh",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
+      affixHeader={0}
+    >
       <Table
-        height={600}
-        data={filteredData}
+        height={500}
+        data={studentData}
         onRowClick={(rowData) => {
-          console.log(rowData.selectedId);
+          console.log(rowData);
         }}
-        // rowClassName={(rowData) =>
-        //   rowData.id === selectedId ? "highlighted-row" : ""
-        // }
       >
         <Column width={100}>
           <HeaderCell>UID</HeaderCell>
@@ -44,10 +63,10 @@ const TrainingList = ({ data: mockUsers, selectedId: key }) => {
         </Column>
 
         <Column width={100}>
-          <HeaderCell>YEAR</HeaderCell>
+          <HeaderCell>CONTACT</HeaderCell>
           <Cell>
             {(rowData) => {
-              return String(rowData.Year);
+              return String(rowData.contact);
             }}
           </Cell>
         </Column>
@@ -63,21 +82,7 @@ const TrainingList = ({ data: mockUsers, selectedId: key }) => {
             {(rowData) => (
               <Button
                 appearance="link"
-                onClick={() => alert(`id:${rowData.id}`)}
-              >
-                Edit
-              </Button>
-            )}
-          </Cell>
-        </Column>
-
-        <Column width={80} fixed="right">
-          <HeaderCell>...</HeaderCell>
-          <Cell style={{ padding: "6px" }}>
-            {(rowData) => (
-              <Button
-                appearance="link"
-                onClick={() => alert(`id:${rowData.id}`)}
+                onClick={() => handleDelete(rowData._id)}
               >
                 Delete
               </Button>
@@ -89,4 +94,4 @@ const TrainingList = ({ data: mockUsers, selectedId: key }) => {
   );
 };
 
-export default TrainingList;
+export default StudentList;
