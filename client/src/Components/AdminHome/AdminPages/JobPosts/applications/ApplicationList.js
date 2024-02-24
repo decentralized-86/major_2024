@@ -33,7 +33,7 @@ function ApplicationList() {
     >
       {jobs.map((job) => (
         <Card
-          key={job.id}
+          key={job._id}
           sx={{
             width: "70vw",
             marginTop: "2vh",

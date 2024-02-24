@@ -15,7 +15,7 @@ import Links from "./Components/Auth/SignUp/Links/Link";
 import StudentDetails from "./Components/Auth/SignUp/StudentDetails/StudentDetails";
 import { FormValueProvider } from "./Components/Auth/SignUp/FormValueContext";
 import { JobsProvider } from "./Components/AdminHome/AdminPages/JobPosts/jobContext";
-import ApplicationList from "./Components/AdminHome/AdminPages/JobPosts/applications/applicationList";
+import ApplicationList from "./Components/AdminHome/AdminPages/JobPosts/applications/ApplicationList";
 import UpdateApplication from "./Components/AdminHome/AdminPages/JobPosts/updateApplication/UpdateApplication";
 import ApplicationForm from "./Components/AdminHome/AdminPages/JobPosts/newApplicationForm/ApplicationForm";
 

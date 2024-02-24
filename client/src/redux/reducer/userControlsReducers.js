@@ -1,7 +1,6 @@
 const initialState = {
   data: null,
   users: [],
-  job: [],
   students: [],
 };
 
