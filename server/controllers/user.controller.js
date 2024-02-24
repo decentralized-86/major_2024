@@ -106,7 +106,7 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { password, select, email } = req.body;
+  const { select, email, password } = req.body;
   console.log(req.body);
   try {
     if (!email || !password) {
@@ -131,7 +131,7 @@ const login = async (req, res) => {
 
       res.status(200).json({ result: coordinator });
     } else if (select === "student") {
-      const student = await User.findOne({ "student.college_email": email });
+      const student = await User.findOne({ college_email: email });
 
       if (!student) {
         return res.status(404).json({ msg: "Does not exists!" });

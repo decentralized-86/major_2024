@@ -2,16 +2,20 @@ import "./Signin.css";
 import * as yup from "yup";
 import { ErrorMessage, Formik, Form, Field } from "formik";
 import Axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { loginAction } from "../../../redux/action/auth";
 
-function Signin({ loginValue = true }) {
-  const login = { loginValue };
+function Signin({ setLogin }) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleLogin = () => {};
-
+  const handleLogin = (loginCredentials) => {
+    dispatch(loginAction(loginCredentials, setLogin, navigate));
+  };
   const validationsLogin = yup.object().shape({
     email: yup.string().email("Invalid email").required("Email is required"),
     password: yup
@@ -28,21 +32,27 @@ function Signin({ loginValue = true }) {
         <div className="card-login">
           <h1>Welcome!!</h1>
           <Formik
-            initialValues={{}}
+            initialValues={{ select: "student", email: "", password: "" }}
             onSubmit={handleLogin}
             validationSchema={validationsLogin}
           >
             <Form className="login-form">
               <div className="form-group">
-                <label form="email">Email</label>
+                <label htmlFor="select">Role</label>
+                <Field as="select" name="select" className="form-field">
+                  <option value="student">Student</option>
+                  <option value="coordinator">Coordinator</option>
+                </Field>
+              </div>
 
+              <div className="form-group">
+                <label form="email">Email</label>
                 <Field
                   name="email"
                   type="email"
                   className="form-field"
                   placeholder="Email"
                 />
-
                 <ErrorMessage
                   component="span"
                   name="email"
@@ -58,7 +68,6 @@ function Signin({ loginValue = true }) {
                   className="form-field"
                   placeholder="Password"
                 />
-
                 <ErrorMessage
                   component="span"
                   name="password"
@@ -67,7 +76,7 @@ function Signin({ loginValue = true }) {
               </div>
 
               <button className="button" type="submit">
-                {login && <Link to="/home/dashboard">LOGIN</Link>}
+                <div>LOGIN</div>
               </button>
               <div
                 className="user-link-cad"

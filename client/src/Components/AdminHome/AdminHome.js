@@ -1,35 +1,42 @@
 import React, { useState, useEffect } from "react";
-import "./Home.css";
+import "./AdminHome.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Navbar from "../Header/Header";
-import SideNavBar from "../AdminPages/SideNavBar/SideNavBar";
+import SideNavBar from "./SideNavBar/SideNavBar";
 import { useNavigate, Outlet } from "react-router-dom";
 import { Container, Content } from "rsuite";
 
-function Home({ isDarkMode, toggleDarkMode }) {
-  const [expanded, setExpanded] = React.useState(true);
-  const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Add this state
+function AdminHome({ isDarkMode, toggleDarkMode, login, setLogin }) {
+  const [expanded, setExpanded] = useState(() => {
+    const savedexpanded = localStorage.getItem("expanded");
+    return savedexpanded !== null ? JSON.parse(savedexpanded) : false;
+  });
+  const navigate = useNavigate(); // Add this state
 
   useEffect(() => {
-    // Replace this with your actual login check
-    const userIsLoggedIn = true; // set to false for demonstration
-
-    if (!userIsLoggedIn) {
+    if (!login) {
       navigate("/"); // replace '/login' with your actual login path
       alert("Please login to continue");
     } else {
-      setIsLoggedIn(true);
+      // setisLoggedIn = true;
     }
-  }, [navigate]);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("expanded", JSON.stringify(expanded));
+  }, [expanded]);
 
   const toggleMenu = () => {
     setExpanded((prevExpanded) => !prevExpanded); // Toggle expanded state
   };
 
-  return isLoggedIn ? (
-    <div className="Home">
-      <Navbar isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+  return login ? (
+    <div className="Home h-[100vh]">
+      <Navbar
+        isDarkMode={isDarkMode}
+        toggleDarkMode={toggleDarkMode}
+        setLogin={setLogin}
+      />
       <div className="body">
         <div className="sidenav">
           <SideNavBar expanded={expanded} toggleMenu={toggleMenu} />
@@ -39,7 +46,6 @@ function Home({ isDarkMode, toggleDarkMode }) {
           style={{
             margin: "1vh 0vw 0vh 0vw",
             padding: "0vh 0vw 0vh 1vw ",
-            height: "90vh",
           }}
         >
           <Container>
@@ -53,4 +59,4 @@ function Home({ isDarkMode, toggleDarkMode }) {
   ) : null;
 }
 
-export default Home;
+export default AdminHome;
