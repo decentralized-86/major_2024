@@ -1,155 +1,141 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
 const jobPostSchema = new mongoose.Schema({
-    company_name: {
+  company_name: {
+    type: String,
+    default: "",
+  },
+  company_email: {
+    type: String,
+    default: "",
+  },
+  company_website_url: {
+    type: String,
+    default: "",
+  },
+  company_location: {
+    type: String,
+    default: "",
+  },
+  company_description: {
+    type: String,
+    default: "",
+  },
+  job_tags: {
+    organization_type: {
+      type: String,
+      default: "",
+    },
+    industry_sector: {
+      type: String,
+      default: "",
+    },
+    job_type: {
+      type: String,
+      default: "",
+    },
+    location_Type: {
+      type: String,
+      default: "",
+    },
+  },
+  job_info: {
+    job_profile: {
+      type: String,
+      default: "",
+    },
+    job_description: {
+      type: String,
+      default: "",
+    },
+    job_registration_link: {
+      type: String,
+      default: "",
+    },
+    job_location: {
+      type: String,
+      default: "",
+    },
+  },
+  eligibility: {
+    eligible_courses: {
+      type: String,
+      default: "",
+    },
+    passout_batch: {
+      type: String,
+      default: "",
+    },
+    avg_cgpa: {
+      type: String,
+      default: "",
+    },
+    min_12_percent: {
+      type: String,
+      default: "",
+    },
+    service_agreement_duration: {
+      type: String,
+      default: "",
+    },
+  },
+  package: {
+    base_salary: {
+      type: String,
+      default: "",
+    },
+    stock_options: {
+      type: String,
+      default: "",
+    },
+  },
+  selection_process: {
+    written_test: {
+      type: String,
+      default: "",
+    },
+    technical_interview: {
+      type: String,
+      default: "",
+    },
+    hr_interview: {
+      type: String,
+      default: "",
+    },
+  },
+  deadline_date: {
+    type: Date,
+  },
+  attendance: {
+    type: Boolean,
+    default: false,
+  },
+  candidates: [
+    {
+      uid: {
         type: String,
-        required: true,
-    },
-    company_email: {
+        default: "",
+      },
+      candidate_status: {
         type: String,
-        required: true,
+        default: "Applied",
+        enum: [
+          "Applied",
+          "Appeared for Test",
+          "Absent",
+          "Shortlisted",
+          "Selected",
+        ],
+      },
+      timestamp: {
+        type: Date,
+      },
     },
-    company_website_url : {
-        type : String,
-        default : ' '
-    },
-    organization_type : {
-        type : String,
-        default : ' '
-    },
-    industry_sector : {
-        type : String,
-        default : ' '
-    },
-    about_company : {
-        type : String,
-        default : ' '
-    },
-
-    // Job Profile
-    job_profile : {
-        type : String,
-        required: true
-    },
-    passout_batch : {
-        type : String,
-        required : true
-    },
-    recruitment : {
-        type : String,
-        required : true
-    },
-    duration : {
-        type : String,
-        default : ' '
-    },
-    posting_location : {
-        type : String,
-        default : ' '
-    },
-    joining_date : {
-        type : Date
-    },
-    job_description : {
-        type : String,
-        default : ' '
-    },
-
-    // student eligibility
-    eligibility : {
-        type : Object
-    },
-    min_cgpa : {
-        type : String, // todo convert float
-        default : 'NA'
-    },
-    min_10_percent : {
-        type : String,
-        default : 'NA'
-    },
-    min_12_percent : {
-        type : String,
-        default : 'NA'
-    },
-    medical_requirement : {
-        type : String,
-        default : 'NA'
-    },
-    service_agreement : {
-        type : String,
-        default : 'NA'
-    },
-    service_agreement_duration : {
-        type : String,
-        default : 'NA'
-    },
-    other_eligibility : {
-        type : String,
-        default : 'NA'
-    },
-
-    // Package Details
-    package : {
-        type : Object
-    },
-    company_accommodation : {
-        type : String,
-        default : 'NA'
-    },
-    other_facility : {
-        type : String,
-        default : 'NA'
-    },
-
-    // Selection Process
-    selection_process : {
-        type : Object
-    },
-    waitlist : {
-        type : String
-    },
-    final_offer : {
-        type : String
-    },
-
-    // registration deadline
-    deadline_date : {
-        type : Date,
-        required : true
-    },
-
-    // Students registration
-    // tempo attendance status
-    attendance : {
-        type : Boolean
-    },
-    company_otp : {
-        type : String
-    },
-    candidates : [{
-        uid : {
-            type : String,
-            required: true
-        },
-        candidate_status : {
-            type : String,
-            default : 'Applied',
-            enum : ['Applied','Appeared for Test','Absent','Shortlisted','Selected']
-        },
-        timestamp : {
-            type : Date,
-            required : true
-        }
-    }],
-    timestamp: {
-        type : Date,
-        required : true,
-        default: Date.now()
-    }
+  ],
+  timestamp: {
+    type: Date,
+  },
 });
 
-    
-
-
-const jobPost = mongoose.model('Company', jobPostSchema);
+const jobPost = mongoose.model("Company", jobPostSchema);
 module.exports = jobPost;

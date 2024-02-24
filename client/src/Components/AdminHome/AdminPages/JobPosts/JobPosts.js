@@ -49,7 +49,7 @@ export default function CenteredTabs() {
             onClick={handleNewJob}
           >
             <AddIcon />
-            Add New
+            Add Job
           </Fab>
         </Stack>
       </Box>

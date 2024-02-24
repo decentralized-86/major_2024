@@ -7,7 +7,7 @@ import { getUsersAction } from "../../../../redux/action/userControls";
 
 function AdminStudentList() {
   const dispatch = useDispatch();
-  const studentList = useSelector((state) => state.userControls?.users);
+  const studentList = useSelector((state) => state.userControls?.students);
   const [selectedId, setSelectedId] = useState([]);
   const [deleteStatus, setDeleteStatus] = useState(false);
 

@@ -10,15 +10,18 @@ export const getUsersAction = () => async (dispatch) => {
 
     if (response.status === 200) {
       dispatch({
-        type: "GET_USERS",
+        type: "GET_STUDENT",
         payload: response.data.studentList,
       });
     } else {
-      dispatch({ type: "GET_USERS_ERROR", error: "Error fetching users" });
+      dispatch({
+        type: "GET_STUDENTS_ERROR",
+        error: "Error fetching students",
+      });
     }
   } catch (error) {
     console.error(error);
-    dispatch({ type: "GET_USERS_ERROR", error: error.message });
+    dispatch({ type: "GET_STUDENTS_ERROR", error: error.message });
   }
 };
 

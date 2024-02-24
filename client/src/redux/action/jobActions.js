@@ -5,41 +5,56 @@ const URL = "http://localhost:8080";
 export const addJobAction = (jobData, navigate) => async (dispatch) => {
   const res = await axios.post(`${URL}/api/jobs`, jobData);
 
-  // const {
-  //   auth: { data },
-  // } = getState();
-
   try {
-    localStorage.setItem("Profile", JSON.stringify({ ...data, ...jobData }));
-
     dispatch({
       type: "ADD_JOB",
       payload: {
-        ...res.data,
-        uid: res.data.uid,
-        name: res.data.name,
-        batch: res.data.batch,
-        branch: res.data.branch,
-        gender: res.data.gender,
-        contact: res.data.contact,
-        college_email: res.data.college_email,
-        degree: res.data.degree,
-        avg_cgpa: res.data.avg_cgpa,
-        ssc_marks: res.data.ssc_marks,
-        ssc_board: res.data.ssc_board,
-        hsc_marks: res.data.hsc_marks,
-        hsc_board: res.data.hsc_board,
-        address: res.data.address,
-        city: res.data.city,
-        post_code: res.data.post_code,
-        state: res.data.state,
-        country: res.data.country,
-        linkedln_link: res.data.linkedln_link,
-        resume_url: res.data.resume_url,
-        password: res.data.password,
+        company_name: res.data.company_name,
+        company_email: res.data.company_email,
+        company_website_url: res.data.company_website_url,
+        company_location: res.data.company_location,
+        company_description: res.data.company_description,
+
+        job_tags: {
+          organization_type: res.data.job_tags.organization_type,
+          industry_sector: res.data.job_tags.industry_sector,
+          job_type: res.data.job_tags.job_type,
+          location_Type: res.data.job_tags.location_Type,
+        },
+
+        job_info: {
+          job_profile: res.data.job_info.job_profile,
+          job_description: res.data.job_info.job_description,
+          job_registration_link: res.data.job_info.job_registration_link,
+          job_location: res.data.job_info.job_location,
+        },
+
+        eligibility: {
+          passout_batch: res.data.eligibility.passout_batch,
+          avg_cgpa: res.data.eligibility.avg_cgpa,
+          min_12_percent: res.data.eligibility.min_12_percent,
+          service_agreement_duration:
+            res.data.eligibility.service_agreement_duration,
+        },
+
+        package: {
+          base_salary: res.data.package.base_salary,
+          stock_options: res.data.package.stock_options,
+        },
+
+        selection_process: {
+          written_test: res.data.selection_process.written_test,
+          technical_interview: res.data.selection_process.technical_interview,
+          hr_interview: res.data.selection_process.hr_interview,
+        },
+
+        deadline_date: res.data.deadline_date,
+        attendance: res.data.attendance,
+        candidates: res.data.candidates,
+        timestamp: res.data.timestamp,
       },
     });
-    console.log("Data", data);
+    // console.log("Data", data);
     // dispatch(setCurrentUser(JSON.parse(localStorage.getItem("Profile"))));
     navigate("/");
   } catch (error) {
@@ -54,10 +69,11 @@ export const getJobsAction = () => async (dispatch) => {
     if (response.status === 200) {
       dispatch({
         type: "GET_JOBS",
-        payload: response.data.jobs,
+        payload: response.data.result,
       });
+      console.log("Response", response.data.result);
     } else {
-      dispatch({ type: "GET_JOBS_ERROR", error: "Error fetching users" });
+      dispatch({ type: "GET_JOBS_ERROR", error: "Error fetching jobss" });
     }
   } catch (error) {
     console.error(error);
@@ -86,3 +102,26 @@ export const deleteJobAction = (jobId, setDeleteStatus) => async (dispatch) => {
     dispatch({ type: "DELETE_JOB_ERROR", error: error.message });
   }
 };
+
+export const updateJobAction =
+  (jobId, updatedJobData, navigate) => async (dispatch) => {
+    try {
+      const response = await axios.put(
+        `${URL}/api/jobs/${jobId}`,
+        updatedJobData
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: "UPDATE_JOB",
+          payload: response.data.result,
+        });
+        navigate("/");
+      } else {
+        dispatch({ type: "UPDATE_JOB_ERROR", error: response.data.message });
+      }
+    } catch (error) {
+      console.error(error);
+      dispatch({ type: "UPDATE_JOB_ERROR", error: error.message });
+    }
+  };

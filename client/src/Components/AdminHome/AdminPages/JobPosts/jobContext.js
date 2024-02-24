@@ -10,45 +10,44 @@ export const JobsProvider = ({ children }) => {
     company_website_url: "",
     company_location: "",
     company_description: "",
-    organization_type: "",
-    industry_sector: "",
-    job_type: "",
-    job_profile: "",
-    location_Type: "",
 
-    joining_date: null,
-    job_description: "",
+    job_tags: {
+      organization_type: "",
+      industry_sector: "",
+      job_type: "",
+      location_Type: "",
+    },
+
+    job_info: {
+      job_profile: "",
+      job_description: "",
+      job_registration_link: "",
+      job_location: "",
+    },
+
     eligibility: {
       passout_batch: "",
-      min_cgpa: "",
-      min_10_percent: "",
+      eligible_courses: "",
+      avg_cgpa: "",
       min_12_percent: "",
-      medical_requirement: "",
-      service_agreement: "",
       service_agreement_duration: "",
-      other_eligibility: "",
     },
+
     package: {
       base_salary: "",
-      bonus: "",
       stock_options: "",
     },
-    company_accommodation: "",
-    other_facility: "",
+
     selection_process: {
       written_test: "",
       technical_interview: "",
       hr_interview: "",
     },
-    waitlist: "",
-    final_offer: "",
+
     deadline_date: null,
     attendance: false,
-    company_otp: "",
     candidates: [],
     timestamp: null,
-    __v: 0,
-    location_Type: "",
   });
 
   return (

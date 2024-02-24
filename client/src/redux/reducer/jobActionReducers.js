@@ -1,5 +1,4 @@
 const initialState = {
-  data: null,
   jobs: [],
 };
 
@@ -8,7 +7,7 @@ const jobActionReducers = (state = initialState, action) => {
     case "GET_JOBS":
       return {
         ...state,
-        users: action.payload,
+        jobs: action.payload,
       };
     case "ADD_JOB":
       return {
@@ -19,6 +18,13 @@ const jobActionReducers = (state = initialState, action) => {
       return {
         ...state,
         jobs: state.jobs.filter((job) => job._id !== action.payload),
+      };
+    case "UPDATE_JOB":
+      return {
+        ...state,
+        jobs: state.jobs.map((job) =>
+          job._id === action.payload._id ? action.payload : job
+        ),
       };
     default:
       return state;

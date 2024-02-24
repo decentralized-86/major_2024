@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useJobs } from "../jobContext";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -11,9 +10,9 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Upload from "../../../../uploader/uploader";
+import logo from "../../../../Logo/cpmsLogo.png";
 
 const UpdateApplication = () => {
-  const { jobs, setJobs } = useJobs();
   const [isSelect, setIsSelect] = useState([
     {
       selectType: "",
@@ -22,14 +21,8 @@ const UpdateApplication = () => {
   ]);
   const navigate = useNavigate();
   const location = useLocation();
-  const jobID = location.state.jobID;
-  const [job, setJob] = useState(null);
+  const job = location.state ? location.state.job : {};
   const [isSave, setIsSave] = useState(false);
-
-  useEffect(() => {
-    const foundJob = jobs.find((job) => job.id === jobID);
-    setJob(foundJob);
-  }, [jobs, jobID]);
 
   const handleChange = (event) => {
     setIsSelect(event.target.value);
@@ -41,6 +34,10 @@ const UpdateApplication = () => {
   const handleEdit = () => {
     setIsSave(!isSave);
   };
+
+  const eligibilityCriteriaValue = `Average CGPA: ${job.eligibility.avg_cgpa}, 
+Minimum 12th Percent: ${job.eligibility.min_12_percent}, 
+Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
 
   return (
     <div className="viewApplication">
@@ -87,7 +84,7 @@ const UpdateApplication = () => {
           }}
         >
           <Card
-            key={job.id}
+            key={job._id}
             sx={{
               width: "70vw",
               marginTop: "2vh",
@@ -97,13 +94,13 @@ const UpdateApplication = () => {
               {isSave ? (
                 <Upload />
               ) : (
-                <img src={job.jobImg} alt="logo" style={{ height: "10vh" }} />
+                <img src={logo} alt="logo" style={{ height: "10vh" }} />
               )}
 
               <Stack direction="column" spacing={1}>
                 <TextField
                   id="standard-read-only-input"
-                  value={job.title}
+                  value={job.job_info.job_profile}
                   InputProps={{
                     readOnly: !isSave,
                   }}
@@ -111,7 +108,7 @@ const UpdateApplication = () => {
                 />
                 <TextField
                   id="standard-read-only-input"
-                  value={job.company}
+                  value={job.company_name}
                   fontSize="small"
                   InputProps={{
                     readOnly: !isSave,
@@ -126,7 +123,7 @@ const UpdateApplication = () => {
                 <FormControl sx={{ m: 1, minWidth: 200 }}>
                   Type
                   <Select
-                    defaultValue={job.type}
+                    defaultValue={job.job_tags.job_type}
                     value={isSelect.selectType}
                     inputProps={{
                       readOnly: !isSave,
@@ -141,7 +138,7 @@ const UpdateApplication = () => {
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                   Location
                   <Select
-                    defaultValue={job.location}
+                    defaultValue={job.job_tags.location_Type}
                     value={isSelect.selectLocation}
                     inputProps={{
                       readOnly: !isSave,
@@ -163,7 +160,7 @@ const UpdateApplication = () => {
                     id="outlined-multiline-flexible-controlled"
                     multiline
                     rows={8}
-                    value={job.description}
+                    value={job.job_info.job_description}
                     InputProps={{
                       readOnly: !isSave,
                     }}
@@ -175,7 +172,7 @@ const UpdateApplication = () => {
                     id="outlined-multiline-flexible-controlled"
                     multiline
                     rows={1}
-                    value={job.registrationLink}
+                    value={job.job_info.job_registration_link}
                     InputProps={{
                       readOnly: !isSave,
                     }}
@@ -187,7 +184,7 @@ const UpdateApplication = () => {
                     id="outlined-multiline-flexible-controlled"
                     multiline
                     rows={3}
-                    value={job.eligibility.eligibleCourses}
+                    value={job.eligibility.eligible_courses}
                     InputProps={{
                       readOnly: !isSave,
                     }}
@@ -199,7 +196,7 @@ const UpdateApplication = () => {
                     id="outlined-multiline-flexible-controlled"
                     multiline
                     rows={3}
-                    value={job.eligibility.eligibleBatch}
+                    value={job.eligibility.passout_batch}
                     InputProps={{
                       readOnly: !isSave,
                     }}
@@ -211,7 +208,7 @@ const UpdateApplication = () => {
                     id="outlined-multiline-flexible-controlled"
                     multiline
                     rows={3}
-                    value={job.eligibility.eligibilityCriteria}
+                    value={eligibilityCriteriaValue}
                     InputProps={{
                       readOnly: !isSave,
                     }}
@@ -223,7 +220,7 @@ const UpdateApplication = () => {
                     id="outlined-multiline-flexible-controlled"
                     multiline
                     rows={3}
-                    value={job.otherDetails}
+                    value={job.company_description}
                     InputProps={{
                       readOnly: !isSave,
                     }}
