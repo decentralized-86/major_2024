@@ -25,9 +25,18 @@ const StudentList = ({ data, selectedId, setDeleteStatus }) => {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        width: "75vw",
+        maxHeight: "73vh",
+        overflowY: "auto",
+        scrollbarWidth: "none",
+        msOverflowStyle: "none",
+      }}
+      affixHeader={0}
+    >
       <Table
-        height={600}
+        height={500}
         data={studentData}
         onRowClick={(rowData) => {
           console.log(rowData);

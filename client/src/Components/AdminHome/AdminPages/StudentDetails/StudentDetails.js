@@ -25,6 +25,9 @@ function AdminStudentList() {
   return (
     <div>
       <Header>
+        <h1 style={{ textAlign: "center", marginBottom: "1vh" }}>
+          Student Details
+        </h1>
         <SearchBar
           data={studentList}
           onSearch={handleSearch}

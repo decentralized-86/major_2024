@@ -6,7 +6,6 @@ import "./Header.css"; // Importing external CSS file
 import { DarkModeSwitch } from "react-toggle-dark-mode";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../Logo/cpmsLogo.png";
-import { set } from "rsuite/esm/utils/dateUtils";
 import { useDispatch } from "react-redux";
 import { logoutAction } from "../../redux/action/auth";
 
