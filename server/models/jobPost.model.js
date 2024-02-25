@@ -91,16 +91,16 @@ const jobPostSchema = new mongoose.Schema({
   },
   selection_process: {
     written_test: {
-      type: String,
-      default: "",
+      type: Boolean,
+      default: false,
     },
     technical_interview: {
-      type: String,
-      default: "",
+      type: Boolean,
+      default: false,
     },
     hr_interview: {
-      type: String,
-      default: "",
+      type: Boolean,
+      default: false,
     },
   },
   deadline_date: {

@@ -39,9 +39,9 @@ export const JobsProvider = ({ children }) => {
     },
 
     selection_process: {
-      written_test: "",
-      technical_interview: "",
-      hr_interview: "",
+      written_test: false,
+      technical_interview: false,
+      hr_interview: false,
     },
 
     deadline_date: null,
