@@ -23,7 +23,7 @@ const jobActionReducers = (state = initialState, action) => {
       return {
         ...state,
         jobs: state.jobs.map((job) =>
-          job._id === action.payload._id ? action.payload : job
+          job._id === action.payload._id ? {...job} : job
         ),
       };
     default:
