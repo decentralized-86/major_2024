@@ -23,11 +23,7 @@ const jobActionReducers = (state = initialState, action) => {
       return {
         ...state,
         jobs: state.jobs.map((job) =>
-<<<<<<< HEAD
-          job._id === action.payload._id ? {...job} : job
-=======
           job._id === action.payload.result._id ? action.payload.result : job
->>>>>>> 769781258f45c4af79a254d1db2c83e21ca260df
         ),
       };
     case "UPDATE_JOB_ERROR":
