@@ -1,4 +1,3 @@
-const { default: mongoose } = require("mongoose");
 const jobPost = require("../models/jobPost.model");
 const { sendNotificationEmailToAllUsers } = require("../services/mail.service");
 
