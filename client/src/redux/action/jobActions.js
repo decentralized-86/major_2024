@@ -69,6 +69,8 @@ export const addJobAction = (jobData, navigate) => async (dispatch) => {
           timestamp: res.data.timestamp,
         },
       });
+      alert("Job added successfully");
+      return res.status;
     } else {
       alert("try again");
     }
