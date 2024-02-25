@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -29,47 +30,78 @@ import MenuItem from "@mui/material/MenuItem";
 import Upload from "../../../../uploader/uploader";
 import logo from "../../../../Logo/cpmsLogo.png";
 import "./updateApplication.css";
+import _ from "lodash";
+import { updateJobAction } from "../../../../../redux/action/jobActions";
 
 const UpdateApplication = () => {
-  const [isSelect, setIsSelect] = useState([
-    {
-      selectType: "",
-      selectLocation: "",
-    },
-  ]);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const job = location.state ? location.state.job : {};
+  const jobInfo = location.state ? location.state.job : {};
+  const [job, setJob] = useState({
+    _id: "",
+    company_name: "",
+    company_email: "",
+    company_website_url: "",
+    company_location: "",
+    company_description: "",
+
+    job_tags: {
+      organization_type: "",
+      industry_sector: "",
+      job_type: "",
+      location_Type: "",
+    },
+
+    job_info: {
+      job_profile: "",
+      job_description: "",
+      job_registration_link: "",
+      job_location: "",
+    },
+
+    eligibility: {
+      passout_batch: "",
+      eligible_courses: "",
+      avg_cgpa: "",
+      min_12_percent: "",
+      service_agreement_duration: "",
+    },
+
+    package: {
+      base_salary: "",
+      stock_options: "",
+    },
+
+    selection_process: {
+      written_test: false,
+      technical_interview: false,
+      hr_interview: false,
+    },
+
+    deadline_date: null,
+    attendance: false,
+    candidates: [],
+    timestamp: null,
+  });
   const [isSave, setIsSave] = useState(false);
 
-  function createData(eligibilityCriteria, criteriaValue) {
-    return { eligibilityCriteria, criteriaValue };
-  }
+  useEffect(() => {
+    setJob(jobInfo);
+  }, [jobInfo]);
 
-  const rows = [
-    createData("Average CGPA", job.eligibility.avg_cgpa),
-    createData("12th Percentage", job.eligibility.min_12_percent),
-    createData(
-      "Service Agreement Duration",
-      job.eligibility.service_agreement_duration
-    ),
-  ];
-
-  const handleChange = (event) => {
-    setIsSelect(event.target.value);
-  };
   const handleBack = () => {
     navigate(-1);
   };
 
-  const handleEdit = () => {
-    setIsSave(!isSave);
+  const handleSave = (job) => {
+    if (isSave) {
+      dispatch(updateJobAction(job, setIsSave, isSave));
+      setIsSave(!isSave);
+    } else {
+      setIsSave(!isSave);
+    }
   };
-
-  const eligibilityCriteriaValue = `Average CGPA: ${job.eligibility.avg_cgpa}, 
-Minimum 12th Percent: ${job.eligibility.min_12_percent}, 
-Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
-
   return (
     <div className="viewApplication">
       <Stack direction="row" spacing={{ md: 117, sm: 53 }} marginBottom={1}>
@@ -84,7 +116,7 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
               color="primary"
               aria-label="add"
               style={{ marginTop: "1vh" }}
-              onClick={handleEdit}
+              onClick={handleSave}
             >
               <EditIcon /> Edit
             </Fab>
@@ -95,7 +127,7 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
               color="primary"
               aria-label="add"
               style={{ marginTop: "1vh" }}
-              onClick={handleEdit}
+              onClick={() => handleSave(job)}
             >
               <SaveAltOutlinedIcon />
               Save
@@ -105,6 +137,7 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
       </Stack>
       {job ? (
         <Box
+          key={job._id}
           sx={{
             maxWidth: "80vw",
             maxHeight: "83vh",
@@ -114,7 +147,7 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
             padding: "0vh 1vw 1vh",
           }}
         >
-          <Card key={job._id} sx={{ width: "70vw", marginTop: "2vh" }}>
+          <Card sx={{ width: "70vw", marginTop: "2vh" }}>
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
@@ -130,16 +163,25 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
 
                   <Stack direction="column" spacing={1}>
                     <TextField
-                      id="standard-read-only-input"
+                      name="job_profile"
                       value={job.job_info.job_profile}
                       InputProps={{
                         readOnly: !isSave,
                         style: { fontSize: "1.5rem", fontWeight: "bold" },
                       }}
                       variant="standard"
+                      onChange={(e) =>
+                        setJob({
+                          ...job,
+                          job_info: {
+                            ...job.job_info,
+                            job_profile: e.target.value,
+                          },
+                        })
+                      }
                     />
                     <TextField
-                      id="standard-read-only-input"
+                      name="company_name"
                       value={job.company_name}
                       fontSize="small"
                       InputProps={{
@@ -147,6 +189,9 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                       }}
                       variant="standard"
                       size="small"
+                      onChange={(e) =>
+                        setJob({ ...job, company_name: e.target.value })
+                      }
                     />
                   </Stack>
                 </Stack>
@@ -156,49 +201,61 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                   <Stack direction="column" spacing={1}>
                     <h6>Company Email</h6>
                     <TextField
-                      id="outlined-multiline-flexible-controlled"
+                      name="company_email"
                       multiline
                       rows={1}
                       value={job.company_email}
                       InputProps={{
                         readOnly: !isSave,
                       }}
+                      onChange={(e) =>
+                        setJob({ ...job, company_email: e.target.value })
+                      }
                     />
                   </Stack>
                   <Stack direction="column" spacing={1}>
                     <h6>Company Website</h6>
                     <TextField
-                      id="outlined-multiline-flexible-controlled"
+                      name="company_website_url"
                       multiline
                       rows={1}
                       value={job.company_website_url}
                       InputProps={{
                         readOnly: !isSave,
                       }}
+                      onChange={(e) =>
+                        setJob({ ...job, company_website_url: e.target.value })
+                      }
                     />
                   </Stack>
                   <Stack direction="column" spacing={1}>
                     <h6>Company Location</h6>
                     <TextField
-                      id="outlined-multiline-flexible-controlled"
+                      name="company_location"
                       multiline
                       rows={1}
                       value={job.company_location}
                       InputProps={{
                         readOnly: !isSave,
                       }}
+                      onChange={(e) =>
+                        setJob({ ...job, company_location: e.target.value })
+                      }
                     />
                   </Stack>
                   <Stack direction="column" spacing={1}>
                     <h6>Company Description</h6>
                     <TextField
-                      id="outlined-multiline-flexible-controlled"
+                      name="company_description"
                       multiline
                       rows={3}
                       value={job.company_description}
                       InputProps={{
                         readOnly: !isSave,
                       }}
+                      onChange={(e) =>
+                        setJob({ ...job, company_description: e.target.value })
+                      }
                     />
                   </Stack>
                 </Stack>
@@ -210,11 +267,18 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                   Job Type
                   <Select
                     defaultValue={job.job_tags.job_type}
-                    value={isSelect.selectType}
                     inputProps={{
                       readOnly: !isSave,
                     }}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      setJob({
+                        ...job,
+                        job_tags: {
+                          ...job.job_tags,
+                          job_type: e.target.value,
+                        },
+                      })
+                    }
                   >
                     <MenuItem value="Full-Time">Full-Time</MenuItem>
                     <MenuItem value="Part-Time">Part-Time</MenuItem>
@@ -225,11 +289,18 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                   Location Type
                   <Select
                     defaultValue={job.job_tags.location_Type}
-                    value={isSelect.selectLocation}
                     inputProps={{
                       readOnly: !isSave,
                     }}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      setJob({
+                        ...job,
+                        job_tags: {
+                          ...job.job_tags,
+                          location_Type: e.target.value,
+                        },
+                      })
+                    }
                   >
                     <MenuItem value="Remote">Remote</MenuItem>
                     <MenuItem value="On-site">On-site</MenuItem>
@@ -240,11 +311,18 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                   Organization Type
                   <Select
                     defaultValue={job.job_tags.organization_type}
-                    value={isSelect.selectType}
                     inputProps={{
                       readOnly: !isSave,
                     }}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      setJob({
+                        ...job,
+                        job_tags: {
+                          ...job.job_tags,
+                          organization_type: e.target.value,
+                        },
+                      })
+                    }
                   >
                     <MenuItem value="Technology">Technology</MenuItem>
                     <MenuItem value="Finance">Finance</MenuItem>
@@ -262,11 +340,18 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                   Industry Sector
                   <Select
                     defaultValue={job.job_tags.industry_sector}
-                    value={isSelect.selectType}
                     inputProps={{
                       readOnly: !isSave,
                     }}
-                    onChange={handleChange}
+                    onChange={(e) =>
+                      setJob({
+                        ...job,
+                        job_tags: {
+                          ...job.job_tags,
+                          industry_sector: e.target.value,
+                        },
+                      })
+                    }
                   >
                     <MenuItem value="Public Corporation">
                       Public Corporation
@@ -299,61 +384,106 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                 <Stack direction="column" spacing={1}>
                   <h6>Description</h6>
                   <TextField
-                    id="outlined-multiline-flexible-controlled"
+                    name="job_description"
                     multiline
                     rows={8}
                     value={job.job_info.job_description}
                     InputProps={{
                       readOnly: !isSave,
                     }}
+                    onChange={(e) =>
+                      setJob({
+                        ...job,
+                        job_info: {
+                          ...job.job_info,
+                          job_description: e.target.value,
+                        },
+                      })
+                    }
                   />
                 </Stack>
                 <Stack direction="column" spacing={1}>
                   <h6>Registration Link</h6>
                   <TextField
-                    id="outlined-multiline-flexible-controlled"
+                    name="job_registration_link"
                     multiline
                     rows={1}
                     value={job.job_info.job_registration_link}
                     InputProps={{
                       readOnly: !isSave,
                     }}
+                    onChange={(e) =>
+                      setJob({
+                        ...job,
+                        job_info: {
+                          ...job.job_info,
+                          job_registration_link: e.target.value,
+                        },
+                      })
+                    }
                   />
                 </Stack>
                 <Stack direction="column" spacing={1}>
                   <h6>Job Location</h6>
                   <TextField
-                    id="outlined-multiline-flexible-controlled"
+                    name="job_location"
                     multiline
                     rows={1}
                     value={job.job_info.job_location}
                     InputProps={{
                       readOnly: !isSave,
                     }}
+                    onChange={(e) =>
+                      setJob({
+                        ...job,
+                        job_info: {
+                          ...job.job_info,
+                          job_location: e.target.value,
+                        },
+                      })
+                    }
                   />
                 </Stack>
                 <Stack direction="column" spacing={1}>
                   <h6>Eligible Courses</h6>
                   <TextField
-                    id="outlined-multiline-flexible-controlled"
+                    name="eligible_courses"
                     multiline
                     rows={3}
                     value={job.eligibility.eligible_courses}
                     InputProps={{
                       readOnly: !isSave,
                     }}
+                    onChange={(e) =>
+                      setJob({
+                        ...job,
+                        eligibility: {
+                          ...job.eligibility,
+                          eligible_courses: e.target.value,
+                        },
+                      })
+                    }
                   />
                 </Stack>
                 <Stack direction="column" spacing={1}>
                   <h6>Eligible Batch</h6>
                   <TextField
-                    id="outlined-multiline-flexible-controlled"
+                    name="passout_batch"
                     multiline
                     rows={3}
                     value={job.eligibility.passout_batch}
                     InputProps={{
                       readOnly: !isSave,
                     }}
+                    onChange={(e) =>
+                      setJob({
+                        ...job,
+                        eligibility: {
+                          ...job.eligibility,
+                          passout_batch: e.target.value,
+                        },
+                      })
+                    }
                   />
                 </Stack>
                 <Stack direction="column" spacing={1}>
@@ -361,29 +491,96 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 650 }} aria-label="simple table">
                       <TableBody>
-                        {rows.map((row) => (
-                          <TableRow
-                            sx={{
-                              "&:last-child td, &:last-child th": { border: 0 },
-                            }}
-                          >
-                            <TableCell component="th" scope="row">
-                              {row.eligibilityCriteria}
-                            </TableCell>
-                            <TableCell align="right">
-                              <TextField
-                                className="tableInputValues"
-                                id="outlined-basic"
-                                variant="outlined"
-                                InputProps={{
-                                  readOnly: !isSave,
-                                }}
-                                value={row.criteriaValue}
-                                sx={{ width: "7vw" }}
-                              />
-                            </TableCell>
-                          </TableRow>
-                        ))}
+                        <TableRow
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            Average CGPA
+                          </TableCell>
+                          <TableCell align="right">
+                            <TextField
+                              name="criteriaValue"
+                              className="tableInputValues"
+                              variant="outlined"
+                              InputProps={{
+                                readOnly: !isSave,
+                              }}
+                              value={job.eligibility.avg_cgpa}
+                              sx={{ width: "7vw" }}
+                              onChange={(e) =>
+                                setJob({
+                                  ...job,
+                                  eligibility: {
+                                    ...job.eligibility,
+                                    avg_cgpa: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            12th Percentage
+                          </TableCell>
+                          <TableCell align="right">
+                            <TextField
+                              name="criteriaValue"
+                              className="tableInputValues"
+                              variant="outlined"
+                              InputProps={{
+                                readOnly: !isSave,
+                              }}
+                              value={job.eligibility.min_12_percent}
+                              sx={{ width: "7vw" }}
+                              onChange={(e) =>
+                                setJob({
+                                  ...job,
+                                  eligibility: {
+                                    ...job.eligibility,
+                                    min_12_percent: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </TableCell>
+                        </TableRow>
+                        <TableRow
+                          sx={{
+                            "&:last-child td, &:last-child th": { border: 0 },
+                          }}
+                        >
+                          <TableCell component="th" scope="row">
+                            Service Agreement Duration
+                          </TableCell>
+                          <TableCell align="right">
+                            <TextField
+                              name="criteriaValue"
+                              className="tableInputValues"
+                              variant="outlined"
+                              InputProps={{
+                                readOnly: !isSave,
+                              }}
+                              value={job.eligibility.service_agreement_duration}
+                              sx={{ width: "7vw" }}
+                              onChange={(e) =>
+                                setJob({
+                                  ...job,
+                                  eligibility: {
+                                    ...job.eligibility,
+                                    service_agreement_duration: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </TableCell>
+                        </TableRow>
                       </TableBody>
                     </Table>
                   </TableContainer>
@@ -410,20 +607,29 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                           </TableCell>
                           <TableCell align="right">
                             <TextField
+                              name="base_salary"
                               className="tableInputValues"
-                              id="outlined-basic"
                               variant="outlined"
                               InputProps={{
                                 readOnly: !isSave,
                               }}
                               value={job.package.base_salary}
                               sx={{ width: "7vw" }}
+                              onChange={(e) =>
+                                setJob({
+                                  ...job,
+                                  package: {
+                                    ...job.package,
+                                    base_salary: e.target.value,
+                                  },
+                                })
+                              }
                             />
                           </TableCell>
                           <TableCell align="right">
                             <TextField
+                              name="stock_options"
                               className="tableInputValues"
-                              id="outlined-basic"
                               variant="outlined"
                               InputProps={{
                                 readOnly: !isSave,
@@ -431,6 +637,15 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                               }}
                               value={job.package.stock_options}
                               sx={{ width: "7vw" }}
+                              onChange={(e) =>
+                                setJob({
+                                  ...job,
+                                  package: {
+                                    ...job.package,
+                                    stock_options: e.target.value,
+                                  },
+                                })
+                              }
                             />
                           </TableCell>
                         </TableRow>
@@ -459,8 +674,16 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                           <TableCell align="right">
                             <Checkbox
                               checked={job.selection_process.written_test}
-                              onChange={handleChange}
-                              inputProps={{ readOnly: !isSave }}
+                              disabled={!isSave}
+                              onChange={(e) =>
+                                setJob({
+                                  ...job,
+                                  selection_process: {
+                                    ...job.selection_process,
+                                    written_test: e.target.checked,
+                                  },
+                                })
+                              }
                             />
                           </TableCell>
                           <TableCell align="right">
@@ -468,15 +691,31 @@ Service Agreement Duration: ${job.eligibility.service_agreement_duration}`;
                               checked={
                                 job.selection_process.technical_interview
                               }
-                              onChange={handleChange}
-                              inputProps={{ readOnly: !isSave }}
+                              onChange={(e) =>
+                                setJob({
+                                  ...job,
+                                  selection_process: {
+                                    ...job.selection_process,
+                                    technical_interview: e.target.checked,
+                                  },
+                                })
+                              }
+                              disabled={!isSave}
                             />
                           </TableCell>
                           <TableCell align="right">
                             <Checkbox
                               checked={job.selection_process.hr_interview}
-                              onChange={handleChange}
-                              inputProps={{ readOnly: !isSave }}
+                              onChange={(e) =>
+                                setJob({
+                                  ...job,
+                                  selection_process: {
+                                    ...job.selection_process,
+                                    hr_interview: e.target.checked,
+                                  },
+                                })
+                              }
+                              disabled={!isSave}
                             />
                           </TableCell>
                         </TableRow>

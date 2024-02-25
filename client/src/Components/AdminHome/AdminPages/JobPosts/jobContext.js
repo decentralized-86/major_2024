@@ -4,7 +4,8 @@ import logo from "../../../Logo/cpmsLogo.png";
 const JobsContext = createContext();
 
 export const JobsProvider = ({ children }) => {
-  const [jobs, setJobs] = useState({
+  const [job, setJob] = useState({
+    _id: "",
     company_name: "",
     company_email: "",
     company_website_url: "",
@@ -51,7 +52,7 @@ export const JobsProvider = ({ children }) => {
   });
 
   return (
-    <JobsContext.Provider value={{ jobs, setJobs }}>
+    <JobsContext.Provider value={{ job, setJob }}>
       {children}
     </JobsContext.Provider>
   );

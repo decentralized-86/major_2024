@@ -71,7 +71,6 @@ export const getJobsAction = () => async (dispatch) => {
         type: "GET_JOBS",
         payload: response.data.result,
       });
-      console.log("Response", response.data.result);
     } else {
       dispatch({ type: "GET_JOBS_ERROR", error: "Error fetching jobss" });
     }
@@ -104,11 +103,12 @@ export const deleteJobAction = (jobId, setDeleteStatus) => async (dispatch) => {
 };
 
 export const updateJobAction =
-  (jobId, updatedJobData, navigate) => async (dispatch) => {
+  (jobData, setIsSave, isSave) => async (dispatch) => {
+    console.log("Response", jobData);
     try {
-      const response = await axios.put(
-        `${URL}/api/jobs/${jobId}`,
-        updatedJobData
+      const response = await axios.patch(
+        `${URL}/api/jobs/updatejobpost/${jobData._id}`,
+        jobData
       );
 
       if (response.status === 200) {
@@ -116,9 +116,9 @@ export const updateJobAction =
           type: "UPDATE_JOB",
           payload: response.data.result,
         });
-        navigate("/");
       } else {
         dispatch({ type: "UPDATE_JOB_ERROR", error: response.data.message });
+        alert("try again");
       }
     } catch (error) {
       console.error(error);
