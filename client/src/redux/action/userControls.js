@@ -27,7 +27,6 @@ export const getUsersAction = () => async (dispatch) => {
 
 export const deleteStudentAction =
   (studentId, setDeleteStatus) => async (dispatch) => {
-    console.log("Response", studentId);
     try {
       const response = await axios.delete(
         `${URL}/api/coordinator/deleteStudent/${studentId}`

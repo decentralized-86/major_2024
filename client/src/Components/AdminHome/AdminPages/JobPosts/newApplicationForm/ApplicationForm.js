@@ -29,13 +29,12 @@ import MenuItem from "@mui/material/MenuItem";
 import Upload from "../../../../uploader/uploader";
 import logo from "../../../../Logo/cpmsLogo.png";
 import "./newApplication.css";
-import { updateJobAction } from "../../../../../redux/action/jobActions";
+import { addJobAction } from "../../../../../redux/action/jobActions";
 
 const ApplicationForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [job, setJob] = useState({
-    _id: "",
     company_name: "",
     company_email: "",
     company_website_url: "",
@@ -43,10 +42,10 @@ const ApplicationForm = () => {
     company_description: "",
 
     job_tags: {
-      organization_type: "",
-      industry_sector: "",
-      job_type: "",
-      location_Type: "",
+      organization_type: "Technology",
+      industry_sector: "Public Corporation",
+      job_type: "Full-Time",
+      location_Type: "Remote",
     },
 
     job_info: {
@@ -86,7 +85,7 @@ const ApplicationForm = () => {
   };
 
   const handleSave = (job) => {
-    // dispatch(addJobAction(job));
+    dispatch(addJobAction(job, navigate));
   };
   return (
     <div className="viewApplication">
@@ -217,7 +216,7 @@ const ApplicationForm = () => {
               <FormControl sx={{ m: 1, minWidth: 200 }}>
                 Job Type
                 <Select
-                  defaultValue={job.job_tags.job_type}
+                  value={job.job_tags.job_type || ""}
                   onChange={(e) =>
                     setJob({
                       ...job,
@@ -236,7 +235,7 @@ const ApplicationForm = () => {
               <FormControl sx={{ m: 1, minWidth: 120 }}>
                 Location Type
                 <Select
-                  defaultValue={job.job_tags.location_Type}
+                  value={job.job_tags.location_Type || ""}
                   onChange={(e) =>
                     setJob({
                       ...job,
@@ -255,7 +254,7 @@ const ApplicationForm = () => {
               <FormControl sx={{ m: 1, minWidth: 200 }}>
                 Organization Type
                 <Select
-                  defaultValue={job.job_tags.organization_type}
+                  value={job.job_tags.organization_type || ""}
                   onChange={(e) =>
                     setJob({
                       ...job,
@@ -281,7 +280,7 @@ const ApplicationForm = () => {
               <FormControl sx={{ m: 1, minWidth: 200 }}>
                 Industry Sector
                 <Select
-                  defaultValue={job.job_tags.industry_sector}
+                  value={job.job_tags.industry_sector || ""}
                   onChange={(e) =>
                     setJob({
                       ...job,
