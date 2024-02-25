@@ -23,8 +23,13 @@ const jobActionReducers = (state = initialState, action) => {
       return {
         ...state,
         jobs: state.jobs.map((job) =>
-          job._id === action.payload._id ? action.payload : job
+          job._id === action.payload.result._id ? action.payload.result : job
         ),
+      };
+    case "UPDATE_JOB_ERROR":
+      return {
+        ...state,
+        error: action.error,
       };
     default:
       return state;
