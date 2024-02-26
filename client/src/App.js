@@ -14,7 +14,6 @@ import Location from "./Components/Auth/SignUp/Location/Location";
 import Links from "./Components/Auth/SignUp/Links/Link";
 import StudentDetails from "./Components/Auth/SignUp/StudentDetails/StudentDetails";
 import { FormValueProvider } from "./Components/Auth/SignUp/FormValueContext";
-import { JobsProvider } from "./Components/AdminHome/AdminPages/JobPosts/jobContext";
 import ApplicationList from "./Components/AdminHome/AdminPages/JobPosts/applications/ApplicationList";
 import UpdateApplication from "./Components/AdminHome/AdminPages/JobPosts/updateApplication/UpdateApplication";
 import ApplicationForm from "./Components/AdminHome/AdminPages/JobPosts/newApplicationForm/ApplicationForm";
@@ -95,32 +94,11 @@ function App() {
         >
           <Route path="adminDashboard" element={<AdminDashboard />} />
 
-          <Route
-            path="adminJobPosts"
-            element={
-              <JobsProvider>
-                <AdminJobPosts />
-              </JobsProvider>
-            }
-          >
+          <Route path="adminJobPosts" element={<AdminJobPosts />}>
             <Route path="applicationList" element={<ApplicationList />} />
           </Route>
-          <Route
-            path="applicationForm"
-            element={
-              <JobsProvider>
-                <ApplicationForm />
-              </JobsProvider>
-            }
-          />
-          <Route
-            path="updateApplication"
-            element={
-              <JobsProvider>
-                <UpdateApplication />
-              </JobsProvider>
-            }
-          />
+          <Route path="applicationForm" element={<ApplicationForm />} />
+          <Route path="updateApplication" element={<UpdateApplication />} />
 
           <Route path="adminStudentList" element={<AdminStudentList />} />
           <Route path="adminTrainings" element={<AdminManageTrainings />} />
