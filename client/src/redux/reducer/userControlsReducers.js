@@ -1,18 +1,15 @@
 const initialState = {
-  data: null,
-  users: [],
-  job: [],
   students: [],
 };
 
 const userControlsReducers = (state = initialState, action) => {
   switch (action.type) {
-    case "GET_USERS":
+    case "GET_STUDENT":
       return {
         ...state,
-        users: action.payload,
+        students: action.payload,
       };
-    case "GET_USERS_ERROR":
+    case "GET_STUDENTS_ERROR":
       return {
         ...state,
         error: action.error,

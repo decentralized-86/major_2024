@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
@@ -9,16 +9,23 @@ import logo from "../../../../Logo/cpmsLogo.png";
 import MChip from "@mui/material-next/Chip";
 import Button from "@mui/material/Button";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useJobs } from "../jobContext";
+import { useDispatch, useSelector } from "react-redux";
+import { getJobsAction } from "../../../../../redux/action/jobActions";
 
 function ApplicationList() {
-  const { jobs, setJobs } = useJobs();
+  const dispatch = useDispatch();
+  const jobs = useSelector((state) => state.jobActions.jobs);
+
   const location = useLocation();
   const job = location.state ? location.state.job : {};
   const navigate = useNavigate();
 
-  const handleApply = (jobID) => {
-    navigate("/adminHome/updateApplication", { state: { jobID } });
+  useEffect(() => {
+    dispatch(getJobsAction());
+  }, [dispatch]);
+
+  const handleView = (job) => {
+    navigate("/adminHome/updateApplication", { state: { job } });
   };
 
   return (
@@ -33,7 +40,7 @@ function ApplicationList() {
     >
       {jobs.map((job) => (
         <Card
-          key={job.id}
+          key={job._id}
           sx={{
             width: "70vw",
             marginTop: "2vh",
@@ -48,27 +55,31 @@ function ApplicationList() {
                   style={{ height: "7vh" }}
                 />
               }
-              title={<h4>{job.title}</h4>}
-              subheader={job.company}
+              title={<h4>{job.job_info.job_profile}</h4>}
+              subheader={job.company_name}
               style={{ width: "50vw" }}
             />
           </Stack>
           <CardContent>
             <Stack direction="row" spacing={1}>
-              <Chip label={job.type} />
-              <Chip label={job.location} />
+              <Chip label={job.job_tags.job_type} />
+              <Chip label={job.job_tags.location_Type} />
+              <Chip label={job.job_tags.organization_type} />
+              <Chip label={job.job_tags.industry_sector} />
             </Stack>
           </CardContent>
           <CardContent>
             <Stack direction="row" spacing={{ md: 81, sm: 32 }}>
               <MChip
-                label={`Register By ${job.registerBy}`}
-                style={{ fontFamily: "serif", width: "20vw" }}
+                label={`Register By ${new Date(
+                  job.deadline_date
+                ).toLocaleDateString("en-GB")}`}
+                style={{ fontFamily: "unset", width: "20vw" }}
               />
               <Button
                 variant="outlined"
                 size="small"
-                onClick={() => handleApply(job.id)}
+                onClick={() => handleView(job)}
                 style={{ width: "10vw" }}
               >
                 View
