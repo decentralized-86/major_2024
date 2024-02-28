@@ -3,9 +3,8 @@ import axios from "axios";
 const URL = "http://localhost:8080";
 
 export const addJobAction = (jobData, navigate) => async (dispatch) => {
-  const res = await axios.post(`${URL}/api/jobs//addjobpost`, jobData);
-  console.log("Response", res);
   try {
+    const res = await axios.post(`${URL}/api/jobs//addjobpost`, jobData);
     if (res.status === 200) {
       dispatch({
         type: "ADD_JOB",
@@ -15,54 +14,28 @@ export const addJobAction = (jobData, navigate) => async (dispatch) => {
           company_website_url: res.data.company_website_url,
           company_location: res.data.company_location,
           company_description: res.data.company_description,
-
           job_tags: {
-            job_tags: {
-              organization_type:
-                res.data && res.data.job_tags
-                  ? res.data.job_tags.organization_type
-                  : undefined,
-              industry_sector:
-                res.data && res.data.job_tags
-                  ? res.data.job_tags.industry_sector
-                  : undefined,
-              job_type:
-                res.data && res.data.job_tags
-                  ? res.data.job_tags.job_type
-                  : undefined,
-              location_Type:
-                res.data && res.data.job_tags
-                  ? res.data.job_tags.location_Type
-                  : undefined,
-            },
+            organization_type:
+              res.data && res.data.job_tags
+                ? res.data.job_tags.organization_type
+                : undefined,
+            industry_sector:
+              res.data && res.data.job_tags
+                ? res.data.job_tags.industry_sector
+                : undefined,
+            job_type:
+              res.data && res.data.job_tags
+                ? res.data.job_tags.job_type
+                : undefined,
+            location_Type:
+              res.data && res.data.job_tags
+                ? res.data.job_tags.location_Type
+                : undefined,
           },
-
-          job_info: {
-            job_profile: res.data.job_info.job_profile,
-            job_description: res.data.job_info.job_description,
-            job_registration_link: res.data.job_info.job_registration_link,
-            job_location: res.data.job_info.job_location,
-          },
-
-          eligibility: {
-            passout_batch: res.data.eligibility.passout_batch,
-            avg_cgpa: res.data.eligibility.avg_cgpa,
-            min_12_percent: res.data.eligibility.min_12_percent,
-            service_agreement_duration:
-              res.data.eligibility.service_agreement_duration,
-          },
-
-          package: {
-            base_salary: res.data.package.base_salary,
-            stock_options: res.data.package.stock_options,
-          },
-
-          selection_process: {
-            written_test: res.data.selection_process.written_test,
-            technical_interview: res.data.selection_process.technical_interview,
-            hr_interview: res.data.selection_process.hr_interview,
-          },
-
+          job_info: res.data.job_info,
+          eligibility: res.data.eligibility,
+          package: res.data.package,
+          selection_process: res.data.selection_process,
           deadline_date: res.data.deadline_date,
           attendance: res.data.attendance,
           candidates: res.data.candidates,
@@ -70,12 +43,13 @@ export const addJobAction = (jobData, navigate) => async (dispatch) => {
         },
       });
       alert("Job added successfully");
-      return res.status;
+      navigate(-1);
     } else {
       alert("try again");
     }
   } catch (error) {
     console.log(error);
+    alert("An error occurred while adding the job");
   }
 };
 

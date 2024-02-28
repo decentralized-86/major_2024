@@ -22,7 +22,7 @@ const sendNotificationEmailToAllUsers = async (jobPost) => {
       from: process.env.SENDER_EMAIL, // replace with your email
       to: userEmails.join(", "), // Comma-separated list of all user emails
       subject: "New Job Post Added",
-      text: `A new job post "${jobPost.job_profile}" has been added. Check it out!`,
+      text: `A new job post "${jobPost.job_info.job_profile}" has been added. Check it out!`,
     };
 
     const info = await transporter.sendMail(mailOptions);

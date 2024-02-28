@@ -86,9 +86,6 @@ const ApplicationForm = () => {
 
   const handleSave = (job) => {
     const status = dispatch(addJobAction(job, navigate));
-    if (status == 200) {
-      navigate(-1);
-    }
   };
   return (
     <div className="viewApplication">
