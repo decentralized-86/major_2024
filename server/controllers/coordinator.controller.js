@@ -21,11 +21,14 @@ const co_signup = async (req, res) => {
       return res.status(400).json({ msg: "Coordinator already exists!" });
     }
 
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const newCoordinator = await Coordinator.create({
       name,
       email,
       uid,
-      password,
+      password: hashedPassword,
       branch,
       contact,
       isAdmin,
@@ -94,12 +97,10 @@ const deleteStudent = async (req, res) => {
     if (!student) {
       return res.status(404).json({ msg: "Student does not exists!" });
     }
-    res
-      .status(200)
-      .json({
-        student,
-        msg: `Student deleted successfully with id:${student.uid}`,
-      });
+    res.status(200).json({
+      student,
+      msg: `Student deleted successfully with id:${student.uid}`,
+    });
   } catch (error) {
     console.error("Error:", error);
     return res.status(500).json({ err: error, msg: "Internal server error!" });

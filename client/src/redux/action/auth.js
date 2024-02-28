@@ -69,7 +69,11 @@ export const loginAction =
           },
         });
         localStorage.setItem("Profile", JSON.stringify({ ...response.data }));
-        navigate("/adminHome/adminDashboard");
+        if (loginCredentials.select === "student") {
+          navigate("/studentHome/studentDashboard");
+        } else {
+          navigate("/adminHome/adminDashboard");
+        }
         return setLogin(true); // Set login status to true
       } else {
         dispatch({ type: "AUTH_ERROR", error: "Invalid login credentials" });

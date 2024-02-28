@@ -117,7 +117,7 @@ const login = async (req, res) => {
 
     //Coordinator login auth:
     if (select === "coordinator") {
-      const coordinator = Coordinator.findOne({ email: email });
+      const coordinator = await Coordinator.findOne({ email: email });
       if (!coordinator) {
         return res.status(404).json({ msg: "Does not exists!" });
       }
