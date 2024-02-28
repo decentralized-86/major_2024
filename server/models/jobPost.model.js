@@ -4,22 +4,27 @@ const jobPostSchema = new mongoose.Schema({
   company_name: {
     type: String,
     default: "",
+    required: true
   },
   company_email: {
     type: String,
     default: "",
+    
   },
   company_website_url: {
     type: String,
     default: "",
+    
   },
   company_location: {
     type: String,
     default: "",
+    
   },
   company_description: {
     type: String,
     default: "",
+
   },
   job_tags: {
     organization_type: {
@@ -105,6 +110,7 @@ const jobPostSchema = new mongoose.Schema({
   },
   deadline_date: {
     type: Date,
+    required: true
   },
   attendance: {
     type: Boolean,
