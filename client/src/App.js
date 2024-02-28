@@ -10,13 +10,10 @@ import AdminSettings from "./Components/AdminHome/AdminPages/Settings/Settings";
 import AdminStudentList from "./Components/AdminHome/AdminPages/StudentDetails/StudentDetails";
 import AdminJobPosts from "./Components/AdminHome/AdminPages/JobPosts/JobPosts";
 import AdminManageTrainings from "./Components/AdminHome/AdminPages/ManageTraining/Training";
-import Location from "./Components/Auth/SignUp/Location/Location";
-import Links from "./Components/Auth/SignUp/Links/Link";
-import StudentDetails from "./Components/Auth/SignUp/StudentDetails/StudentDetails";
-import { FormValueProvider } from "./Components/Auth/SignUp/FormValueContext";
 import ApplicationList from "./Components/AdminHome/AdminPages/JobPosts/applications/ApplicationList";
 import UpdateApplication from "./Components/AdminHome/AdminPages/JobPosts/updateApplication/UpdateApplication";
 import ApplicationForm from "./Components/AdminHome/AdminPages/JobPosts/newApplicationForm/ApplicationForm";
+import CoSignUp from "./Components/CoSignup/coSignup";
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(() => {
@@ -72,15 +69,15 @@ function App() {
         <Route
           path="/signup"
           element={
-            <FormValueProvider>
-              <SignUp isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
-            </FormValueProvider>
+            <SignUp isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
           }
-        >
-          <Route path="studentdetails" element={<StudentDetails />} />
-          <Route path="location" element={<Location />} />
-          <Route path="links" element={<Links />} />
-        </Route>
+        />
+        <Route
+          path="/coSignup"
+          element={
+            <CoSignUp isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
+          }
+        />
         <Route
           path="adminHome"
           element={

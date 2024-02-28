@@ -6,6 +6,7 @@ const URL = "http://localhost:8080";
 
 export const signupAction =
   (authData, navigate) => async (dispatch, getState) => {
+    console.log(authData);
     const res = await axios.post(`${URL}/api/user/signup`, authData);
 
     const {
@@ -43,7 +44,6 @@ export const signupAction =
         },
       });
       console.log("Data", data);
-      // dispatch(setCurrentUser(JSON.parse(localStorage.getItem("Profile"))));
       navigate("/");
     } catch (error) {
       console.log(error);
@@ -86,4 +86,33 @@ export const logoutAction = (setLogin, navigate) => async (dispatch) => {
   dispatch({ type: "LOGOUT" });
   navigate("/");
   return setLogin(false);
+};
+
+export const coSignupAction = (authData) => async (dispatch, getState) => {
+  try {
+    const res = await axios.post(
+      `${URL}/api/coordinator/coordinator/signup`,
+      authData
+    );
+    dispatch({
+      type: "AUTH",
+      payload: {
+        ...res.data,
+        uid: res.data.uid,
+        name: res.data.name,
+        branch: res.data.branch,
+        contact: res.data.contact,
+        email: res.data.email,
+        password: res.data.password,
+      },
+    });
+    return res.status;
+  } catch (error) {
+    if (error.response) {
+      const { data, status } = error.response;
+      return { error: data, status };
+    } else {
+      return { error: error.message };
+    }
+  }
 };

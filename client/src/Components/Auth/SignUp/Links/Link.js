@@ -1,53 +1,45 @@
 import React, { useContext, useRef, useState } from "react";
-// import "./SignUp.css";
-import ReactDOM from "react-dom";
-import {
-  Form,
-  Button,
-  ButtonToolbar,
-  Schema,
-  Panel,
-  FlexboxGrid,
-} from "rsuite";
-import { FormValueContext } from "../FormValueContext";
+import { Box, Card, Stack, TextField } from "@mui/material";
 
-const TextField = React.forwardRef((props, ref) => {
-  const { name, label, accepter, ...rest } = props;
+const Links = ({ formValue, handleInputChange }) => {
   return (
-    <Form.Group ref={ref}>
-      <Form.ControlLabel>{label} </Form.ControlLabel>
-      <Form.Control name={name} accepter={accepter} {...rest} />
-    </Form.Group>
-  );
-});
-
-const Links = () => {
-  const { formRef, formValue, setFormValue, formError, setFormError, model } =
-    useContext(FormValueContext);
-
-  const handleChange = (newFormValue) => {
-    setFormValue(newFormValue);
-  };
-
-  return (
-    <Form
-      ref={formRef}
-      onCheck={setFormError}
-      formValue={formValue}
-      model={model}
-      onChange={handleChange}
+    <Box
+      sx={{
+        "& > :not(style)": {
+          margin: "auto",
+          width: "50vw",
+          height: "60vh",
+        },
+      }}
     >
-      <TextField
-        name="linkedln_link"
-        label="LinkedIn Link"
-        value={formValue.linkedln_link}
-      />
-      <TextField
-        name="resume_url"
-        label="Resume URL"
-        value={formValue.resume_url}
-      />
-    </Form>
+      <Card
+        elevation={3}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          padding: "5vh 1vw",
+        }}
+      >
+        <Stack direction="column" spacing={4}>
+          <Stack direction="column" spacing={1}>
+            <h5>LinkedIn Link</h5>
+            <TextField
+              name="linkedln_link"
+              value={formValue.linkedln_link}
+              onChange={handleInputChange}
+            />
+          </Stack>
+          <Stack direction="column" spacing={1}>
+            <h5>Resume URL</h5>
+            <TextField
+              name="resume_url"
+              value={formValue.resume_url}
+              onChange={handleInputChange}
+            />
+          </Stack>
+        </Stack>
+      </Card>
+    </Box>
   );
 };
 

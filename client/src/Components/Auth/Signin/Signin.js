@@ -83,7 +83,7 @@ function Signin({ setLogin }) {
                 style={{ color: "white", padding: "1em" }}
               >
                 Don't have an account?
-                <Link to="/signup/studentdetails">Sign up</Link>
+                <Link to="/signup">Sign up</Link>
               </div>
             </Form>
           </Formik>

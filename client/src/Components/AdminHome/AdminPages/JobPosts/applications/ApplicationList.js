@@ -10,9 +10,14 @@ import MChip from "@mui/material-next/Chip";
 import Button from "@mui/material/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getJobsAction } from "../../../../../redux/action/jobActions";
+import {
+  deleteJobAction,
+  getJobsAction,
+} from "../../../../../redux/action/jobActions";
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 
 function ApplicationList() {
+  const [deleteStatus, setDeleteStatus] = useState(false);
   const dispatch = useDispatch();
   const jobs = useSelector((state) => state.jobActions.jobs);
 
@@ -20,9 +25,13 @@ function ApplicationList() {
   const job = location.state ? location.state.job : {};
   const navigate = useNavigate();
 
+  const handleDelete = (id) => {
+    dispatch(deleteJobAction(id, setDeleteStatus));
+  };
+
   useEffect(() => {
     dispatch(getJobsAction());
-  }, [dispatch]);
+  }, [dispatch, deleteStatus]);
 
   const handleView = (job) => {
     navigate("/adminHome/updateApplication", { state: { job } });
@@ -46,7 +55,7 @@ function ApplicationList() {
             marginTop: "2vh",
           }}
         >
-          <Stack direction="row" spacing={{ md: 22, sm: 4 }}>
+          <Stack direction="row" spacing={{ md: 29, sm: 4 }}>
             <CardHeader
               avatar={
                 <CardMedia
@@ -59,6 +68,16 @@ function ApplicationList() {
               subheader={job.company_name}
               style={{ width: "50vw" }}
             />
+            <div>
+              <DeleteTwoToneIcon
+                fontSize="large"
+                color="action"
+                style={{ margin: "3vh 0vw 0vh" }}
+                onClick={() => {
+                  handleDelete(job._id);
+                }}
+              />
+            </div>
           </Stack>
           <CardContent>
             <Stack direction="row" spacing={1}>

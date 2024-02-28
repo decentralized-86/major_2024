@@ -1,210 +1,266 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
+import "./SignUp.css";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Form, Button, ButtonToolbar, Schema, FlexboxGrid } from "rsuite";
-import SignupNav from "./SignupNav/SignupNav";
-import { Outlet, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import AuthHeader from "./AuthHeader/AuthHeader";
 import { signupAction } from "../../../redux/action/auth";
-import { FormValueContext, FormValueProvider } from "./FormValueContext";
+import Box from "@mui/material/Box";
+import Stepper from "@mui/material/Stepper";
+import Step from "@mui/material/Step";
+import StepLabel from "@mui/material/StepLabel";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import PersonalDetails from "./PersonalDetails/PersonalDetails";
+import AcademicDetails from "./AcademicDetails/AcademicDetails";
+import Links from "./Links/Link";
+import AccountDetails from "./AccountDetails/AccountDetails";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
-const SignUp = ({ isDarkMode, toggleDarkMode }) => {
-  const { formRef, formValue, setFormValue, formError, setFormError, model } =
-    useContext(FormValueContext);
+const steps = [
+  "Account Setup",
+  "Personal Information",
+  "Academic Background",
+  "Additional Links",
+];
+
+export default function SignUp({ isDarkMode, toggleDarkMode }) {
+  const [formValue, setFormValue] = useState({
+    name: "",
+    uid: "",
+    batch: "",
+    branch: "",
+    gender: "",
+    contact: "",
+    college_email: "",
+    degree: "",
+    avg_cgpa: "",
+    ssc_marks: "",
+    ssc_board: "",
+    hsc_marks: "",
+    hsc_board: "",
+    address: "",
+    city: "",
+    post_code: "",
+    state: "",
+    country: "",
+    linkedln_link: "",
+    resume_url: "",
+    password: "",
+    c_password: "",
+  });
+  const [errors, setErrors] = useState(formValue);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValue((prev) => ({ ...prev, [name]: value }));
+
+    // Check if field is filled
+    if (!value) {
+      setErrors((prev) => ({ ...prev, [name]: "This field is required" }));
+    } else {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+
+    // Check if passwords match
+    if (name === "c_password" && value !== formValue.password) {
+      setErrors((prev) => ({ ...prev, c_password: "Passwords do not match" }));
+    }
+  };
+
+  const [activeStep, setActiveStep] = useState(0);
+  const [skipped, setSkipped] = useState(new Set());
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!formRef.current.check()) {
-      console.error("Form Error");
-      return;
-    }
     dispatch(signupAction(formValue, navigate));
   };
 
+  const isStepOptional = (step) => {
+    return step === 3;
+  };
+
+  const isStepSkipped = (step) => {
+    return skipped.has(step);
+  };
+
+  const handleNext = () => {
+    // Define the fields required for each step
+    const requiredFields = [
+      ["uid", "password", "c_password"], // Account Setup
+      [
+        "name",
+        "gender",
+        "contact",
+        "address",
+        "city",
+        "post_code",
+        "state",
+        "country",
+      ], // Personal Information
+      [
+        "batch",
+        "branch",
+        "college_email",
+        "degree",
+        "avg_cgpa",
+        "ssc_marks",
+        "ssc_board",
+        "hsc_marks",
+        "hsc_board",
+      ], // Academic Background
+      ["linkedln_link", "resume_url"], // Additional Links
+    ];
+
+    // Check if all required fields for the current step are filled
+    const isStepComplete = requiredFields[activeStep].every(
+      (field) => formValue[field]
+    );
+
+    if (isStepComplete) {
+      let newSkipped = skipped;
+      if (isStepSkipped(activeStep)) {
+        newSkipped = new Set(newSkipped.values());
+        newSkipped.delete(activeStep);
+      }
+
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setSkipped(newSkipped);
+    } else {
+      // Show a toast message if the step is not complete
+      toast.error(
+        "Please fill all the required fields before moving to the next step."
+      );
+    }
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleSkip = () => {
+    if (!isStepOptional(activeStep)) {
+      throw new Error("You can't skip a step that isn't optional.");
+    }
+
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped((prevSkipped) => {
+      const newSkipped = new Set(prevSkipped.values());
+      newSkipped.add(activeStep);
+      return newSkipped;
+    });
+  };
+
   return (
-    <div style={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <Box sx={{ width: "100%", height: "100vh" }}>
       <div>
         <AuthHeader isDarkMode={isDarkMode} toggleDarkMode={toggleDarkMode} />
       </div>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <SignupNav />
-        <FlexboxGrid className="groupContainer h-[91vh] p-4">
-          <FlexboxGrid.Item colspan={12}>
-            <FormValueContext.Provider
-              value={{
-                formRef,
-                formValue,
-                setFormValue,
-                formError,
-                setFormError,
-                model,
-              }}
+      <Stepper
+        activeStep={activeStep}
+        style={{
+          padding: "2vh 3vw",
+          backgroundColor: "#23073b45",
+        }}
+      >
+        {steps.map((label, index) => {
+          const stepProps = {};
+          const labelProps = {};
+          if (isStepOptional(index)) {
+            labelProps.optional = (
+              <Typography variant="caption">Optional</Typography>
+            );
+          }
+          if (isStepSkipped(index)) {
+            stepProps.completed = false;
+          }
+          return (
+            <Step key={label} {...stepProps}>
+              <StepLabel {...labelProps}>{label}</StepLabel>
+            </Step>
+          );
+        })}
+      </Stepper>
+      {activeStep === steps.length ? (
+        <React.Fragment>
+          <Typography sx={{ mt: 2, mb: 1 }}>
+            All steps completed - Submit the form
+          </Typography>
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Box sx={{ flex: "1 1 auto" }} />
+            <Button appearance="primary" onClick={handleSubmit}>
+              Submit
+            </Button>
+          </Box>
+        </React.Fragment>
+      ) : (
+        //Step {activeStep + 1}
+        <React.Fragment>
+          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+            <Button
+              color="inherit"
+              disabled={activeStep === 0}
+              onClick={handleBack}
+              sx={{ mr: 1 }}
             >
-              <Outlet />
-              <Form
-                ref={formRef}
-                model={model}
-                formValue={formValue}
-                onChange={setFormValue}
-                onCheck={setFormError}
-              >
-                <ButtonToolbar>
-                  {location.pathname === "/signup/links" && (
-                    <Button appearance="primary" onClick={handleSubmit}>
-                      Submit
-                    </Button>
-                  )}
-                </ButtonToolbar>
-              </Form>
-            </FormValueContext.Provider>
-          </FlexboxGrid.Item>
-        </FlexboxGrid>
-      </div>
-    </div>
-  );
-};
-
-export default SignUp;
-/*
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-
-import "./Auth.css";
-import icon from "../../assets/onlylogo.svg";
-import AboutAuth from "./AboutAuth";
-import { signup, login } from "../../actions/auth";
-const Auth = () => {
-  const [isSignup, setIsSignup] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleSwitch = () => {
-    setIsSignup(!isSignup);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!email && !password) {
-      alert("Enter email and password");
-    }
-    if (isSignup) {
-      if (!name) {
-        alert("Enter a name to continue");
-      }
-      dispatch(signup({ name, email, password }, navigate));
-    } else {
-      dispatch(login({ email, password }, navigate));
-    }
-  };
-
-  return (
-    <section class="auth-section">
-      {isSignup && <AboutAuth />}
-      <div class="auth-container-2">
-        {!isSignup && (
-          <img src={icon} alt="stack overflow" className="login-logo" />
-        )}
-        <form onSubmit={handleSubmit}>
-          {isSignup && (
-            <label htmlFor="name">
-              <h4>Display Name</h4>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              />
-            </label>
-          )}
-          <label htmlFor="email">
-            <h4>Email</h4>
-            <input
-              type="email"
-              name="email"
-              id="email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
-            />
-          </label>
-          <label htmlFor="password">
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <h4>Password</h4>
-              {!isSignup && (
-                <p style={{ color: "#007ac6", fontSize: "13px" }}>
-                  forgot password?
-                </p>
-              )}
-            </div>
-            <input
-              type="password"
-              name="password"
-              id="password"
-              onChange={(e) => {
-                setPassword(e.target.value);
-              }}
-            />
-            {isSignup && (
-              <p style={{ color: "#666767", fontSize: "13px" }}>
-                Passwords must contain at least eight
-                <br />
-                characters, including at least 1 letter and 1<br /> number.
-              </p>
+              Back
+            </Button>
+            <Box sx={{ flex: "1 1 auto" }} />
+            {isStepOptional(activeStep) && (
+              <Button color="inherit" onClick={handleSkip}>
+                Skip
+              </Button>
             )}
-          </label>
-          {isSignup && (
-            <label htmlFor="check">
-              <input type="checkbox" id="check" />
-              <p style={{ fontSize: "13px" }}>
-                Opt-in to receive occasional,
-                <br />
-                product updates, user research invitations,
-                <br />
-                company announcements, and digests.
-              </p>
-            </label>
-          )}
-          <button type="submit" className="auth-btn">
-            {isSignup ? "Sign up" : "Log in"}
-          </button>
-          {isSignup && (
-            <p style={{ color: "#666767", fontSize: "13px" }}>
-              By clicking “Sign up”, you agree to our
-              <span style={{ color: "#007ac6" }}>
-                {" "}
-                terms of
-                <br /> service
-              </span>
-              ,<span style={{ color: "#007ac6" }}> privacy policy</span> and
-              <span style={{ color: "#007ac6" }}> cookie policy</span>
-            </p>
-          )}
-        </form>
-        <p>
-          {isSignup ? "Already have an account?" : "Don't have an account?"}
-          <button
-            type="button"
-            className="handle-switch-btn"
-            onClick={handleSwitch}
-          >
-            {isSignup ? "Log in" : "sign up"}
-          </button>
-        </p>
-      </div>
-    </section>
-  );
-};
 
-export default Auth;
-*/
+            <Button onClick={handleNext}>Next</Button>
+          </Box>
+          <Typography
+            sx={{
+              mb: 1,
+              fontSize: 35,
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            {steps[activeStep]}
+          </Typography>
+          <div className="SignupForm">
+            {activeStep === 0 && (
+              <AccountDetails
+                formValue={formValue}
+                errors={errors}
+                handleInputChange={handleInputChange}
+              />
+            )}
+            {activeStep === 1 && (
+              <PersonalDetails
+                formValue={formValue}
+                errors={errors}
+                handleInputChange={handleInputChange}
+              />
+            )}
+            {activeStep === 2 && (
+              <AcademicDetails
+                formValue={formValue}
+                errors={errors}
+                handleInputChange={handleInputChange}
+              />
+            )}
+            {activeStep === 3 && (
+              <Links
+                formValue={formValue}
+                errors={errors}
+                handleInputChange={handleInputChange}
+              />
+            )}
+            <ToastContainer />
+          </div>
+        </React.Fragment>
+      )}
+    </Box>
+  );
+}

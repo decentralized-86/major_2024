@@ -45,7 +45,7 @@ export default function CenteredTabs() {
             size="medium"
             color="primary"
             aria-label="add"
-            style={{ marginTop: "1vh" }}
+            style={{ marginTop: "0.5vh" }}
             onClick={handleNewJob}
           >
             <AddIcon />

@@ -72,7 +72,6 @@ export const getJobsAction = () => async (dispatch) => {
 };
 
 export const deleteJobAction = (jobId, setDeleteStatus) => async (dispatch) => {
-  console.log("Response", jobId);
   try {
     const response = await axios.delete(
       `${URL}/api/jobs/deletejobpost/${jobId}`
@@ -93,26 +92,25 @@ export const deleteJobAction = (jobId, setDeleteStatus) => async (dispatch) => {
   }
 };
 
-export const updateJobAction =
-  (jobData, setIsSave, isSave) => async (dispatch) => {
-    console.log("Response", jobData);
-    try {
-      const response = await axios.patch(
-        `${URL}/api/jobs/updatejobpost/${jobData._id}`,
-        jobData
-      );
+export const updateJobAction = (jobData) => async (dispatch) => {
+  console.log("Response", jobData);
+  try {
+    const response = await axios.patch(
+      `${URL}/api/jobs/updatejobpost/${jobData._id}`,
+      jobData
+    );
 
-      if (response.status === 200) {
-        dispatch({
-          type: "UPDATE_JOB",
-          payload: response.data.result,
-        });
-      } else {
-        dispatch({ type: "UPDATE_JOB_ERROR", error: response.data.message });
-        alert("try again");
-      }
-    } catch (error) {
-      console.error(error);
-      dispatch({ type: "UPDATE_JOB_ERROR", error: error.message });
+    if (response.status === 200) {
+      dispatch({
+        type: "UPDATE_JOB",
+        payload: response.data.result,
+      });
+    } else {
+      dispatch({ type: "UPDATE_JOB_ERROR", error: response.data.message });
+      alert("try again");
     }
-  };
+  } catch (error) {
+    console.error(error);
+    dispatch({ type: "UPDATE_JOB_ERROR", error: error.message });
+  }
+};
