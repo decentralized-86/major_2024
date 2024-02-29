@@ -8,6 +8,7 @@ const connect = require('./db/connect')
 const auth = require('./routes/auth.route')
 const coordinator = require('./routes/coordinator.route')
 const jobs = require('./routes/jobPost.route')
+const training = require('./routes/training.route')
 
 app.use(cors());
 app.use(express.json());
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/user', auth);  //user
 app.use('/api/coordinator',coordinator);
 app.use('/api/jobs',jobs);
+app.use('/api/training',training);
 
 const Port = process.env.PORT || 8080;
 

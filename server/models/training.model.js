@@ -15,7 +15,7 @@ const trainingSchema = new mongoose.Schema({
         required: true,
     },
     duration: {
-        type: Number, // Duration in minutes, hours, or any suitable unit
+        type: Number, 
         required: true,
     },
     
