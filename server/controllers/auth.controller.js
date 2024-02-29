@@ -184,7 +184,7 @@ const co_signup = async (req, res) => {
       password: hashedPassword,
       branch,
       contact,
-      isAdmin,
+      isAdmin: true,
     });
 
     res.status(200).json({ result: newCoordinator });
