@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./jobPost.css";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -9,8 +9,8 @@ import { Stack } from "@mui/material";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 
-export default function CenteredTabs() {
-  const [value, setValue] = React.useState(0);
+export default function AdminJobPosts() {
+  const [value, setValue] = useState(0);
   const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
@@ -59,69 +59,3 @@ export default function CenteredTabs() {
     </div>
   );
 }
-
-// import React, { useState } from "react";
-// import "./jobPost.css";
-// import BreifcaseIcon from "@rsuite/icons/legacy/Briefcase";
-// import { Header } from "rsuite";
-// import { Nav } from "rsuite";
-// import { Link, Outlet } from "react-router-dom";
-
-// const Navbar = ({ active, onSelect, ...props }) => {
-//   const NavLink = React.memo(
-//     React.forwardRef(({ href, children, ...rest }, ref) => (
-//       <Link ref={ref} to={href} {...rest}>
-//         {children}
-//       </Link>
-//     ))
-//   );
-
-//   return (
-//     <Nav
-//       {...props}
-//       activeKey={active}
-//       onSelect={onSelect}
-//       style={{
-//         marginBottom: 50,
-//         width: "75vw",
-//         fontSize: "20px",
-//       }}
-//     >
-//       <Nav.Item
-//         as={NavLink}
-//         href="applicationList"
-//         eventKey="Applications"
-//         style={{ width: "37.5vw" }}
-//       >
-//         Applications
-//       </Nav.Item>
-//       <Nav.Item
-//         as={NavLink}
-//         href="applicationForm"
-//         eventKey="NewApplication"
-//         style={{ width: "37.5vw" }}
-//       >
-//         New Application
-//       </Nav.Item>
-//     </Nav>
-//   );
-// };
-
-// function AdminJobPosts() {
-//   const [active, setActive] = useState("Applications");
-//   return (
-//     <div className="jobPost">
-//       <Header style={{ width: "80vw", marginBottom: "2vh" }}>
-//         <h1>
-//           <BreifcaseIcon color="gray-600" /> Jobs
-//         </h1>
-//       </Header>
-//       <Navbar appearance="subtle" active={active} onSelect={setActive} />
-//       <div className="jobPostBody">
-//         <Outlet />
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default AdminJobPosts;

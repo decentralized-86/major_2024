@@ -14,13 +14,14 @@ const co_signup = async (req, res) => {
         .status(400)
         .json({ error: "Contact number must be a 10-digit number" });
     }
-    const isAdmin = email === process.env.ADMIN_EMAIL;
 
     const oldCoordinator = await Coordinator.findOne({ email: email });
     if (oldCoordinator) {
       return res.status(400).json({ msg: "Coordinator already exists!" });
     }
-
+    if (email === process.env.ADMIN_EMAIL) {
+      isAdmin = true;
+    }
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
