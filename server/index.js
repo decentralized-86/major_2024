@@ -6,17 +6,19 @@ require("dotenv").config();
 
 const connect = require('./db/connect')
 const auth = require('./routes/auth.route')
-const coordinator = require('./routes/coordinator.route')
+const students = require('./routes/students.route')
 const jobs = require('./routes/jobPost.route')
 const training = require('./routes/training.route')
+const coordinator = require('./routes/coordinator.route')
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/api/user', auth);  //user
-app.use('/api/coordinator',coordinator);
+app.use('/api/user', auth);  //
+app.use('/api/students',students);
 app.use('/api/jobs',jobs);
 app.use('/api/training',training);
+app.use('/api/coordinator',coordinator);
 
 const Port = process.env.PORT || 8080;
 

@@ -9,7 +9,7 @@ const addTraining = async (req,res) => {
             date: body.date,
         });
 
-        if (existingTraining) {
+        if(existingTraining) {
             
             return res.status(400).json({
                 success: false,

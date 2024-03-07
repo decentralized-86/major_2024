@@ -1,113 +1,57 @@
-const Coordinator = require("../models/coordinator.model");
-const User = require("../models/user.model");
+const Coordinator = require('../models/coordinator.model')
 
-const bcrypt = require("bcrypt");
-
-const co_signup = async (req, res) => {
-  const { email, password, name, uid, branch, contact } = req.body;
-  try {
-    if (!email || !password || !name || !uid || !branch || !contact) {
-      return res.status.json({ err: "All fields are required!" });
+const addCoordinator = async (req,res) => {
+    try {
+        
+    } catch (error) {
+        return res.status(500).json({err: error, message: "Internal sever error!"});
     }
-    if (contact.length !== 10 || !/^\d+$/.test(contact)) {
-      return res
-        .status(400)
-        .json({ error: "Contact number must be a 10-digit number" });
+}
+
+const getCoordinators = async (req,res)=> {
+    try {
+        const coordinator = await Coordinator.find({});
+        if(coordinator === null)
+        {
+            return res.status(404).json({message: "No entries to display!"});
+        }
+        res.status(200).json({success: true, coordinator});
     }
-    const isAdmin = true;
-
-    const oldCoordinator = await Coordinator.findOne({ email: email });
-    if (oldCoordinator) {
-      return res.status(400).json({ msg: "Coordinator already exists!" });
+    catch{
+        return res.status(500).json({err: error, message: "Internal sever error!"});
     }
+}
 
-    const newCoordinator = await Coordinator.create({
-      name,
-      email,
-      uid,
-      password,
-      branch,
-      contact,
-      isAdmin,
-    });
-
-    res.status(200).json({ result: newCoordinator });
-  } catch (error) {
-    return res.status(500).json({ msg: "Internal server error!" });
-  }
-};
-
-//Coordinator login is in user.controller.js
-
-//Students CRUD:
-const getStudentDetails = async (req, res) => {
-  try {
-    const studentList = await User.find({});
-    res.status(200).json({ studentList });
-  } catch (error) {
-    return res.status(500).json({ err: error, msg: "Internal server error!" });
-  }
-};
-
-const getStudent = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const student = await User.findById(id);
-    if (!student) {
-      return res
-        .status(404)
-        .json({ msg: `Student does not exists with id:${id}!` });
+const updateCoordinator = async (req, res) => {
+    const id = req.params.id; 
+    try {
+        const updateCoordinator = await Coordinator.findByIdAndUpdate(id,req.body,{
+            new: true,
+        });
+        if(!updateCoordinator)
+        {
+            return res.status(404).json({message: `No Coordinator with id ${id}`})
+        }
+        res.status(200).json({success: true, updateCoordinator});
+    } catch (error) {
+        return res.status(500).json({err: error, message: "Internal sever error!"});
     }
-    res.status(200).json({ student });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ err: error, msg: "Internal server error!" });
-  }
-};
+}
 
-const updateStudent = async (req, res) => {
-  const id = req.params.id;
-
-  try {
-    const updatedStudent = await User.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!updatedStudent) {
-      return res
-        .status(404)
-        .json({ msg: `Student does not exist with id: ${id}` });
+const deleteCoordinator = async (req,res) => {
+    const id = req.params.id;
+    try {
+        const deleteCoordinator = await Training.findByIdAndDelete(id);
+        if(!deleteCoordinator)
+        {
+            return res.status(404).json({message: `No Coordinator with id ${id}`});
+        }
+        res.status(200).json({success:true, message: `Coordinator with id ${id} deleted successfully.`});
+    } catch (error) {
+        return res.status(500).json({err: error, message: "Internal server error!"})
     }
+}
 
-    res.status(200).json({ student: updatedStudent });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ err: error, msg: "Internal server error!" });
-  }
-};
 
-const deleteStudent = async (req, res) => {
-  const id = req.params.id;
-  try {
-    const student = await User.findByIdAndDelete(id);
-    if (!student) {
-      return res.status(404).json({ msg: "Student does not exists!" });
-    }
-    res.status(200).json({
-      student,
-      msg: `Student deleted successfully with id:${student.uid}`,
-    });
-  } catch (error) {
-    console.error("Error:", error);
-    return res.status(500).json({ err: error, msg: "Internal server error!" });
-  }
-};
 
-module.exports = {
-  co_signup,
-  getStudentDetails,
-  getStudent,
-  updateStudent,
-  deleteStudent,
-};
+module.exports = {addCoordinator, getCoordinators, updateCoordinator,deleteCoordinator};
