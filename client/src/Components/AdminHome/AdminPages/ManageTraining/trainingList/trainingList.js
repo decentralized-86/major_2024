@@ -11,30 +11,30 @@ import Button from "@mui/material/Button";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  deleteJobAction,
-  getJobsAction,
-} from "../../../../../redux/action/jobActions";
+  deleteTrainingAction,
+  getTrainingsAction,
+} from "../../../../../redux/action/trainingActions";
 import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 
 function TrainingList() {
   const [deleteStatus, setDeleteStatus] = useState(false);
   const dispatch = useDispatch();
-  const jobs = useSelector((state) => state.trainingActions.trainings);
+  const trainings = useSelector((state) => state.trainingActions.trainings);
 
   const location = useLocation();
-  const job = location.state ? location.state.job : {};
+  const training = location.state ? location.state.training : {};
   const navigate = useNavigate();
 
   const handleDelete = (id) => {
-    dispatch(deleteJobAction(id, setDeleteStatus));
+    dispatch(deleteTrainingAction(id, setDeleteStatus));
   };
 
   useEffect(() => {
-    dispatch(getJobsAction());
+    dispatch(getTrainingsAction());
   }, [dispatch, deleteStatus]);
 
-  const handleView = (job) => {
-    navigate("/adminHome/updateTrainingForm", { state: { job } });
+  const handleView = (training) => {
+    navigate("/adminHome/updateTrainingForm", { state: { training } });
   };
 
   return (
@@ -47,66 +47,69 @@ function TrainingList() {
         msOverflowStyle: "none",
       }}
     >
-      {jobs.map((job) => (
-        <Card
-          key={job._id}
-          sx={{
-            width: "70vw",
-            marginTop: "2vh",
-          }}
-        >
-          <Stack direction="row" spacing={{ md: 29, sm: 4 }}>
-            <CardHeader
-              avatar={
-                <CardMedia
-                  component="img"
-                  src={logo}
-                  style={{ height: "7vh" }}
+      {trainings &&
+        trainings.map((training) => (
+          <Card
+            key={training._id}
+            sx={{
+              width: "70vw",
+              marginTop: "2vh",
+            }}
+          >
+            <Stack direction="row" spacing={{ md: 29, sm: 4 }}>
+              <CardHeader
+                avatar={
+                  <CardMedia
+                    component="img"
+                    src={logo}
+                    style={{ height: "7vh" }}
+                  />
+                }
+                title={<h4>{training.title}</h4>}
+                subheader={training.trainer.name}
+                style={{ width: "50vw" }}
+              />
+              <div>
+                <DeleteTwoToneIcon
+                  fontSize="large"
+                  color="action"
+                  style={{ margin: "3vh 0vw 0vh" }}
+                  onClick={() => {
+                    handleDelete(training._id);
+                  }}
                 />
-              }
-              title={<h4>{job.job_info.job_profile}</h4>}
-              subheader={job.company_name}
-              style={{ width: "50vw" }}
-            />
-            <div>
-              <DeleteTwoToneIcon
-                fontSize="large"
-                color="action"
-                style={{ margin: "3vh 0vw 0vh" }}
-                onClick={() => {
-                  handleDelete(job._id);
-                }}
-              />
-            </div>
-          </Stack>
-          <CardContent>
-            <Stack direction="row" spacing={1}>
-              <Chip label={job.job_tags.job_type} />
-              <Chip label={job.job_tags.location_Type} />
-              <Chip label={job.job_tags.organization_type} />
-              <Chip label={job.job_tags.industry_sector} />
+              </div>
             </Stack>
-          </CardContent>
-          <CardContent>
-            <Stack direction="row" spacing={{ md: 81, sm: 32 }}>
-              <MChip
-                label={`Register By ${new Date(
-                  job.deadline_date
-                ).toLocaleDateString("en-GB")}`}
-                style={{ fontFamily: "unset", width: "20vw" }}
-              />
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => handleView(job)}
-                style={{ width: "10vw" }}
-              >
-                View
-              </Button>
-            </Stack>
-          </CardContent>
-        </Card>
-      ))}
+            <CardContent>
+              <Stack direction="row" spacing={1}>
+                <Chip label={`${training.duration} Weeks`} />
+                <Chip
+                  label={`Starts From ${new Date(
+                    training.date
+                  ).toLocaleDateString("en-GB")}`}
+                />
+              </Stack>
+            </CardContent>
+            <CardContent>
+              <Stack direction="row" spacing={{ md: 81, sm: 32 }}>
+                <MChip
+                  label={`Register By ${new Date(
+                    training.registration.registrationDeadline
+                  ).toLocaleDateString("en-GB")}`}
+                  style={{ fontFamily: "unset", width: "20vw" }}
+                />
+                <Button
+                  variant="outlined"
+                  size="small"
+                  onClick={() => handleView(training)}
+                  style={{ width: "10vw" }}
+                >
+                  View
+                </Button>
+              </Stack>
+            </CardContent>
+          </Card>
+        ))}
     </div>
   );
 }

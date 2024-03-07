@@ -9,83 +9,55 @@ import {
   AccordionSummary,
   Card,
   CardContent,
-  Checkbox,
   Paper,
   Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
   TextField,
 } from "@mui/material";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import SaveAltOutlinedIcon from "@mui/icons-material/SaveAltOutlined";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import Fab from "@mui/material/Fab";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import Upload from "../../../../uploader/uploader";
-import logo from "../../../../Logo/cpmsLogo.png";
 import "./newTrainingForm.css";
-import { addJobAction } from "../../../../../redux/action/jobActions";
+import { addTrainingAction } from "../../../../../redux/action/trainingActions";
 
 const TrainingForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [job, setJob] = useState({
-    company_name: "",
-    company_email: "",
-    company_website_url: "",
-    company_location: "",
-    company_description: "",
-
-    job_tags: {
-      organization_type: "Technology",
-      industry_sector: "Public Corporation",
-      job_type: "Full-Time",
-      location_Type: "Remote",
+  const [training, setTraining] = useState({
+    title: "",
+    description: "",
+    date: null,
+    duration: 0,
+    location: "To be announced",
+    trainer: {
+      name: "",
+      bio: "No bio available",
+      contact: "Not provided",
     },
-
-    job_info: {
-      job_profile: "",
-      job_description: "",
-      job_registration_link: "",
-      job_location: "",
-    },
-
     eligibility: {
-      passout_batch: "",
-      eligible_courses: "",
-      avg_cgpa: "",
-      min_12_percent: "",
-      service_agreement_duration: "",
+      department: "All Departments",
+      batch: "All Batches",
     },
-
-    package: {
-      base_salary: "",
-      stock_options: "",
+    registration: {
+      isOpen: true,
+      registrationDeadline: null,
     },
-
-    selection_process: {
-      written_test: false,
-      technical_interview: false,
-      hr_interview: false,
-    },
-
-    deadline_date: null,
-    attendance: false,
-    candidates: [],
-    timestamp: null,
+    attendees: [],
   });
 
   const handleBack = () => {
     navigate(-1);
   };
 
-  const handleSave = (job) => {
-    const status = dispatch(addJobAction(job, navigate));
+  const handleSave = (training) => {
+    const status = dispatch(addTrainingAction(training, navigate));
   };
   return (
     <div className="viewApplication">
@@ -100,7 +72,7 @@ const TrainingForm = () => {
             color="primary"
             aria-label="add"
             style={{ marginTop: "1vh" }}
-            onClick={() => handleSave(job)}
+            onClick={() => handleSave(training)}
           >
             <SaveAltOutlinedIcon />
             Save
@@ -117,7 +89,7 @@ const TrainingForm = () => {
           padding: "0vh 1vw 1vh",
         }}
       >
-        <Card key={job._id} sx={{ width: "70vw", marginTop: "2vh" }}>
+        <Card sx={{ width: "70vw", marginTop: "2vh" }}>
           <Accordion>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
@@ -126,33 +98,35 @@ const TrainingForm = () => {
             >
               <Stack direction="row" spacing={2} padding={2}>
                 <Upload />
-
                 <Stack direction="column" spacing={1}>
                   <TextField
-                    name="job_profile"
-                    value={job.job_info.job_profile}
+                    name="title"
+                    value={training.title}
                     InputProps={{
                       style: { fontSize: "1.5rem", fontWeight: "bold" },
                     }}
                     variant="standard"
                     onChange={(e) =>
-                      setJob({
-                        ...job,
-                        job_info: {
-                          ...job.job_info,
-                          job_profile: e.target.value,
-                        },
+                      setTraining({
+                        ...training,
+                        title: e.target.value,
                       })
                     }
                   />
                   <TextField
-                    name="company_name"
-                    value={job.company_name}
+                    name="name"
+                    value={training.trainer.name}
                     fontSize="small"
                     variant="standard"
                     size="small"
                     onChange={(e) =>
-                      setJob({ ...job, company_name: e.target.value })
+                      setTraining({
+                        ...training,
+                        trainer: {
+                          ...training.trainer,
+                          name: e.target.value,
+                        },
+                      })
                     }
                   />
                 </Stack>
@@ -161,50 +135,38 @@ const TrainingForm = () => {
             <AccordionDetails>
               <Stack direction="column" spacing={1}>
                 <Stack direction="column" spacing={1}>
-                  <h6>Company Email</h6>
+                  <Stack direction="column" spacing={1}>
+                    <h6>Trainer Bio</h6>
+                    <TextField
+                      name="bio"
+                      multiline
+                      rows={3}
+                      value={training.trainer.bio}
+                      onChange={(e) =>
+                        setTraining({
+                          ...training,
+                          trainer: {
+                            ...training.trainer,
+                            bio: e.target.value,
+                          },
+                        })
+                      }
+                    />
+                  </Stack>{" "}
+                  <h6>Trainer Contact</h6>
                   <TextField
-                    name="company_email"
+                    name="contact"
                     multiline
                     rows={1}
-                    value={job.company_email}
+                    value={training.trainer.contact}
                     onChange={(e) =>
-                      setJob({ ...job, company_email: e.target.value })
-                    }
-                  />
-                </Stack>
-                <Stack direction="column" spacing={1}>
-                  <h6>Company Website</h6>
-                  <TextField
-                    name="company_website_url"
-                    multiline
-                    rows={1}
-                    value={job.company_website_url}
-                    onChange={(e) =>
-                      setJob({ ...job, company_website_url: e.target.value })
-                    }
-                  />
-                </Stack>
-                <Stack direction="column" spacing={1}>
-                  <h6>Company Location</h6>
-                  <TextField
-                    name="company_location"
-                    multiline
-                    rows={1}
-                    value={job.company_location}
-                    onChange={(e) =>
-                      setJob({ ...job, company_location: e.target.value })
-                    }
-                  />
-                </Stack>
-                <Stack direction="column" spacing={1}>
-                  <h6>Company Description</h6>
-                  <TextField
-                    name="company_description"
-                    multiline
-                    rows={3}
-                    value={job.company_description}
-                    onChange={(e) =>
-                      setJob({ ...job, company_description: e.target.value })
+                      setTraining({
+                        ...training,
+                        trainer: {
+                          ...training.trainer,
+                          contact: e.target.value,
+                        },
+                      })
                     }
                   />
                 </Stack>
@@ -212,163 +174,51 @@ const TrainingForm = () => {
             </AccordionDetails>
           </Accordion>
           <CardContent>
-            <Stack direction="row" spacing={1}>
-              <FormControl sx={{ m: 1, minWidth: 200 }}>
-                Job Type
-                <Select
-                  value={job.job_tags.job_type || ""}
-                  onChange={(e) =>
-                    setJob({
-                      ...job,
-                      job_tags: {
-                        ...job.job_tags,
-                        job_type: e.target.value,
-                      },
-                    })
-                  }
-                >
-                  <MenuItem value="Full-Time">Full-Time</MenuItem>
-                  <MenuItem value="Part-Time">Part-Time</MenuItem>
-                  <MenuItem value="Internship">Internship</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                Location Type
-                <Select
-                  value={job.job_tags.location_Type || ""}
-                  onChange={(e) =>
-                    setJob({
-                      ...job,
-                      job_tags: {
-                        ...job.job_tags,
-                        location_Type: e.target.value,
-                      },
-                    })
-                  }
-                >
-                  <MenuItem value="Remote">Remote</MenuItem>
-                  <MenuItem value="On-site">On-site</MenuItem>
-                  <MenuItem value="Hybrid">Hybrid</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl sx={{ m: 1, minWidth: 200 }}>
-                Organization Type
-                <Select
-                  value={job.job_tags.organization_type || ""}
-                  onChange={(e) =>
-                    setJob({
-                      ...job,
-                      job_tags: {
-                        ...job.job_tags,
-                        organization_type: e.target.value,
-                      },
-                    })
-                  }
-                >
-                  <MenuItem value="Technology">Technology</MenuItem>
-                  <MenuItem value="Finance">Finance</MenuItem>
-                  <MenuItem value="Healthcare">Healthcare</MenuItem>
-                  <MenuItem value="Education">Education</MenuItem>
-                  <MenuItem value="Manufacturing">Manufacturing</MenuItem>
-                  <MenuItem value="Retail">Retail</MenuItem>
-                  <MenuItem value="Entertainment">Entertainment</MenuItem>
-                  <MenuItem value="Hospitality">Hospitality</MenuItem>
-                  <MenuItem value="Energy">Energy</MenuItem>
-                  <MenuItem value="Transportation">Transportation</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl sx={{ m: 1, minWidth: 200 }}>
-                Industry Sector
-                <Select
-                  value={job.job_tags.industry_sector || ""}
-                  onChange={(e) =>
-                    setJob({
-                      ...job,
-                      job_tags: {
-                        ...job.job_tags,
-                        industry_sector: e.target.value,
-                      },
-                    })
-                  }
-                >
-                  <MenuItem value="Public Corporation">
-                    Public Corporation
-                  </MenuItem>
-                  <MenuItem value="Private Company">Private Company</MenuItem>
-                  <MenuItem value="Non-profit Organization">
-                    Non-profit Organization
-                  </MenuItem>
-                  <MenuItem value="Government Agency">
-                    Government Agency
-                  </MenuItem>
-                  <MenuItem value="Startup">Startup</MenuItem>
-                  <MenuItem value="Educational Institution">
-                    Educational Institution
-                  </MenuItem>
-                  <MenuItem value="Research Institute">
-                    Research Institute
-                  </MenuItem>
-                  <MenuItem value="Consulting Firm">Consulting Firm</MenuItem>
-                  <MenuItem value="Healthcare Provider">
-                    Healthcare Provider
-                  </MenuItem>
-                  <MenuItem value="Legal Firm">Legal Firm</MenuItem>
-                </Select>
-              </FormControl>
-            </Stack>
-          </CardContent>
-          <CardContent>
             <Stack direction="column" spacing={3}>
               <Stack direction="column" spacing={1}>
                 <h6>Description</h6>
                 <TextField
-                  name="job_description"
+                  name="description"
                   multiline
                   rows={8}
-                  value={job.job_info.job_description}
+                  value={training.description}
                   onChange={(e) =>
-                    setJob({
-                      ...job,
-                      job_info: {
-                        ...job.job_info,
-                        job_description: e.target.value,
-                      },
+                    setTraining({
+                      ...training,
+                      description: e.target.value,
                     })
                   }
                 />
               </Stack>
-              <Stack direction="column" spacing={1}>
+              {/* <Stack direction="column" spacing={1}>
                 <h6>Registration Link</h6>
                 <TextField
-                  name="job_registration_link"
+                  name="registration_link"
                   multiline
                   rows={1}
-                  value={job.job_info.job_registration_link}
+                  value={training.registration.registration_link}
                   onChange={(e) =>
-                    setJob({
-                      ...job,
-                      job_info: {
-                        ...job.job_info,
-                        job_registration_link: e.target.value,
+                    setTraining({
+                      ...training,
+                      registration: {
+                        ...training.registration,
+                        registration_link: e.target.value,
                       },
                     })
                   }
                 />
-              </Stack>
+              </Stack> */}
               <Stack direction="column" spacing={1}>
-                <h6>Job Location</h6>
+                <h6>training Location</h6>
                 <TextField
-                  name="job_location"
+                  name="location"
                   multiline
                   rows={1}
-                  value={job.job_info.job_location}
+                  value={training.location}
                   onChange={(e) =>
-                    setJob({
-                      ...job,
-                      job_info: {
-                        ...job.job_info,
-                        job_location: e.target.value,
-                      },
+                    setTraining({
+                      ...training,
+                      location: e.target.value,
                     })
                   }
                 />
@@ -376,16 +226,16 @@ const TrainingForm = () => {
               <Stack direction="column" spacing={1}>
                 <h6>Eligible Courses</h6>
                 <TextField
-                  name="eligible_courses"
+                  name="department"
                   multiline
                   rows={3}
-                  value={job.eligibility.eligible_courses}
+                  value={training.eligibility.department}
                   onChange={(e) =>
-                    setJob({
-                      ...job,
+                    setTraining({
+                      ...training,
                       eligibility: {
-                        ...job.eligibility,
-                        eligible_courses: e.target.value,
+                        ...training.eligibility,
+                        department: e.target.value,
                       },
                     })
                   }
@@ -394,122 +244,25 @@ const TrainingForm = () => {
               <Stack direction="column" spacing={1}>
                 <h6>Eligible Batch</h6>
                 <TextField
-                  name="passout_batch"
+                  name="batch"
                   multiline
                   rows={3}
-                  value={job.eligibility.passout_batch}
+                  value={training.eligibility.batch}
                   onChange={(e) =>
-                    setJob({
-                      ...job,
+                    setTraining({
+                      ...training,
                       eligibility: {
-                        ...job.eligibility,
-                        passout_batch: e.target.value,
+                        ...training.eligibility,
+                        batch: e.target.value,
                       },
                     })
                   }
                 />
               </Stack>
               <Stack direction="column" spacing={1}>
-                <h6>Eligibility Criteria</h6>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableBody>
-                      <TableRow
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          Average CGPA
-                        </TableCell>
-                        <TableCell align="right">
-                          <TextField
-                            name="criteriaValue"
-                            className="tableInputValues"
-                            variant="outlined"
-                            value={job.eligibility.avg_cgpa}
-                            sx={{ width: "7vw" }}
-                            onChange={(e) =>
-                              setJob({
-                                ...job,
-                                eligibility: {
-                                  ...job.eligibility,
-                                  avg_cgpa: e.target.value,
-                                },
-                              })
-                            }
-                          />
-                        </TableCell>
-                      </TableRow>
-                      <TableRow
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          12th Percentage
-                        </TableCell>
-                        <TableCell align="right">
-                          <TextField
-                            name="criteriaValue"
-                            className="tableInputValues"
-                            variant="outlined"
-                            value={job.eligibility.min_12_percent}
-                            sx={{ width: "7vw" }}
-                            onChange={(e) =>
-                              setJob({
-                                ...job,
-                                eligibility: {
-                                  ...job.eligibility,
-                                  min_12_percent: e.target.value,
-                                },
-                              })
-                            }
-                          />
-                        </TableCell>
-                      </TableRow>
-                      <TableRow
-                        sx={{
-                          "&:last-child td, &:last-child th": { border: 0 },
-                        }}
-                      >
-                        <TableCell component="th" scope="row">
-                          Service Agreement Duration
-                        </TableCell>
-                        <TableCell align="right">
-                          <TextField
-                            name="criteriaValue"
-                            className="tableInputValues"
-                            variant="outlined"
-                            value={job.eligibility.service_agreement_duration}
-                            sx={{ width: "7vw" }}
-                            onChange={(e) =>
-                              setJob({
-                                ...job,
-                                eligibility: {
-                                  ...job.eligibility,
-                                  service_agreement_duration: e.target.value,
-                                },
-                              })
-                            }
-                          />
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              </Stack>
-              <Stack direction="column" spacing={1}>
                 <h6>Other Details</h6>
                 <TableContainer component={Paper}>
                   <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell align="right">Base Salary</TableCell>
-                        <TableCell align="right">Stock Option</TableCell>
-                      </TableRow>
-                    </TableHead>
                     <TableBody>
                       <TableRow
                         sx={{
@@ -517,107 +270,68 @@ const TrainingForm = () => {
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          Package
+                          Start Date
                         </TableCell>
                         <TableCell align="right">
-                          <TextField
-                            name="base_salary"
-                            className="tableInputValues"
-                            variant="outlined"
-                            value={job.package.base_salary}
-                            sx={{ width: "7vw" }}
-                            onChange={(e) =>
-                              setJob({
-                                ...job,
-                                package: {
-                                  ...job.package,
-                                  base_salary: e.target.value,
-                                },
-                              })
+                          <DatePicker
+                            name="date"
+                            selected={
+                              training.date ? new Date(training.date) : null
                             }
-                          />
-                        </TableCell>
-                        <TableCell align="right">
-                          <TextField
-                            name="stock_options"
-                            className="tableInputValues"
-                            variant="outlined"
-                            InputProps={{
-                              style: { textAlign: "right" },
-                            }}
-                            value={job.package.stock_options}
-                            sx={{ width: "7vw" }}
-                            onChange={(e) =>
-                              setJob({
-                                ...job,
-                                package: {
-                                  ...job.package,
-                                  stock_options: e.target.value,
-                                },
-                              })
+                            onChange={(date) =>
+                              setTraining({ ...training, date: date })
                             }
                           />
                         </TableCell>
                       </TableRow>
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                <TableContainer component={Paper}>
-                  <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <TableHead>
-                      <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell align="right">Written Test</TableCell>
-                        <TableCell align="right">Technical Round</TableCell>
-                        <TableCell align="right">Interview Round</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
                       <TableRow
                         sx={{
                           "&:last-child td, &:last-child th": { border: 0 },
                         }}
                       >
                         <TableCell component="th" scope="row">
-                          Selection Process
+                          Duration (in weeks)
                         </TableCell>
                         <TableCell align="right">
-                          <Checkbox
-                            checked={job.selection_process.written_test}
+                          <TextField
+                            name="duration"
+                            className="tableInputValues"
+                            variant="outlined"
+                            value={training.duration}
+                            sx={{ width: "7vw" }}
                             onChange={(e) =>
-                              setJob({
-                                ...job,
-                                selection_process: {
-                                  ...job.selection_process,
-                                  written_test: e.target.checked,
-                                },
+                              setTraining({
+                                ...training,
+                                duration: e.target.value,
                               })
                             }
                           />
                         </TableCell>
-                        <TableCell align="right">
-                          <Checkbox
-                            checked={job.selection_process.technical_interview}
-                            onChange={(e) =>
-                              setJob({
-                                ...job,
-                                selection_process: {
-                                  ...job.selection_process,
-                                  technical_interview: e.target.checked,
-                                },
-                              })
-                            }
-                          />
+                      </TableRow>
+                      <TableRow
+                        sx={{
+                          "&:last-child td, &:last-child th": { border: 0 },
+                        }}
+                      >
+                        <TableCell component="th" scope="row">
+                          Registration Deadline
                         </TableCell>
                         <TableCell align="right">
-                          <Checkbox
-                            checked={job.selection_process.hr_interview}
-                            onChange={(e) =>
-                              setJob({
-                                ...job,
-                                selection_process: {
-                                  ...job.selection_process,
-                                  hr_interview: e.target.checked,
+                          <DatePicker
+                            name="registration_deadline"
+                            selected={
+                              training.registration.registrationDeadline
+                                ? new Date(
+                                    training.registration.registrationDeadline
+                                  )
+                                : null
+                            }
+                            onChange={(date) =>
+                              setTraining({
+                                ...training,
+                                registration: {
+                                  ...(training.registration || {}),
+                                  registrationDeadline: date,
                                 },
                               })
                             }

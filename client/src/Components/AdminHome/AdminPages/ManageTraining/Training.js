@@ -22,7 +22,7 @@ export default function AdminManageTrainings() {
   };
 
   return (
-    <div className="jobPost w-[75vw]">
+    <div className="trainingPost w-[75vw]">
       <h1 style={{ textAlign: "center", marginBottom: "1vh" }}>
         Manage Training
       </h1>
@@ -49,7 +49,7 @@ export default function AdminManageTrainings() {
           </Fab>
         </Stack>
       </Box>
-      <div className="jobPostBody flex flex-col">
+      <div className="trainingPostBody flex flex-col">
         <Outlet />
       </div>
     </div>

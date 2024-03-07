@@ -33,7 +33,6 @@ const StudentList = ({ data, selectedId, setDeleteStatus }) => {
         scrollbarWidth: "none",
         msOverflowStyle: "none",
       }}
-      affixHeader={0}
     >
       <Table
         height={500}
@@ -41,6 +40,7 @@ const StudentList = ({ data, selectedId, setDeleteStatus }) => {
         onRowClick={(rowData) => {
           console.log(rowData);
         }}
+        affixHeader={0}
       >
         <Column width={100}>
           <HeaderCell>UID</HeaderCell>

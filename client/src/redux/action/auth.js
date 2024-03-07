@@ -1,12 +1,9 @@
-// import * as api from "../api/index";
-// import { setCurrentUser } from "./auth";
 import axios from "axios";
 
 const URL = "http://localhost:8080";
 
 export const signupAction =
   (authData, navigate) => async (dispatch, getState) => {
-    console.log(authData);
     const res = await axios.post(`${URL}/api/user/signup`, authData);
 
     const {
@@ -18,32 +15,8 @@ export const signupAction =
 
       dispatch({
         type: "AUTH",
-        payload: {
-          ...res.data,
-          uid: res.data.uid,
-          name: res.data.name,
-          batch: res.data.batch,
-          branch: res.data.branch,
-          gender: res.data.gender,
-          contact: res.data.contact,
-          college_email: res.data.college_email,
-          degree: res.data.degree,
-          avg_cgpa: res.data.avg_cgpa,
-          ssc_marks: res.data.ssc_marks,
-          ssc_board: res.data.ssc_board,
-          hsc_marks: res.data.hsc_marks,
-          hsc_board: res.data.hsc_board,
-          address: res.data.address,
-          city: res.data.city,
-          post_code: res.data.post_code,
-          state: res.data.state,
-          country: res.data.country,
-          linkedln_link: res.data.linkedln_link,
-          resume_url: res.data.resume_url,
-          password: res.data.password,
-        },
+        payload: res.data,
       });
-      console.log("Data", data);
       navigate("/");
     } catch (error) {
       console.log(error);

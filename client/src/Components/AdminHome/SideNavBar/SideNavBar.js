@@ -67,6 +67,14 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
             </Nav.Item>
             <Nav.Item
               as={NavLink}
+              href="adminTrainings/trainingList"
+              eventKey="4"
+              icon={<TaskIcon />}
+            >
+              TRAININGS
+            </Nav.Item>
+            <Nav.Item
+              as={NavLink}
               href="adminStudentList"
               eventKey="3"
               icon={<GroupIcon />}
@@ -75,11 +83,11 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
             </Nav.Item>
             <Nav.Item
               as={NavLink}
-              href="adminTrainings"
-              eventKey="4"
-              icon={<TaskIcon />}
+              href="adminStudentList"
+              eventKey="3"
+              icon={<GroupIcon />}
             >
-              TRAININGS
+              STUDENTS
             </Nav.Item>
             <Nav.Item
               as={NavLink}

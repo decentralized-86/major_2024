@@ -4,7 +4,7 @@ const URL = "http://localhost:8080";
 
 export const addJobAction = (jobData, navigate) => async (dispatch) => {
   try {
-    const res = await axios.post(`${URL}/api/jobs//addjobpost`, jobData);
+    const res = await axios.post(`${URL}/api/jobs/addjobpost`, jobData);
     if (res.status === 200) {
       dispatch({
         type: "ADD_JOB",
@@ -93,7 +93,6 @@ export const deleteJobAction = (jobId, setDeleteStatus) => async (dispatch) => {
 };
 
 export const updateJobAction = (jobData) => async (dispatch) => {
-  console.log("Response", jobData);
   try {
     const response = await axios.patch(
       `${URL}/api/jobs/updatejobpost/${jobData._id}`,
