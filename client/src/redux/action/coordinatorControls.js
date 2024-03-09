@@ -2,7 +2,7 @@ import axios from "axios";
 
 const URL = "http://localhost:8080";
 
-export const getUsersAction = () => async (dispatch) => {
+export const getCoordinatorAction = () => async (dispatch) => {
   try {
     const response = await axios.get(`${URL}/api/students/getstudents`);
 
@@ -23,7 +23,7 @@ export const getUsersAction = () => async (dispatch) => {
   }
 };
 
-export const deleteStudentAction =
+export const deleteCoordinatorAction =
   (studentId, setDeleteStatus) => async (dispatch) => {
     try {
       const response = await axios.delete(

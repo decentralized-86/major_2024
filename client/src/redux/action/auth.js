@@ -68,7 +68,7 @@ export const logoutAction = (setLogin, navigate) => async (dispatch) => {
 export const coSignupAction = (authData) => async (dispatch, getState) => {
   try {
     const res = await axios.post(
-      `${URL}/api/coordinator/coordinator/signup`,
+      `${URL}/api/user/coordinator/signup`,
       authData
     );
     dispatch({
