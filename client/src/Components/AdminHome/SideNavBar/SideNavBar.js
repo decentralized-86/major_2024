@@ -21,7 +21,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
 
   return (
     <div className="sideNavBar h-[91vh] ">
-      <Sidenav className="w-[20vw]" expanded={expanded}>
+      <Sidenav className="w-[20vw] h-[inherit]" expanded={expanded}>
         <Sidenav.Header>
           <Disclosure>
             <div className="flex items-center pb-1 pl-1 bg-white ">
@@ -48,7 +48,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
           </Disclosure>
         </Sidenav.Header>
         <Sidenav.Body>
-          <Nav style={{ backgroundColor: "red" }}>
+          <Nav>
             <Nav.Item
               as={NavLink}
               href="adminDashboard"
@@ -68,7 +68,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
             <Nav.Item
               as={NavLink}
               href="adminTrainings/trainingList"
-              eventKey="4"
+              eventKey="3"
               icon={<TaskIcon />}
             >
               TRAININGS
@@ -76,18 +76,18 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
             <Nav.Item
               as={NavLink}
               href="adminStudentList"
-              eventKey="3"
+              eventKey="4"
               icon={<GroupIcon />}
             >
               STUDENTS
             </Nav.Item>
             <Nav.Item
               as={NavLink}
-              href="adminStudentList"
-              eventKey="3"
+              href="coordinatorList"
+              eventKey="5"
               icon={<GroupIcon />}
             >
-              STUDENTS
+              COORDINATORS
             </Nav.Item>
             <Nav.Item
               as={NavLink}

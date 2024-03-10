@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 const { Column, HeaderCell, Cell } = Table;
 
-const StudentList = ({ data, selectedId, setDeleteStatus }) => {
+const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
   const dispatch = useDispatch();
   const [studentData, setStudentData] = useState([]);
 
@@ -94,4 +94,4 @@ const StudentList = ({ data, selectedId, setDeleteStatus }) => {
   );
 };
 
-export default StudentList;
+export default CoordinatorList;

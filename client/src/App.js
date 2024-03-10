@@ -18,6 +18,7 @@ import CoSignUp from "./Components/CoSignup/coSignup";
 import TrainingList from "./Components/AdminHome/AdminPages/ManageTraining/trainingList/trainingList";
 import TrainingForm from "./Components/AdminHome/AdminPages/ManageTraining/newTraining/newTrainingForm";
 import UpdateTrainingForm from "./Components/AdminHome/AdminPages/ManageTraining/updateTraining/updateTrainingForm";
+import CoordinatorDetails from "./Components/AdminHome/AdminPages/CoordinatorDetails/CoordinatorDetails";
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(() => {
@@ -107,7 +108,7 @@ function App() {
           </Route>
           <Route path="trainingForm" element={<TrainingForm />} />
           <Route path="updateTrainingForm" element={<UpdateTrainingForm />} />
-
+          <Route path="coordinatorList" element={<CoordinatorDetails />} />
           <Route path="adminSettings" element={<AdminSettings />} />
         </Route>
       </Routes>

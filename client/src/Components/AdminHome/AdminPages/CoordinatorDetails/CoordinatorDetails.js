@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import StudentList from "./StudentList";
+import CoordinatorList from "./CoordinatorList";
 import SearchBar from "../../../Search/Search";
 import { Header } from "rsuite";
 import { getUsersAction } from "../../../../redux/action/userControls";
 
-function AdminStudentList() {
+function CoordinatorDetails() {
   const dispatch = useDispatch();
   const studentList = useSelector((state) => state.userControls?.students);
   const [selectedId, setSelectedId] = useState([]);
@@ -34,7 +34,7 @@ function AdminStudentList() {
           clearSelectedId={clearSelectedIds}
         />
       </Header>
-      <StudentList
+      <CoordinatorList
         data={studentList}
         selectedId={selectedId}
         setDeleteStatus={setDeleteStatus}
@@ -43,4 +43,4 @@ function AdminStudentList() {
   );
 }
 
-export default AdminStudentList;
+export default CoordinatorDetails;
