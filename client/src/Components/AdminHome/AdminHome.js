@@ -31,7 +31,12 @@ function AdminHome({ isDarkMode, toggleDarkMode, login, setLogin }) {
   };
 
   return login ? (
-    <div className="Home h-[100vh]">
+    <div
+      className="Home h-[100vh]"
+      style={{
+        backgroundColor: "#639bbe78",
+      }}
+    >
       <Navbar
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleDarkMode}
@@ -43,10 +48,6 @@ function AdminHome({ isDarkMode, toggleDarkMode, login, setLogin }) {
         </div>
         <div
           className={expanded ? "show-container" : "expanded-show-container"}
-          style={{
-            margin: "1vh 0vw 0vh 0vw",
-            padding: "0vh 0vw 0vh 1vw ",
-          }}
         >
           <Container>
             <Content>

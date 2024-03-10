@@ -23,16 +23,35 @@ function AdminStudentList() {
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        padding: "0vh 5vw",
+        width: "80vw",
+        height: "90vh",
+      }}
+    >
       <Header>
         <h1 style={{ textAlign: "center", marginBottom: "1vh" }}>
           Student Details
         </h1>
-        <SearchBar
-          data={studentList}
-          onSearch={handleSearch}
-          clearSelectedId={clearSelectedIds}
-        />
+        <div
+          style={{
+            display: "flex",
+            direction: "row",
+            width: "70.32vw",
+            justifyContent: "space-between",
+            margin: "1vh 1vw",
+          }}
+        >
+          <SearchBar
+            data={studentList}
+            onSearch={handleSearch}
+            clearSelectedId={clearSelectedIds}
+          />
+        </div>
       </Header>
       <StudentList
         data={studentList}

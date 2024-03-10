@@ -6,6 +6,7 @@ import GroupIcon from "@rsuite/icons/legacy/Group";
 import TaskIcon from "@rsuite/icons/Task";
 import BriefcaseIcon from "@rsuite/icons/legacy/Briefcase";
 import GearIcon from "@rsuite/icons/Gear";
+import AdminIcon from "@rsuite/icons/Admin";
 import { MenuIcon, XIcon } from "@heroicons/react/outline";
 import { Disclosure } from "@headlessui/react";
 import { Link } from "react-router-dom";
@@ -21,10 +22,10 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
 
   return (
     <div className="sideNavBar h-[91vh] ">
-      <Sidenav className="w-[20vw] h-[inherit]" expanded={expanded}>
+      <Sidenav className="w-[18vw] h-[inherit]" expanded={expanded}>
         <Sidenav.Header>
           <Disclosure>
-            <div className="flex items-center pb-1 pl-1 bg-white ">
+            <div className="flex items-center pb-1  bg-white ">
               <Disclosure.Button
                 className="inline-flex items-center justify-center   text-gray-400 hover:ring-2 hover:ring-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-inset h-[40px] w-[55px] mt-1 "
                 onClick={toggleMenu}
@@ -37,7 +38,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
               </Disclosure.Button>
               <div
                 style={{
-                  width: "9vw",
+                  // width: "2vw",
                   fontWeight: "bolder",
                   fontSize: "30px",
                   color: "White",
@@ -85,7 +86,7 @@ const SideNavBar = ({ expanded, toggleMenu }) => {
               as={NavLink}
               href="coordinatorList"
               eventKey="5"
-              icon={<GroupIcon />}
+              icon={<AdminIcon />}
             >
               COORDINATORS
             </Nav.Item>

@@ -27,7 +27,7 @@ const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
   return (
     <div
       style={{
-        width: "70.32vw",
+        width: "63.84vw",
         maxHeight: "73vh",
         overflowY: "auto",
         scrollbarWidth: "none",
