@@ -41,7 +41,7 @@ const updateCoordinator = async (req, res) => {
 const deleteCoordinator = async (req,res) => {
     const id = req.params.id;
     try {
-        const deleteCoordinator = await Training.findByIdAndDelete(id);
+        const deleteCoordinator = await Coordinator.findByIdAndDelete(id);
         if(!deleteCoordinator)
         {
             return res.status(404).json({message: `No Coordinator with id ${id}`});
