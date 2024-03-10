@@ -1,7 +1,9 @@
 const Coordinator = require("../models/coordinator.model");
+const { addCoordinatorMail } = require("../services/mail.service");
 
 const addCoordinator = async (req, res) => {
   try {
+    await addCoordinatorMail();
   } catch (error) {
     return res
       .status(500)
@@ -51,10 +53,12 @@ const deleteCoordinator = async (req, res) => {
     if (!deleteCoordinator) {
       return res.status(404).json({ message: `No Coordinator with id ${id}` });
     }
-    res.status(200).json({
-      success: true,
-      message: `Coordinator with id ${id} deleted successfully.`,
-    });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: `Coordinator with id ${id} deleted successfully.`,
+      });
   } catch (error) {
     return res
       .status(500)
