@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 
 const User = require("../models/user.model");
+const Coordinator = require("../models/coordinator.model");
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -53,4 +54,25 @@ const trainingNotificationToAllUsers = async (training) => {
   }
 }
 
-module.exports = { sendNotificationEmailToAllUsers,trainingNotificationToAllUsers};
+const addCoordinatorMail = async() => {
+  try {
+    const coordinators = await Coordinator.find();
+    const coordinatorEmails = coordinators.map((coordinator)=> coordinator.email);
+
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL, // replace with your email
+      to: userEmails.join(", "), // Comma-separated list of all user emails
+      subject: "New Job Post Added",
+      text: `Training session on "${training.title}". Check it out!`,
+    };
+
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Email sent:", info.response);
+  } catch (error) {
+    console.error("Error sending email:", error);
+    return res.status(500).json({err: error, message: "Email service error!"})
+  }
+}
+
+
+module.exports = { sendNotificationEmailToAllUsers,trainingNotificationToAllUsers,addCoordinatorMail};
