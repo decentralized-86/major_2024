@@ -2,17 +2,19 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CoordinatorList from "./CoordinatorList";
 import SearchBar from "../../../Search/Search";
-import { Header } from "rsuite";
-import { getUsersAction } from "../../../../redux/action/userControls";
+import { Button, Header } from "rsuite";
+import { getCoordinatorAction } from "../../../../redux/action/coordinatorControls";
 
 function CoordinatorDetails() {
   const dispatch = useDispatch();
-  const studentList = useSelector((state) => state.userControls?.students);
+  const coordinatorList = useSelector(
+    (state) => state.coordinatorControls?.coordinators
+  );
   const [selectedId, setSelectedId] = useState([]);
   const [deleteStatus, setDeleteStatus] = useState(false);
 
   useEffect(() => {
-    dispatch(getUsersAction());
+    dispatch(getCoordinatorAction());
   }, [dispatch, deleteStatus]);
 
   const handleSearch = (record) => {
@@ -26,16 +28,19 @@ function CoordinatorDetails() {
     <div>
       <Header>
         <h1 style={{ textAlign: "center", marginBottom: "1vh" }}>
-          Student Details
+          Coordinator Details
         </h1>
-        <SearchBar
-          data={studentList}
-          onSearch={handleSearch}
-          clearSelectedId={clearSelectedIds}
-        />
+        <div style={{ display: "flex", direction: "row" }}>
+          <SearchBar
+            data={coordinatorList}
+            onSearch={handleSearch}
+            clearSelectedId={clearSelectedIds}
+          />
+          <Button>ADD Coordinator</Button>
+        </div>
       </Header>
       <CoordinatorList
-        data={studentList}
+        data={coordinatorList}
         selectedId={selectedId}
         setDeleteStatus={setDeleteStatus}
       />

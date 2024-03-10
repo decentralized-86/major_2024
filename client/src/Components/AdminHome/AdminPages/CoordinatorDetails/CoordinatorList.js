@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import { Table, Button, List } from "rsuite";
-import { deleteStudentAction } from "../../../../redux/action/userControls";
+import { deleteCoordinatorAction } from "../../../../redux/action/coordinatorControls";
 import { useDispatch } from "react-redux";
 
 const { Column, HeaderCell, Cell } = Table;
 
 const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
   const dispatch = useDispatch();
-  const [studentData, setStudentData] = useState([]);
+  const [coordinatorData, setCoordinatorData] = useState([]);
 
   useEffect(() => {
-    setStudentData(
+    setCoordinatorData(
       selectedId.length > 0
         ? data.filter((item) => selectedId.includes(item._id))
         : data
@@ -19,8 +19,8 @@ const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
   }, [selectedId, data]);
 
   const handleDelete = (id) => {
-    if (window.confirm(`Are you sure you want to delete the student?`)) {
-      dispatch(deleteStudentAction(id, setDeleteStatus));
+    if (window.confirm(`Are you sure you want to delete the Co-ordinator?`)) {
+      dispatch(deleteCoordinatorAction(id, setDeleteStatus));
     }
   };
 
@@ -36,7 +36,7 @@ const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
     >
       <Table
         height={500}
-        data={studentData}
+        data={coordinatorData}
         onRowClick={(rowData) => {
           console.log(rowData);
         }}
@@ -50,11 +50,6 @@ const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
         <Column width={200}>
           <HeaderCell>NAME</HeaderCell>
           <Cell dataKey="name" />
-        </Column>
-
-        <Column width={100}>
-          <HeaderCell>BATCH</HeaderCell>
-          <Cell dataKey="batch" />
         </Column>
 
         <Column width={100}>
@@ -73,7 +68,7 @@ const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
 
         <Column width={400}>
           <HeaderCell>COLLEGE EMAIL</HeaderCell>
-          <Cell dataKey="college_email" />
+          <Cell dataKey="email" />
         </Column>
 
         <Column width={80} fixed="right">

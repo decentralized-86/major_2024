@@ -4,43 +4,46 @@ const URL = "http://localhost:8080";
 
 export const getCoordinatorAction = () => async (dispatch) => {
   try {
-    const response = await axios.get(`${URL}/api/students/getstudents`);
+    const response = await axios.get(`${URL}/api/coordinator/getcoordinators`);
 
     if (response.status === 200) {
       dispatch({
-        type: "GET_STUDENT",
-        payload: response.data.studentList,
+        type: "GET_COORDINATOR",
+        payload: response.data.coordinator,
       });
     } else {
       dispatch({
-        type: "GET_STUDENTS_ERROR",
+        type: "GET_COORDINATORS_ERROR",
         error: "Error fetching students",
       });
     }
   } catch (error) {
     console.error(error);
-    dispatch({ type: "GET_STUDENTS_ERROR", error: error.message });
+    dispatch({ type: "GET_COORDINATORS_ERROR", error: error.message });
   }
 };
 
 export const deleteCoordinatorAction =
-  (studentId, setDeleteStatus) => async (dispatch) => {
+  (coordinatorId, setDeleteStatus) => async (dispatch) => {
     try {
       const response = await axios.delete(
-        `${URL}/api/students/deleteStudent/${studentId}`
+        `${URL}/api/coordinator/deletecoordinator/${coordinatorId}`
       );
 
       if (response.status === 200) {
         dispatch({
-          type: "DELETE_STUDENT",
-          payload: response.data.studentId,
+          type: "DELETE_COORDINATOR",
+          payload: response.data.coordinatorId,
         });
         setDeleteStatus(true);
       } else {
-        dispatch({ type: "DELETE_STUDENT_ERROR", error: response.data.msg });
+        dispatch({
+          type: "DELETE_COORDINATOR_ERROR",
+          error: response.data.msg,
+        });
       }
     } catch (error) {
       console.error(error);
-      dispatch({ type: "DELETE_STUDENT_ERROR", error: error.message });
+      dispatch({ type: "DELETE_COORDINATOR_ERROR", error: error.message });
     }
   };

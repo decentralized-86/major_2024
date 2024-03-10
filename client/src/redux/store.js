@@ -3,6 +3,7 @@ import authReducer from "./reducer/authReducer";
 import userControlsReducers from "./reducer/userControlsReducers";
 import jobActionReducers from "./reducer/jobActionReducers";
 import trainingActionReducers from "./reducer/trainingActionReducers";
+import coordinatorControlsReducers from "./reducer/coordinatorReducers";
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     userControls: userControlsReducers,
     jobActions: jobActionReducers,
     trainingActions: trainingActionReducers,
+    coordinatorControls: coordinatorControlsReducers,
   },
 });
