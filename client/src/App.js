@@ -19,6 +19,14 @@ import TrainingList from "./Components/AdminHome/AdminPages/ManageTraining/train
 import TrainingForm from "./Components/AdminHome/AdminPages/ManageTraining/newTraining/newTrainingForm";
 import UpdateTrainingForm from "./Components/AdminHome/AdminPages/ManageTraining/updateTraining/updateTrainingForm";
 import CoordinatorDetails from "./Components/AdminHome/AdminPages/CoordinatorDetails/CoordinatorDetails";
+import StudentHome from "./Components/StudentHome/StudentHome";
+import StudentDashboard from "./Components/StudentHome/StudentPages/StudentDashboard/StudentDashboard";
+import StudentJobPosts from "./Components/StudentHome/StudentPages/JobPosts/JobPosts";
+import StudentApplicationList from "./Components/StudentHome/StudentPages/JobPosts/applications/StudentApplicationList";
+import ViewApplication from "./Components/StudentHome/StudentPages/JobPosts/ViewApplication/ViewApplication";
+import StudentTrainings from "./Components/StudentHome/StudentPages/ManageTraining/StudentTraining";
+import StudentTrainingList from "./Components/StudentHome/StudentPages/ManageTraining/StudentTrainingList/StudentTrainingList";
+import ViewTrainingForm from "./Components/StudentHome/StudentPages/ManageTraining/StudentTraining/ViewTrainingForm";
 
 function App() {
   const [isDarkMode, setDarkMode] = useState(() => {
@@ -110,6 +118,42 @@ function App() {
           <Route path="updateTrainingForm" element={<UpdateTrainingForm />} />
           <Route path="coordinatorList" element={<CoordinatorDetails />} />
           <Route path="adminSettings" element={<AdminSettings />} />
+        </Route>
+
+        <Route
+          path="studentHome"
+          element={
+            <StudentHome
+              isDarkMode={isDarkMode}
+              toggleDarkMode={toggleDarkMode}
+              login={login}
+              setLogin={setLogin}
+            />
+          }
+        >
+          <Route path="studentDashboard" element={<StudentDashboard />} />
+
+          <Route path="studentJobPosts" element={<StudentJobPosts />}>
+            <Route
+              path="student_applicationList"
+              element={<StudentApplicationList />}
+            />
+          </Route>
+          <Route path="student_ViewApplication" element={<ViewApplication />} />
+
+          <Route path="student_StudentList" element={<AdminStudentList />} />
+          <Route path="student_Trainings" element={<StudentTrainings />}>
+            <Route
+              path="student_trainingList"
+              element={<StudentTrainingList />}
+            />
+          </Route>
+          <Route
+            path="student_ViewTrainingForm"
+            element={<ViewTrainingForm />}
+          />
+
+          <Route path="student_Settings" element={<AdminSettings />} />
         </Route>
       </Routes>
     </div>

@@ -40,22 +40,38 @@ const NumberAnalysis = () => {
     <div className="NumAnalysis lg:w-[85vw] ">
       <Row>
         <Col md={6} sm={12}>
-          <Panel bordered header="Students Registered">
+          <Panel
+            bordered
+            header="Students Registered"
+            style={{ backgroundColor: "white" }}
+          >
             {calculateAnalysis(studentsRegistered).totalEntries}
           </Panel>
         </Col>
         <Col md={6} sm={12}>
-          <Panel bordered header="Training Programs">
+          <Panel
+            bordered
+            header="Training Programs"
+            style={{ backgroundColor: "white" }}
+          >
             {calculateAnalysis(trainingPrograms).totalEntries}
           </Panel>
         </Col>
         <Col md={6} sm={12}>
-          <Panel bordered header="Company Drives">
+          <Panel
+            bordered
+            header="Company Drives"
+            style={{ backgroundColor: "white" }}
+          >
             {calculateAnalysis(companyDrives).totalEntries}
           </Panel>
         </Col>
         <Col md={6} sm={12}>
-          <Panel bordered header="Students Placed">
+          <Panel
+            bordered
+            header="Students Placed"
+            style={{ backgroundColor: "white" }}
+          >
             {calculateAnalysis(studentsPlaced).totalEntries}
           </Panel>
         </Col>

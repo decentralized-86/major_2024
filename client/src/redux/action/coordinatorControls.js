@@ -2,6 +2,33 @@ import axios from "axios";
 
 const URL = "http://localhost:8080";
 
+export const addCoordinator = (coordinatorEmail) => {
+  return async (dispatch) => {
+    dispatch({ type: "ADD_COORDINATOR_REQUEST" });
+    try {
+      const response = await axios.post(
+        `${URL}/api/coordinator/addcoordinator`,
+        { email: coordinatorEmail }
+      );
+
+      if (response.status === 200) {
+        dispatch({
+          type: "ADD_COORDINATOR_SUCCESS",
+          payload: response.data.coordinator,
+        });
+      } else {
+        dispatch({
+          type: "ADD_COORDINATOR_FAILURE",
+          error: response.data.msg,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      dispatch({ type: "ADD_COORDINATOR_FAILURE", error: error.message });
+    }
+  };
+};
+
 export const getCoordinatorAction = () => async (dispatch) => {
   try {
     const response = await axios.get(`${URL}/api/coordinator/getcoordinators`);

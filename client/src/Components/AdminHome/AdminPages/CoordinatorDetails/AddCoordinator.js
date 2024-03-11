@@ -1,13 +1,14 @@
 import { Avatar, Button, TextField } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import Chip from "@mui/material/Chip";
-import Autocomplete from "@mui/material/Autocomplete";
 import React, { useState } from "react";
 import Popup from "reactjs-popup";
+import { useDispatch } from "react-redux";
+import { addCoordinator } from "../../../../redux/action/coordinatorControls";
 
 const AddCoordinatorPopUp = ({ addEmails, setAddEmails }) => {
   const [inputValue, setInputValue] = useState("");
-
+  const dispatch = useDispatch();
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
@@ -48,13 +49,12 @@ const AddCoordinatorPopUp = ({ addEmails, setAddEmails }) => {
         >
           <div
             style={{
-              height: "40vh",
+              minHeight: "30vh",
               width: "30vw",
               backgroundColor: "white",
               borderRadius: "10px",
               display: "flex",
               flexDirection: "column",
-              position: "relative",
               padding: "1vh 1vw",
             }}
           >
@@ -70,33 +70,37 @@ const AddCoordinatorPopUp = ({ addEmails, setAddEmails }) => {
             >
               X
             </Button>
-            <TextField
-              id="outlined-controlled"
-              label="Add Coordinator Email"
-              placeholder="Enter Email"
-              value={inputValue}
-              onChange={handleInputChange}
-              onKeyDown={handleKeyDown}
-              style={{ marginBottom: "2vh" }}
-            />
             <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              {addEmails.map((option, index) => (
-                <Chip
-                  key={index}
-                  label={option}
-                  variant="outlined"
-                  onDelete={() => handleDelete(option)}
-                  avatar={<Avatar>{option[0].toUpperCase()}</Avatar>}
-                />
-              ))}
+              <TextField
+                fullWidth
+                id="outlined-controlled"
+                label="Add Coordinator Email"
+                placeholder="Enter Email"
+                value={inputValue}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
+                style={{ marginBottom: "2vh" }}
+              />
+              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                {addEmails.map((option, index) => (
+                  <Chip
+                    key={index}
+                    label={option}
+                    variant="outlined"
+                    onDelete={() => handleDelete(option)}
+                    avatar={<Avatar>{option[0].toUpperCase()}</Avatar>}
+                  />
+                ))}
+              </Stack>
+              <Button
+                variant="contained"
+                fullWidth
+                style={{ width: "28vw" }}
+                onClick={() => dispatch(addCoordinator(addEmails))}
+              >
+                Send invitation
+              </Button>
             </Stack>
-            <Button
-              variant="contained"
-              fullWidth
-              style={{ position: "absolute", bottom: 6, width: "28vw" }}
-            >
-              Send invitation
-            </Button>
           </div>
         </div>
       )}
