@@ -153,29 +153,24 @@ const login = async (req, res) => {
 
 //Co-ordinator signup:
 const co_signup = async (req, res) => {
-  const { email, password, name, uid, branch, contact,isAdmin } = req.body;
+  const { email, password, name, uid, branch, contact, isAdmin } = req.body;
   try {
     if (!email || !password || !name || !uid || !branch || !contact) {
       return res.status.json({ err: "All fields are required!" });
     }
-    if (contact.length !== 10 || !/^\d+$/.test(contact)) {
-      return res
-        .status(400)
-        .json({ error: "Contact number must be a 10-digit number" });
-    }
-   //super admin
+
+    //super admin
 
     const oldCoordinator = await Coordinator.findOne({ email: email });
     if (oldCoordinator) {
       return res.status(400).json({ msg: "Coordinator already exists!" });
     }
 
-    if(email === process.env.ADMIN_EMAIL)
-   {
-          isAdmin = true;
-   }   
+    if (email === process.env.ADMIN_EMAIL) {
+      isAdmin = true;
+    }
 
-   const hashedPassword = await bcrypt.hash(password,12);
+    const hashedPassword = await bcrypt.hash(password, 12);
 
     const newCoordinator = await Coordinator.create({
       name,
@@ -187,10 +182,12 @@ const co_signup = async (req, res) => {
       isAdmin: true,
     });
 
-    res.status(200).json({ result: newCoordinator });
+    const token = await newCoordinator.generateAuthTokenCoordinator();
+
+    res.status(200).json({ result: newCoordinator, token });
   } catch (error) {
     return res.status(500).json({ msg: "Internal server error!" });
   }
 };
 
-module.exports = { signup, login, co_signup};
+module.exports = { signup, login, co_signup };

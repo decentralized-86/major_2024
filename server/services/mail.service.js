@@ -56,27 +56,39 @@ const trainingNotificationToAllUsers = async (training) => {
   }
 };
 
-const addCoordinatorMail = async () => {
+const addCoordinatorMail = async (req, res) => {
   try {
-    const coordinators = await Coordinator.find();
-    const coordinatorEmails = coordinators.map(
-      (coordinator) => coordinator.email
-    );
+    // Extract emails from the request body
+    const emails = req.body.emails;
 
-    const mailOptions = {
-      from: process.env.SENDER_EMAIL, // replace with your email
-      to: coordinatorEmails.join(", "), // Comma-separated list of all user emails
-      subject: "Invitation to become a Coordinator on CPMS",
-      text: `Sign Up  as coordinator using the below link`,
-    };
+    // Validate if emails are present
+    if (!emails || emails.length === 0) {
+      return res
+        .status(400)
+        .json({ error: "Please provide at least one email address." });
+    }
 
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Email sent:", info.response);
+    const promises = emails.map(async (email) => {
+      const inviteLink = "http:localhost:3000/add";
+
+      const mailOptions = {
+        from: "your_email@gmail.com",
+        to: email,
+        subject: "Invitation to join as a coordinator",
+        text: `Hello!\n\nYou have been invited to join as a coordinator. Click the link below to sign up:\n${inviteLink}`,
+      };
+
+      await transporter.sendMail(mailOptions);
+    });
+
+    // Wait for all emails to be sent
+    await Promise.all(promises);
+
+    // Send success response
+    res.status(200).json({ message: "Invites sent successfully." });
   } catch (error) {
-    console.error("Error sending email:", error);
-    return res
-      .status(500)
-      .json({ err: error, message: "Email service error!" });
+    console.error("Error sending invites:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
