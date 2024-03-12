@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
-const jwt = require("jsonwebtoken");
+
+const generateAuthToken = require("../services/jwt.service");
 
 const coordinatorSchema = new mongoose.Schema({
   name: {
@@ -34,12 +35,7 @@ const coordinatorSchema = new mongoose.Schema({
 });
 
 coordinatorSchema.methods.generateAuthTokenCoordinator = async function () {
-  try {
-    let token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET);
-    return token;
-  } catch (error) {
-    console.log(error);
-  }
+  return generateAuthToken(this);
 };
 
 const Coordinator = mongoose.model("Coordinator", coordinatorSchema);
