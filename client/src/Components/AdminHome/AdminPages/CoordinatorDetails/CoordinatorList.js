@@ -6,17 +6,13 @@ import { useDispatch } from "react-redux";
 
 const { Column, HeaderCell, Cell } = Table;
 
-const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
+const CoordinatorList = ({ data, setDeleteStatus }) => {
   const dispatch = useDispatch();
   const [coordinatorData, setCoordinatorData] = useState([]);
 
   useEffect(() => {
-    setCoordinatorData(
-      selectedId.length > 0
-        ? data.filter((item) => selectedId.includes(item._id))
-        : data
-    );
-  }, [selectedId, data]);
+    setCoordinatorData(data);
+  }, [data]);
 
   const handleDelete = (id) => {
     if (window.confirm(`Are you sure you want to delete the Co-ordinator?`)) {
@@ -34,14 +30,7 @@ const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
         msOverflowStyle: "none",
       }}
     >
-      <Table
-        height={500}
-        data={coordinatorData}
-        onRowClick={(rowData) => {
-          console.log(rowData);
-        }}
-        affixHeader={0}
-      >
+      <Table height={500} data={coordinatorData} affixHeader={0}>
         <Column width={100}>
           <HeaderCell>UID</HeaderCell>
           <Cell dataKey="uid" />
@@ -59,11 +48,7 @@ const CoordinatorList = ({ data, selectedId, setDeleteStatus }) => {
 
         <Column width={100}>
           <HeaderCell>CONTACT</HeaderCell>
-          <Cell>
-            {(rowData) => {
-              return String(rowData.contact);
-            }}
-          </Cell>
+          <Cell dataKey="contact" />
         </Column>
 
         <Column width={400}>

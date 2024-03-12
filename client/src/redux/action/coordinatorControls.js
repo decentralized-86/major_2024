@@ -2,19 +2,19 @@ import axios from "axios";
 
 const URL = "http://localhost:8080";
 
-export const addCoordinator = (coordinatorEmail) => {
+export const addCoordinator = (coordinatorEmails) => {
   return async (dispatch) => {
     dispatch({ type: "ADD_COORDINATOR_REQUEST" });
     try {
       const response = await axios.post(
         `${URL}/api/coordinator/addcoordinator`,
-        { email: coordinatorEmail }
+        coordinatorEmails
       );
 
       if (response.status === 200) {
         dispatch({
           type: "ADD_COORDINATOR_SUCCESS",
-          payload: response.data.coordinator,
+          payload: response.data,
         });
       } else {
         dispatch({
@@ -22,9 +22,12 @@ export const addCoordinator = (coordinatorEmail) => {
           error: response.data.msg,
         });
       }
+
+      return response;
     } catch (error) {
       console.error(error);
       dispatch({ type: "ADD_COORDINATOR_FAILURE", error: error.message });
+      return error;
     }
   };
 };

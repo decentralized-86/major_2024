@@ -13,7 +13,7 @@ import AdminManageTrainings from "./Components/AdminHome/AdminPages/ManageTraini
 import ApplicationList from "./Components/AdminHome/AdminPages/JobPosts/applications/ApplicationList";
 import UpdateApplication from "./Components/AdminHome/AdminPages/JobPosts/updateApplication/UpdateApplication";
 import ApplicationForm from "./Components/AdminHome/AdminPages/JobPosts/newApplicationForm/ApplicationForm";
-
+import ErrorBoundary from "./ErrorBoundary";
 import CoSignUp from "./Components/CoSignup/coSignup";
 import TrainingList from "./Components/AdminHome/AdminPages/ManageTraining/trainingList/trainingList";
 import TrainingForm from "./Components/AdminHome/AdminPages/ManageTraining/newTraining/newTrainingForm";
@@ -116,7 +116,16 @@ function App() {
           </Route>
           <Route path="trainingForm" element={<TrainingForm />} />
           <Route path="updateTrainingForm" element={<UpdateTrainingForm />} />
-          <Route path="coordinatorList" element={<CoordinatorDetails />} />
+
+          <Route
+            path="coordinatorList"
+            element={
+              <ErrorBoundary>
+                <CoordinatorDetails />{" "}
+              </ErrorBoundary>
+            }
+          />
+
           <Route path="adminSettings" element={<AdminSettings />} />
         </Route>
 

@@ -9,10 +9,14 @@ const Search = ({ data, onSearch, clearSelectedId }) => {
   const [selectedValue, setSelectedValue] = useState("name");
 
   const searchData = data
-    ? data.map((item) => ({
-        key: item._id,
-        value: item[selectedValue],
-      }))
+    ? data.map((item) =>
+        item
+          ? {
+              key: item._id,
+              value: item[selectedValue],
+            }
+          : {}
+      )
     : [];
 
   const handleSelect = (record) => {

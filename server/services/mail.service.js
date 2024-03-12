@@ -59,7 +59,7 @@ const trainingNotificationToAllUsers = async (training) => {
 const addCoordinatorMail = async (req, res) => {
   try {
     // Extract emails from the request body
-    const emails = req.body.emails;
+    const emails = req.body;
 
     // Validate if emails are present
     if (!emails || emails.length === 0) {

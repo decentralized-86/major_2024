@@ -21,10 +21,9 @@ const coordinatorControlsReducers = (state = initialState, action) => {
           (coordinator) => coordinator._id !== action.payload
         ),
       };
-      case "ADD_COORDINATOR_SUCCESS":
+    case "ADD_COORDINATOR_SUCCESS":
       return {
         ...state,
-        coordinators: [...state.coordinators, action.payload],
       };
     case "ADD_COORDINATOR_FAILURE":
       return {

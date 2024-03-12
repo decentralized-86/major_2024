@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import Popup from "reactjs-popup";
 import { useDispatch } from "react-redux";
 import { addCoordinator } from "../../../../redux/action/coordinatorControls";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddCoordinatorPopUp = ({ addEmails, setAddEmails }) => {
   const [inputValue, setInputValue] = useState("");
@@ -24,87 +26,109 @@ const AddCoordinatorPopUp = ({ addEmails, setAddEmails }) => {
     setAddEmails((prevEmails) => prevEmails.filter((item) => item !== email));
   };
 
+  const handleAddCoordinator = async () => {
+    let response;
+    if (addEmails.length === 0) {
+      toast.error("Please Enter Email");
+    } else {
+      response = await dispatch(addCoordinator(addEmails));
+    }
+    if (response && response.status == 200) {
+      toast.success("Invitation sent!");
+      setAddEmails([]);
+    } else {
+      toast.error("Try sending invitation Again!");
+    }
+  };
+
   return (
-    <Popup
-      trigger={
-        <Button variant="outlined" size="small" style={{ fontWeight: "bold" }}>
-          ADD Coordinator
-        </Button>
-      }
-      position="right center"
-      modal
-      nested
-    >
-      {(close) => (
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            height: "100vh",
-            width: "100vw",
-            backdropFilter: "blur(5px)",
-          }}
-        >
+    <>
+      <ToastContainer />
+      <Popup
+        trigger={
+          <Button
+            variant="outlined"
+            size="small"
+            style={{ fontWeight: "bold" }}
+          >
+            ADD Coordinator
+          </Button>
+        }
+        position="right center"
+        modal
+        nested
+      >
+        {(close) => (
           <div
             style={{
-              minHeight: "30vh",
-              width: "30vw",
-              backgroundColor: "white",
-              borderRadius: "10px",
               display: "flex",
               flexDirection: "column",
-              padding: "1vh 1vw",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100vh",
+              width: "100vw",
+              backdropFilter: "blur(5px)",
             }}
           >
-            <Button
-              variant="outlined"
-              color="error"
-              onClick={close}
+            <div
               style={{
-                width: "fit-content",
-                alignSelf: "flex-end",
-                marginBottom: "2vh ",
+                minHeight: "30vh",
+                width: "30vw",
+                backgroundColor: "white",
+                borderRadius: "10px",
+                display: "flex",
+                flexDirection: "column",
+                padding: "1vh 1vw",
               }}
             >
-              X
-            </Button>
-            <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-              <TextField
-                fullWidth
-                id="outlined-controlled"
-                label="Add Coordinator Email"
-                placeholder="Enter Email"
-                value={inputValue}
-                onChange={handleInputChange}
-                onKeyDown={handleKeyDown}
-                style={{ marginBottom: "2vh" }}
-              />
-              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                {addEmails.map((option, index) => (
-                  <Chip
-                    key={index}
-                    label={option}
-                    variant="outlined"
-                    onDelete={() => handleDelete(option)}
-                    avatar={<Avatar>{option[0].toUpperCase()}</Avatar>}
-                  />
-                ))}
-              </Stack>
               <Button
-                variant="contained"
-                fullWidth
-                style={{ width: "28vw" }}
-                onClick={() => dispatch(addCoordinator(addEmails))}
+                variant="outlined"
+                color="error"
+                onClick={close}
+                style={{
+                  width: "fit-content",
+                  alignSelf: "flex-end",
+                  marginBottom: "2vh ",
+                }}
               >
-                Send invitation
+                X
               </Button>
-            </Stack>
+              <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                <TextField
+                  fullWidth
+                  id="outlined-controlled"
+                  label="Add Coordinator Email"
+                  placeholder="Enter Email"
+                  value={inputValue}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                  style={{ marginBottom: "2vh" }}
+                />
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                  {addEmails.map((option, index) => (
+                    <Chip
+                      key={index}
+                      label={option}
+                      variant="outlined"
+                      onDelete={() => handleDelete(option)}
+                      avatar={<Avatar>{option[0].toUpperCase()}</Avatar>}
+                    />
+                  ))}
+                </Stack>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  style={{ width: "28vw" }}
+                  onClick={handleAddCoordinator}
+                >
+                  Send invitation
+                </Button>
+              </Stack>
+            </div>
           </div>
-        </div>
-      )}
-    </Popup>
+        )}
+      </Popup>
+    </>
   );
 };
 

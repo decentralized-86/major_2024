@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CoordinatorList from "./CoordinatorList";
-import SearchBar from "../../../Search/Search";
-import { Button, Header } from "rsuite";
+import { Header } from "rsuite";
 import { getCoordinatorAction } from "../../../../redux/action/coordinatorControls";
-import Popover from "@mui/material/Popover";
-import { TextField } from "@mui/material";
 import AddCoordinatorPopUp from "./AddCoordinator";
 
 function CoordinatorDetails() {
@@ -14,19 +11,11 @@ function CoordinatorDetails() {
   const coordinatorList = useSelector(
     (state) => state.coordinatorControls?.coordinators
   );
-  const [selectedId, setSelectedId] = useState([]);
   const [deleteStatus, setDeleteStatus] = useState(false);
 
   useEffect(() => {
     dispatch(getCoordinatorAction());
   }, [dispatch, deleteStatus]);
-
-  const handleSearch = (record) => {
-    setSelectedId((prevIds) => [...prevIds, record]);
-  };
-  const clearSelectedIds = () => {
-    setSelectedId([]);
-  };
 
   return (
     <div
@@ -52,11 +41,6 @@ function CoordinatorDetails() {
             margin: "1vh 1vw",
           }}
         >
-          <SearchBar
-            data={coordinatorList}
-            onSearch={handleSearch}
-            clearSelectedId={clearSelectedIds}
-          />
           <AddCoordinatorPopUp
             addEmails={addEmails}
             setAddEmails={setAddEmails}
@@ -65,7 +49,6 @@ function CoordinatorDetails() {
       </Header>
       <CoordinatorList
         data={coordinatorList}
-        selectedId={selectedId}
         setDeleteStatus={setDeleteStatus}
       />
     </div>
