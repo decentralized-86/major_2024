@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const Coordinator = require("../models/coordinator.model");
+const generateAuthToken = require("../services/jwt.service");
 
 const bcrypt = require("bcrypt");
 
