@@ -1,5 +1,6 @@
 const User = require("../models/user.model");
 const Coordinator = require("../models/coordinator.model");
+const generateAuthToken = require("../services/jwt.service");
 
 const bcrypt = require("bcrypt");
 
@@ -93,7 +94,7 @@ const signup = async (req, res) => {
       password: password,
     });
 
-    const token = await newStudent.generateAuthToken();
+    const token = await generateAuthToken(newStudent);
 
     res.status(200).json({ result: newStudent, token });
   } catch (error) {
@@ -127,8 +128,9 @@ const login = async (req, res) => {
       if (!correctPassword) {
         return res.status(400).json({ msg: "Invalid Credentials!" });
       }
+      const token = await generateAuthToken(coordinator);
 
-      res.status(200).json({ result: coordinator });
+      res.status(200).json({ result: coordinator, token });
     } else if (select === "student") {
       const student = await User.findOne({ college_email: email });
 
@@ -141,7 +143,7 @@ const login = async (req, res) => {
         return res.status(400).json({ msg: "Invalid Credentials!" });
       }
 
-      const token = await student.generateAuthToken();
+      const token = await student.generateAuthToken(student);
 
       res.status(200).json({ result: student, token });
     }
@@ -166,9 +168,7 @@ const co_signup = async (req, res) => {
       return res.status(400).json({ msg: "Coordinator already exists!" });
     }
 
-    if (email === process.env.ADMIN_EMAIL) {
-      isAdmin = true;
-    }
+    const isAdmin = email === process.env.ADMIN_EMAIL;
 
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -179,10 +179,10 @@ const co_signup = async (req, res) => {
       password: hashedPassword,
       branch,
       contact,
-      isAdmin: true,
+      isAdmin,
     });
 
-    const token = await newCoordinator.generateAuthTokenCoordinator();
+    const token = await generateAuthToken(newCoordinator);
 
     res.status(200).json({ result: newCoordinator, token });
   } catch (error) {

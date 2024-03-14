@@ -69,7 +69,7 @@ const addCoordinatorMail = async (req, res) => {
     }
 
     const promises = emails.map(async (email) => {
-      const inviteLink = "http:localhost:3000/add";
+      const inviteLink = "http//:localhost:3000/add";
 
       const mailOptions = {
         from: "your_email@gmail.com",
